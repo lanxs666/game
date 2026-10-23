@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090d12">
+  <title>霓虹贪吃蛇</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 15px;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      --page: #090d12;
+      --panel: #0e141b;
+      --panel-raised: #121a23;
+      --line: #202b37;
+      --text: #eaf2f7;
+      --muted: #8493a2;
+      --green: #a5ff65;
+      --green-deep: #5de09a;
+      --pink: #ff5b9d;
+      --cyan: #65e9ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 28px 18px;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(33, 57, 68, .2), transparent 48%),
+        var(--page);
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    button { font: inherit; }
+
+    .game {
+      width: min(100%, 590px);
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border: 1px solid rgba(165, 255, 101, .22);
+      border-radius: 12px;
+      background: rgba(165, 255, 101, .08);
+      color: var(--green);
+      font-size: 20px;
+      line-height: 1;
+      box-shadow: 0 0 22px rgba(165, 255, 101, .08);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 650;
+      letter-spacing: -.025em;
+    }
+
+    .eyebrow {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: .02em;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #b8c4ce;
+      font-size: 12px;
+      font-weight: 550;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 9px rgba(165, 255, 101, .7);
+    }
+
+    .scoreboard {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .score-card {
+      padding: 13px 16px 14px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: linear-gradient(145deg, rgba(18, 26, 35, .92), rgba(13, 19, 26, .96));
+    }
+
+    .score-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 650;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    .score-value {
+      display: block;
+      margin-top: 3px;
+      color: var(--text);
+      font-size: 25px;
+      font-variant-numeric: tabular-nums;
+      font-weight: 650;
+      letter-spacing: -.04em;
+      line-height: 1.15;
+    }
+
+    .score-value.current { color: var(--green); }
+
+    .leaderboard {
+      margin-top: 16px;
+      padding: 15px 16px 10px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: linear-gradient(145deg, rgba(18, 26, 35, .92), rgba(13, 19, 26, .96));
+    }
+
+    .leaderboard-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .leaderboard h2 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .leaderboard-note {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .leaderboard-list {
+      display: grid;
+      gap: 2px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .leaderboard-row {
+      display: grid;
+      grid-template-columns: 32px 1fr auto;
+      align-items: center;
+      min-height: 32px;
+      border-top: 1px solid rgba(144, 166, 181, .08);
+      color: #c3ced6;
+      font-size: 13px;
+    }
+
+    .leaderboard-rank {
+      color: var(--muted);
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .leaderboard-row:first-child .leaderboard-rank,
+    .leaderboard-row:first-child .leaderboard-score {
+      color: var(--green);
+    }
+
+    .leaderboard-date {
+      margin-left: 8px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .leaderboard-score {
+      font-variant-numeric: tabular-nums;
+      font-weight: 650;
+    }
+
+    .leaderboard-empty {
+      padding: 12px 0 7px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .board-wrap {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #283440;
+      border-radius: 16px;
+      background: #0b1117;
+      box-shadow: 0 22px 70px rgba(0, 0, 0, .34), 0 0 34px rgba(101, 233, 255, .035);
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1;
+      background: #0b1117;
+      touch-action: none;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(5, 9, 13, .68);
+      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(5px);
+      text-align: center;
+      transition: opacity .2s ease, visibility .2s ease;
+    }
+
+    .overlay[hidden] {
+      display: none;
+    }
+
+    .overlay-card {
+      width: min(100%, 300px);
+      padding: 24px 22px;
+      border: 1px solid rgba(134, 160, 177, .22);
+      border-radius: 16px;
+      background: rgba(14, 21, 28, .92);
+      box-shadow: 0 16px 55px rgba(0, 0, 0, .38);
+    }
+
+    .overlay-icon {
+      display: grid;
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 13px;
+      place-items: center;
+      border: 1px solid rgba(165, 255, 101, .2);
+      border-radius: 14px;
+      background: rgba(165, 255, 101, .09);
+      color: var(--green);
+      font-size: 21px;
+    }
+
+    .overlay h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -.035em;
+    }
+
+    .overlay p {
+      margin: 8px 0 18px;
+      color: #9baab6;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .primary-button {
+      min-height: 42px;
+      padding: 0 18px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--green);
+      color: #10170e;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+      box-shadow: 0 4px 18px rgba(165, 255, 101, .13);
+    }
+
+    .primary-button:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(165, 255, 101, .21);
+    }
+
+    .primary-button:focus-visible,
+    .dpad button:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+    }
+
+    .bottom-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: 13px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .controls-hint { line-height: 1.6; }
+
+    kbd {
+      padding: 2px 5px;
+      border: 1px solid #293542;
+      border-radius: 5px;
+      background: #111922;
+      color: #c1ccd5;
+      font: inherit;
+      font-size: 11px;
+    }
+
+    .dpad {
+      display: none;
+      grid-template-columns: repeat(3, 38px);
+      grid-template-rows: repeat(2, 34px);
+      gap: 4px;
+    }
+
+    .dpad button {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: #c9d4dc;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .dpad button:active { background: var(--panel-raised); }
+    .dpad [data-dir="up"] { grid-column: 2; grid-row: 1; }
+    .dpad [data-dir="left"] { grid-column: 1; grid-row: 2; }
+    .dpad [data-dir="down"] { grid-column: 2; grid-row: 2; }
+    .dpad [data-dir="right"] { grid-column: 3; grid-row: 2; }
+
+    @media (max-width: 520px) {
+      body { padding: 18px 14px; }
+      .topline { margin-bottom: 14px; }
+      .dpad { display: grid; }
+      .controls-hint { max-width: 190px; }
+      .bottom-row { align-items: center; }
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        color-scheme: dark;
+        --page: #0b1015;
+        --panel: #10171e;
+        --panel-raised: #151e27;
+        --line: #273440;
+        --text: #edf4f8;
+        --muted: #91a0ad;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="game" aria-label="霓虹贪吃蛇游戏">
+    <header class="topline">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">⌁</div>
+        <div>
+          <h1>霓虹贪吃蛇</h1>
+          <p class="eyebrow">吃掉能量豆，挑战更高分。</p>
+        </div>
+      </div>
+      <div class="status" aria-live="polite">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="statusText">准备开始</span>
+      </div>
+    </header>
+
+    <section class="scoreboard" aria-label="分数">
+      <div class="score-card">
+        <span class="score-label">本局得分</span>
+        <strong class="score-value current" id="score">00</strong>
+      </div>
+      <div class="score-card">
+        <span class="score-label">个人最佳</span>
+        <strong class="score-value" id="best">00</strong>
+      </div>
+    </section>
+
+    <div class="board-wrap">
+      <canvas id="board" width="480" height="480" aria-label="贪吃蛇游戏区域"></canvas>
+      <div class="overlay" id="overlay">
+        <div class="overlay-card">
+          <div class="overlay-icon" id="overlayIcon" aria-hidden="true">↗</div>
+          <h2 id="overlayTitle">准备好了吗？</h2>
+          <p id="overlayMessage">吃掉发光能量豆，别撞到墙壁或自己的身体。</p>
+          <button class="primary-button" id="startButton" type="button">开始游戏</button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bottom-row">
+      <div class="controls-hint">
+        使用 <kbd>←</kbd> <kbd>↑</kbd> <kbd>↓</kbd> <kbd>→</kbd> 或 <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移动
+        <span aria-hidden="true"> · </span><kbd>Space</kbd> 暂停
+      </div>
+      <div class="dpad" aria-label="触屏方向键">
+        <button type="button" data-dir="up" aria-label="向上">↑</button>
+        <button type="button" data-dir="left" aria-label="向左">←</button>
+        <button type="button" data-dir="down" aria-label="向下">↓</button>
+        <button type="button" data-dir="right" aria-label="向右">→</button>
+      </div>
+    </footer>
+
+    <section class="leaderboard" aria-labelledby="leaderboardTitle">
+      <div class="leaderboard-header">
+        <h2 id="leaderboardTitle">🏆 本地排行榜</h2>
+        <span class="leaderboard-note">最佳 5 局 · 保存在此设备</span>
+      </div>
+      <ol class="leaderboard-list" id="leaderboardList" aria-live="polite"></ol>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const canvas = document.getElementById("board");
+      const ctx = canvas.getContext("2d");
+      const scoreEl = document.getElementById("score");
+      const bestEl = document.getElementById("best");
+      const statusText = document.getElementById("statusText");
+      const leaderboardList = document.getElementById("leaderboardList");
+      const overlay = document.getElementById("overlay");
+      const overlayIcon = document.getElementById("overlayIcon");
+      const overlayTitle = document.getElementById("overlayTitle");
+      const overlayMessage = document.getElementById("overlayMessage");
+      const startButton = document.getElementById("startButton");
+      const leaderboardKey = "neon-snake-leaderboard";
+
+      const cells = 24;
+      const cellSize = canvas.width / cells;
+      const initialInterval = 150;
+      const minimumInterval = 68;
+      const speedStep = 4;
+      const directions = {
+        up: { x: 0, y: -1 },
+        right: { x: 1, y: 0 },
+        down: { x: 0, y: 1 },
+        left: { x: -1, y: 0 }
+      };
+      const keyDirections = {
+        ArrowUp: "up", KeyW: "up",
+        ArrowRight: "right", KeyD: "right",
+        ArrowDown: "down", KeyS: "down",
+        ArrowLeft: "left", KeyA: "left"
+      };
+
+      let snake;
+      let direction;
+      let nextDirection;
+      let food;
+      let score = 0;
+      let interval = initialInterval;
+      let timer = null;
+      let state = "ready";
+      let best = readBest();
+      let leaderboard = readLeaderboard();
+      let audioContext = null;
+
+      bestEl.textContent = formatScore(best);
+      renderLeaderboard();
+      resetRound();
+      draw();
+
+      function formatScore(value) {
+        return String(value).padStart(2, "0");
+      }
+
+      function readBest() {
+        try {
+          return Number(localStorage.getItem("neon-snake-best")) || 0;
+        } catch (error) {
+          return 0;
+        }
+      }
+
+      function saveBest() {
+        try {
+          localStorage.setItem("neon-snake-best", String(best));
+        } catch (error) {
+          // The current session still tracks the best score if storage is unavailable.
+        }
+      }
+
+      function readLeaderboard() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(leaderboardKey) || "[]");
+          if (!Array.isArray(saved)) return [];
+          return saved
+            .filter((entry) => entry && Number.isFinite(entry.score) && typeof entry.date === "string")
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 5);
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function renderLeaderboard() {
+        leaderboardList.replaceChildren();
+        if (leaderboard.length === 0) {
+          const empty = document.createElement("li");
+          empty.className = "leaderboard-empty";
+          empty.textContent = "完成一局后，成绩会显示在这里。";
+          leaderboardList.append(empty);
+          return;
+        }
+
+        leaderboard.forEach((entry, index) => {
+          const row = document.createElement("li");
+          row.className = "leaderboard-row";
+
+          const rank = document.createElement("span");
+          rank.className = "leaderboard-rank";
+          rank.textContent = `${String(index + 1).padStart(2, "0")}.`;
+
+          const date = document.createElement("time");
+          date.className = "leaderboard-date";
+          date.dateTime = entry.date;
+          date.textContent = new Date(entry.date).toLocaleDateString("zh-CN");
+
+          const scoreValue = document.createElement("span");
+          scoreValue.className = "leaderboard-score";
+          scoreValue.textContent = formatScore(entry.score);
+
+          row.append(rank, date, scoreValue);
+          leaderboardList.append(row);
+        });
+      }
+
+      function saveRun() {
+        leaderboard.push({ score, date: new Date().toISOString() });
+        leaderboard.sort((a, b) => b.score - a.score);
+        leaderboard = leaderboard.slice(0, 5);
+        try {
+          localStorage.setItem(leaderboardKey, JSON.stringify(leaderboard));
+        } catch (error) {
+          statusText.textContent = "成绩仅保存于本次打开";
+        }
+        renderLeaderboard();
+      }
+
+      function getAudioContext() {
+        if (!audioContext) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContextClass) return null;
+          audioContext = new AudioContextClass();
+        }
+        if (audioContext.state === "suspended") audioContext.resume();
+        return audioContext;
+      }
+
+      function playTone(frequency, endFrequency, startTime, duration, volume, type) {
+        const audio = getAudioContext();
+        if (!audio) return;
+        const oscillator = audio.createOscillator();
+        const gain = audio.createGain();
+        oscillator.type = type;
+        oscillator.frequency.setValueAtTime(frequency, startTime);
+        oscillator.frequency.exponentialRampToValueAtTime(endFrequency, startTime + duration);
+        gain.gain.setValueAtTime(volume, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+        oscillator.connect(gain);
+        gain.connect(audio.destination);
+        oscillator.start(startTime);
+        oscillator.stop(startTime + duration);
+      }
+
+      function playEatSound() {
+        const audio = getAudioContext();
+        if (!audio) return;
+        const now = audio.currentTime;
+        playTone(520, 820, now, 0.09, 0.055, "sine");
+      }
+
+      function playDeathSound() {
+        const audio = getAudioContext();
+        if (!audio) return;
+        const now = audio.currentTime;
+        playTone(260, 130, now, 0.24, 0.09, "triangle");
+        playTone(160, 70, now + 0.2, 0.32, 0.075, "triangle");
+      }
+
+      function resetRound() {
+        snake = [
+          { x: 11, y: 12 },
+          { x: 10, y: 12 },
+          { x: 9, y: 12 },
+          { x: 8, y: 12 }
+        ];
+        direction = directions.right;
+        nextDirection = direction;
+        score = 0;
+        interval = initialInterval;
+        scoreEl.textContent = formatScore(score);
+        placeFood();
+      }
+
+      function placeFood() {
+        const openCells = [];
+        for (let y = 0; y < cells; y += 1) {
+          for (let x = 0; x < cells; x += 1) {
+            if (!snake.some((segment) => segment.x === x && segment.y === y)) {
+              openCells.push({ x, y });
+            }
+          }
+        }
+        food = openCells[Math.floor(Math.random() * openCells.length)];
+      }
+
+      function drawGrid() {
+        ctx.fillStyle = "#0b1117";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = "rgba(144, 166, 181, 0.075)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let i = 1; i < cells; i += 1) {
+          const position = i * cellSize + 0.5;
+          ctx.moveTo(position, 0);
+          ctx.lineTo(position, canvas.height);
+          ctx.moveTo(0, position);
+          ctx.lineTo(canvas.width, position);
+        }
+        ctx.stroke();
+      }
+
+      function drawFood() {
+        const centerX = (food.x + 0.5) * cellSize;
+        const centerY = (food.y + 0.5) * cellSize;
+        const radius = cellSize * 0.29;
+        ctx.save();
+        ctx.shadowColor = "#ff5b9d";
+        ctx.shadowBlur = 17;
+        ctx.fillStyle = "#ff5b9d";
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = "#ffd5e5";
+        ctx.beginPath();
+        ctx.arc(centerX - radius * 0.25, centerY - radius * 0.28, radius * 0.24, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function drawSnake() {
+        snake.forEach((segment, index) => {
+          const inset = index === 0 ? 2 : 2.5;
+          const x = segment.x * cellSize + inset;
+          const y = segment.y * cellSize + inset;
+          const size = cellSize - inset * 2;
+          const gradient = ctx.createLinearGradient(x, y, x + size, y + size);
+          if (index === 0) {
+            gradient.addColorStop(0, "#d5ff9a");
+            gradient.addColorStop(1, "#8dff63");
+          } else {
+            const fade = Math.min(index / Math.max(snake.length, 12), 1);
+            gradient.addColorStop(0, `rgb(${Math.round(137 - fade * 35)}, ${Math.round(255 - fade * 25)}, ${Math.round(93 + fade * 74)})`);
+            gradient.addColorStop(1, `rgb(${Math.round(104 - fade * 18)}, ${Math.round(236 - fade * 28)}, ${Math.round(147 + fade * 60)})`);
+          }
+          ctx.fillStyle = gradient;
+          ctx.shadowColor = index === 0 ? "rgba(165, 255, 101, .58)" : "transparent";
+          ctx.shadowBlur = index === 0 ? 13 : 0;
+          roundedRect(ctx, x, y, size, size, cellSize * 0.25);
+          ctx.fill();
+        });
+
+        const head = snake[0];
+        const eyeRadius = cellSize * 0.055;
+        const eyeOffset = cellSize * 0.18;
+        const centerX = (head.x + 0.5) * cellSize;
+        const centerY = (head.y + 0.5) * cellSize;
+        ctx.fillStyle = "#17311e";
+        if (direction.x !== 0) {
+          const x = centerX + direction.x * eyeOffset;
+          ctx.beginPath();
+          ctx.arc(x, centerY - eyeOffset, eyeRadius, 0, Math.PI * 2);
+          ctx.arc(x, centerY + eyeOffset, eyeRadius, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          const y = centerY + direction.y * eyeOffset;
+          ctx.beginPath();
+          ctx.arc(centerX - eyeOffset, y, eyeRadius, 0, Math.PI * 2);
+          ctx.arc(centerX + eyeOffset, y, eyeRadius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function roundedRect(context, x, y, width, height, radius) {
+        context.beginPath();
+        context.roundRect(x, y, width, height, radius);
+      }
+
+      function draw() {
+        drawGrid();
+        drawFood();
+        drawSnake();
+      }
+
+      function startGame() {
+        if (state === "over") resetRound();
+        if (state === "running") return;
+        state = "running";
+        statusText.textContent = "游戏进行中";
+        overlay.hidden = true;
+        clearInterval(timer);
+        timer = setInterval(tick, interval);
+      }
+
+      function pauseGame() {
+        if (state !== "running") return;
+        state = "paused";
+        clearInterval(timer);
+        statusText.textContent = "已暂停";
+        showOverlay("Ⅱ", "休息一下？", "游戏已暂停，继续按钮可接着挑战。", "继续游戏");
+      }
+
+      function showOverlay(icon, title, message, buttonText) {
+        overlayIcon.textContent = icon;
+        overlayTitle.textContent = title;
+        overlayMessage.textContent = message;
+        startButton.textContent = buttonText;
+        overlay.hidden = false;
+      }
+
+      function endGame() {
+        state = "over";
+        clearInterval(timer);
+        timer = null;
+        statusText.textContent = "本局结束";
+        saveRun();
+        playDeathSound();
+        showOverlay("↻", "游戏结束", `本局得分：${score}。${score > 0 ? "再来一局，挑战更高纪录！" : "别灰心，再试一次吧！"}`, "再玩一次");
+      }
+
+      function tick() {
+        direction = nextDirection;
+        const head = {
+          x: snake[0].x + direction.x,
+          y: snake[0].y + direction.y
+        };
+        const eating = head.x === food.x && head.y === food.y;
+        const body = eating ? snake : snake.slice(0, -1);
+        const hitWall = head.x < 0 || head.x >= cells || head.y < 0 || head.y >= cells;
+        const hitSelf = body.some((segment) => segment.x === head.x && segment.y === head.y);
+
+        if (hitWall || hitSelf) {
+          draw();
+          endGame();
+          return;
+        }
+
+        snake.unshift(head);
+        if (eating) {
+          score += 10;
+          playEatSound();
+          scoreEl.textContent = formatScore(score);
+          if (score > best) {
+            best = score;
+            bestEl.textContent = formatScore(best);
+            saveBest();
+          }
+          interval = Math.max(minimumInterval, initialInterval - (score / 10) * speedStep);
+          placeFood();
+          clearInterval(timer);
+          timer = setInterval(tick, interval);
+        } else {
+          snake.pop();
+        }
+        draw();
+      }
+
+      function steer(name) {
+        const candidate = directions[name];
+        if (!candidate || state === "over" || state === "paused") return;
+        const reversing = candidate.x === -direction.x && candidate.y === -direction.y;
+        if (!reversing) nextDirection = candidate;
+        if (state === "ready") startGame();
+      }
+
+      startButton.addEventListener("click", startGame);
+
+      document.addEventListener("keydown", (event) => {
+        const directionName = keyDirections[event.code];
+        if (directionName) {
+          event.preventDefault();
+          steer(directionName);
+          return;
+        }
+        if (event.code === "Space") {
+          event.preventDefault();
+          if (state === "running") pauseGame();
+          else if (state === "paused" || state === "ready") startGame();
+          else if (state === "over") startGame();
+        }
+      });
+
+      document.querySelectorAll(".dpad button").forEach((button) => {
+        button.addEventListener("click", () => steer(button.dataset.dir));
+      });
+    })();
+  </script>
+</body>
+</html>
