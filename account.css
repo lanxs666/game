@@ -1,0 +1,225 @@
+.account-trigger {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  place-items: center;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid rgba(198, 250, 114, .28);
+  border-radius: 50%;
+  background: linear-gradient(145deg, #253525, #142019);
+  color: #d4ff9c;
+  cursor: pointer;
+  font: inherit;
+  font-size: 19px;
+  box-shadow: 0 0 20px rgba(198, 250, 114, .07);
+  transition: border-color .18s ease, transform .18s ease;
+}
+
+.account-trigger:hover {
+  transform: translateY(-1px);
+  border-color: rgba(198, 250, 114, .65);
+}
+
+.account-trigger:focus-visible,
+.account-dialog button:focus-visible,
+.account-dialog input:focus-visible {
+  outline: 2px solid #c6fa72;
+  outline-offset: 3px;
+}
+
+.account-backdrop {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  display: grid;
+  overflow-y: auto;
+  place-items: center;
+  padding: 20px;
+  background: rgba(3, 5, 7, .76);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.account-backdrop[hidden] { display: none; }
+
+.account-dialog {
+  width: min(100%, 430px);
+  padding: 25px;
+  border: 1px solid rgba(226, 233, 242, .12);
+  border-radius: 18px;
+  background: linear-gradient(150deg, #171b21, #101318);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .55);
+}
+
+.account-dialog-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 21px;
+}
+
+.account-dialog h2 {
+  margin: 0;
+  color: #f4f5f7;
+  font-size: 21px;
+  letter-spacing: -.04em;
+}
+
+.account-dialog-subtitle {
+  margin: 6px 0 0;
+  color: #9299a5;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.account-close {
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(226, 233, 242, .1);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, .035);
+  color: #b9c0c9;
+  cursor: pointer;
+  font: inherit;
+}
+
+.account-form { display: grid; gap: 13px; }
+
+.account-field {
+  display: grid;
+  gap: 7px;
+  color: #c0c6cf;
+  font-size: 12px;
+}
+
+.account-field input {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid rgba(226, 233, 242, .12);
+  border-radius: 9px;
+  background: #0d1014;
+  color: #f4f5f7;
+  font: inherit;
+}
+
+.account-avatar-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.account-avatar-choice {
+  display: grid;
+  width: 39px;
+  height: 39px;
+  place-items: center;
+  border: 1px solid rgba(226, 233, 242, .12);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .04);
+  cursor: pointer;
+  font: inherit;
+  font-size: 19px;
+}
+
+.account-avatar-choice[aria-pressed="true"] {
+  border-color: #c6fa72;
+  background: rgba(198, 250, 114, .12);
+  box-shadow: 0 0 14px rgba(198, 250, 114, .12);
+}
+
+.account-submit {
+  min-height: 42px;
+  margin-top: 4px;
+  border: 0;
+  border-radius: 9px;
+  background: #c6fa72;
+  color: #151a0d;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.account-submit:disabled { cursor: wait; opacity: .65; }
+
+.account-switch {
+  display: block;
+  margin: 16px auto 0;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  color: #c6fa72;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+}
+
+.account-message {
+  min-height: 18px;
+  margin: 13px 0 0;
+  color: #a9b0ba;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.account-message[data-error="true"] { color: #ff8b9f; }
+
+.account-current {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 13px;
+  border: 1px solid rgba(226, 233, 242, .08);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, .025);
+}
+
+.account-current-avatar {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(198, 250, 114, .1);
+  font-size: 21px;
+}
+
+.account-current-name {
+  overflow: hidden;
+  color: #f4f5f7;
+  font-size: 14px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-current-email {
+  overflow: hidden;
+  margin-top: 4px;
+  color: #9299a5;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-signout {
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid rgba(226, 233, 242, .12);
+  border-radius: 9px;
+  background: transparent;
+  color: #b8bec7;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+}
+
+@media (max-width: 520px) {
+  .account-dialog { padding: 21px; }
+}
