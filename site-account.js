@@ -58,8 +58,33 @@
   function updateTriggers() {
     const avatar = profile && profile.avatar ? profile.avatar : defaultAvatar;
     for (const trigger of document.querySelectorAll(".account-trigger")) {
-      trigger.textContent = avatar;
+      renderAvatar(trigger, avatar, "account-avatar-image");
       trigger.setAttribute("aria-label", session ? "打开个人信息中心" : "登录或注册");
+    }
+  }
+
+  function renderAvatar(container, avatar, imageClass) {
+    container.replaceChildren();
+    if (isProfilePhoto(avatar) || typeof avatar === "string" && avatar.startsWith("blob:")) {
+      const image = document.createElement("img");
+      image.className = imageClass;
+      image.alt = "";
+      image.src = avatar;
+      image.addEventListener("error", () => image.replaceWith(document.createTextNode(defaultAvatar)), { once: true });
+      container.append(image);
+      return;
+    }
+    container.textContent = avatar || defaultAvatar;
+  }
+
+  function isProfilePhoto(value) {
+    if (typeof value !== "string" || !config || !config.url) return false;
+    try {
+      const image = new URL(value);
+      const project = new URL(config.url);
+      return image.origin === project.origin && image.pathname.startsWith("/storage/v1/object/public/profile-avatars/");
+    } catch (error) {
+      return false;
     }
   }
 
@@ -102,6 +127,30 @@
     const data = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(data.msg || data.message || data.error_description || "认证请求失败。");
     return data;
+  }
+
+  async function uploadProfilePhoto(file) {
+    if (session.expires_at && session.expires_at <= Math.floor(Date.now() / 1000) + 30) {
+      if (!session.refresh_token) throw new Error("登录已过期，请重新登录。");
+      const refreshed = await authRequest("/auth/v1/token?grant_type=refresh_token", { refresh_token: session.refresh_token });
+      saveSession(refreshed);
+    }
+    const objectPath = `${session.user.id}/avatar`;
+    const response = await fetch(apiUrl(`/storage/v1/object/profile-avatars/${objectPath}`), {
+      method: "POST",
+      headers: {
+        apikey: config.anonKey,
+        Authorization: `Bearer ${session.access_token}`,
+        "Content-Type": file.type,
+        "x-upsert": "true"
+      },
+      body: file
+    });
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      throw new Error(data.message || data.error || "头像上传失败，请稍后重试。");
+    }
+    return `${config.url.replace(/\/+$/, "")}/storage/v1/object/public/profile-avatars/${objectPath}?v=${Date.now()}`;
   }
 
   async function loadProfile() {
@@ -241,19 +290,59 @@
     const current = document.createElement("div");
     current.className = "account-current";
     current.innerHTML = `<span class="account-current-avatar"></span><div style="min-width:0"><div class="account-current-name"></div><div class="account-current-email"></div></div>`;
-    current.querySelector(".account-current-avatar").textContent = profile.avatar || defaultAvatar;
+    renderAvatar(current.querySelector(".account-current-avatar"), profile.avatar, "account-avatar-image");
     current.querySelector(".account-current-name").textContent = profile.nickname || "玩家";
     current.querySelector(".account-current-email").textContent = session.user.email || "";
     const form = document.createElement("form");
     form.className = "account-form";
     form.innerHTML = `
       <label class="account-field">昵称<input name="nickname" maxlength="24" autocomplete="nickname" required></label>
+      <div class="account-field">
+        <span>头像照片</span>
+        <div class="account-photo-row">
+          <span class="account-current-avatar account-photo-preview" aria-label="头像预览"></span>
+          <label class="account-upload-button">上传照片<input class="account-photo-input" name="avatarFile" type="file" accept="image/jpeg,image/png,image/webp"></label>
+          <span class="account-upload-hint">JPG、PNG、WebP，最大 2 MB</span>
+        </div>
+      </div>
       <div class="account-field"><span>头像</span><div class="account-avatar-choices" role="group" aria-label="选择头像">${avatars.map((avatar) => `<button class="account-avatar-choice" type="button" data-avatar="${avatar}">${avatar}</button>`).join("")}</div></div>
       <button class="account-submit" type="submit">保存个人资料</button>`;
     form.elements.nickname.value = profile.nickname || "玩家";
+    const photoInput = form.querySelector(".account-photo-input");
+    const photoPreview = form.querySelector(".account-photo-preview");
+    renderAvatar(photoPreview, profile.avatar, "account-avatar-image");
+    let selectedPhoto = null;
+    let previewUrl = null;
+    photoInput.addEventListener("change", () => {
+      const file = photoInput.files && photoInput.files[0];
+      if (!file) return;
+      if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+        photoInput.value = "";
+        showMessage("请选择 JPG、PNG 或 WebP 格式的图片。", true);
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        photoInput.value = "";
+        showMessage("头像图片不能超过 2 MB。", true);
+        return;
+      }
+      selectedPhoto = file;
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      previewUrl = URL.createObjectURL(file);
+      renderAvatar(photoPreview, previewUrl, "account-avatar-image");
+      form.querySelectorAll("[data-avatar]").forEach((choice) => choice.setAttribute("aria-pressed", "false"));
+      showMessage("照片已选择，保存个人资料后上传。");
+    });
     form.querySelectorAll("[data-avatar]").forEach((button) => {
       button.setAttribute("aria-pressed", String(button.dataset.avatar === (profile.avatar || defaultAvatar)));
-      button.addEventListener("click", () => form.querySelectorAll("[data-avatar]").forEach((choice) => choice.setAttribute("aria-pressed", String(choice === button))));
+      button.addEventListener("click", () => {
+        selectedPhoto = null;
+        photoInput.value = "";
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        previewUrl = null;
+        form.querySelectorAll("[data-avatar]").forEach((choice) => choice.setAttribute("aria-pressed", String(choice === button)));
+        renderAvatar(photoPreview, button.dataset.avatar, "account-avatar-image");
+      });
     });
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -261,7 +350,8 @@
       submit.disabled = true;
       try {
         const nickname = String(new FormData(form).get("nickname")).trim();
-        const avatar = form.querySelector('[aria-pressed="true"]')?.dataset.avatar || defaultAvatar;
+        let avatar = form.querySelector('[aria-pressed="true"]')?.dataset.avatar || profile.avatar || defaultAvatar;
+        if (selectedPhoto) avatar = await uploadProfilePhoto(selectedPhoto);
         await request("/rest/v1/profiles?on_conflict=user_id", {
           method: "POST",
           headers: { Prefer: "resolution=merge-duplicates,return=minimal" },

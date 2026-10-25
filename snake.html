@@ -170,6 +170,12 @@
       font-size: 11px;
     }
 
+    .leaderboard-open {
+      color: var(--green);
+      font-size: 11px;
+      text-decoration: none;
+    }
+
     .leaderboard-list {
       display: grid;
       gap: 2px;
@@ -221,6 +227,7 @@
     }
 
     .leaderboard-avatar { font-size: 13px; }
+    .leaderboard-avatar img { display: block; width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
 
     .leaderboard-name {
       overflow: hidden;
@@ -469,7 +476,7 @@
         <section class="leaderboard-panel" aria-labelledby="globalLeaderboardTitle">
           <div class="leaderboard-header">
             <h2 id="globalLeaderboardTitle">🏆 全站榜单</h2>
-            <span class="leaderboard-note">前 10</span>
+            <a class="leaderboard-open" href="leaderboard.html">查看完整排名 ↗</a>
           </div>
           <ol class="leaderboard-list" id="globalLeaderboardList" aria-live="polite"></ol>
         </section>
@@ -580,7 +587,7 @@
           const avatar = document.createElement("span");
           avatar.className = "leaderboard-avatar";
           avatar.setAttribute("aria-hidden", "true");
-          avatar.textContent = entry.profiles && entry.profiles.avatar || "🟢";
+          renderLeaderboardAvatar(avatar, entry.profiles && entry.profiles.avatar);
           const identity = document.createElement("span");
           identity.className = "leaderboard-name";
           const nickname = document.createElement("span");
@@ -599,6 +606,25 @@
           row.append(rank, person, scoreValue);
           list.append(row);
         });
+      }
+
+      function renderLeaderboardAvatar(container, value) {
+        const config = window.GAME_SITE_SUPABASE;
+        try {
+          const photo = new URL(value);
+          const project = new URL(config.url);
+          if (photo.origin === project.origin && photo.pathname.startsWith("/storage/v1/object/public/profile-avatars/")) {
+            const image = document.createElement("img");
+            image.alt = "";
+            image.src = photo.href;
+            image.addEventListener("error", () => image.replaceWith(document.createTextNode("🟢")), { once: true });
+            container.append(image);
+            return;
+          }
+        } catch (error) {
+          // Emoji avatars are not URLs.
+        }
+        container.textContent = value || "🟢";
       }
 
       async function refreshLeaderboards() {

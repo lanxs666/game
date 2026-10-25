@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0d10">
+  <meta name="description" content="查看所有玩家的游戏成绩，冲击全站排行榜。">
+  <title>全站排行榜 | 夜游</title>
+  <link rel="stylesheet" href="account.css">
+  <link rel="stylesheet" href="leaderboard.css">
+</head>
+<body>
+  <header class="rank-header">
+    <nav class="rank-nav rank-shell" aria-label="主导航">
+      <a class="rank-brand" href="index.html"><span class="rank-brand-mark" aria-hidden="true">Y</span>夜游<span aria-hidden="true">.</span></a>
+      <div class="rank-nav-actions">
+        <a class="rank-home" href="index.html">返回游戏库</a>
+        <button class="account-trigger" type="button" aria-label="登录或注册">🟢</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="rank-shell">
+    <section class="rank-hero" aria-labelledby="rankTitle">
+      <p class="rank-kicker">NIGHT ARCADE · PLAYER RANKINGS</p>
+      <div class="rank-title-row">
+        <div>
+          <h1 class="rank-title" id="rankTitle">高手，<span>请留名。</span></h1>
+          <p class="rank-description">所有玩家的精彩战绩都在这里。选一款游戏，看看谁正领跑全场。</p>
+        </div>
+        <span class="rank-season">✦ 全站实时榜单</span>
+      </div>
+    </section>
+
+    <div class="rank-layout">
+      <section class="rank-panel" aria-labelledby="globalTitle">
+        <div class="rank-panel-head">
+          <div class="rank-panel-title-line">
+            <h2 id="globalTitle">🏆 全站排行榜</h2>
+            <span class="rank-panel-caption">每款游戏 TOP 10</span>
+          </div>
+          <div class="rank-game-tabs" role="group" aria-label="选择排行榜游戏">
+            <button class="rank-game-tab" type="button" data-game="neon-snake" aria-pressed="true">霓虹贪吃蛇</button>
+            <button class="rank-game-tab" type="button" data-game="neon-breakout" aria-pressed="false">霓虹打砖块</button>
+          </div>
+        </div>
+        <ol class="rank-list" id="globalRankList" aria-live="polite">
+          <li class="rank-empty">正在加载全站榜单…</li>
+        </ol>
+        <p class="rank-note">成绩按分数从高到低排列。登录后即可提交成绩并保存个人记录。</p>
+      </section>
+
+      <aside class="rank-panel rank-personal" aria-labelledby="personalTitle">
+        <div class="rank-panel-head">
+          <div class="rank-panel-title-line">
+            <h2 id="personalTitle">✨ 我的最佳记录</h2>
+            <span class="rank-panel-caption">个人 TOP 5</span>
+          </div>
+        </div>
+        <div id="personalRankContent">
+          <div class="rank-locked">
+            <span class="rank-lock-icon" aria-hidden="true">↗</span>
+            <strong>登录后查看你的记录</strong>
+            <p>每一局成绩都会保存到账号，换设备也能继续挑战自己的纪录。</p>
+            <button class="rank-login" type="button" id="rankLogin">登录 / 注册</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="rank-footer">
+    <div class="rank-footer-inner rank-shell">
+      <span>夜游 · 一个人的游戏实验室</span>
+      <a href="index.html">继续探索游戏 →</a>
+    </div>
+  </footer>
+
+  <script src="supabase-config.js"></script>
+  <script src="site-account.js"></script>
+  <script>
+    (() => {
+      const globalList = document.getElementById("globalRankList");
+      const personalContent = document.getElementById("personalRankContent");
+      const tabs = Array.from(document.querySelectorAll("[data-game]"));
+      let selectedGame = "neon-snake";
+      let refreshId = 0;
+
+      document.getElementById("rankLogin").addEventListener("click", () => {
+        document.querySelector(".account-trigger").click();
+      });
+      tabs.forEach((tab) => tab.addEventListener("click", () => {
+        selectedGame = tab.dataset.game;
+        tabs.forEach((item) => item.setAttribute("aria-pressed", String(item === tab)));
+        refresh();
+      }));
+      window.gameSite.onAuthChanged(() => refresh());
+      refresh();
+
+      async function refresh() {
+        const requestId = ++refreshId;
+        if (!window.gameSite.isConfigured) {
+          showEmpty(globalList, "排行榜服务尚未配置，请稍后再来查看。");
+          renderPersonalMessage("请先连接排行榜服务。");
+          return;
+        }
+        try {
+          const globalScores = await window.gameSite.getScores(selectedGame, "global", 10);
+          if (requestId !== refreshId) return;
+          renderScores(globalList, globalScores);
+          if (window.gameSite.user) {
+            const personalScores = await window.gameSite.getScores(selectedGame, "personal", 5);
+            if (requestId !== refreshId) return;
+              const list = document.createElement("ol");
+              list.className = "rank-list";
+              personalContent.replaceChildren(list);
+              renderScores(list, personalScores);
+          } else {
+            renderPersonalMessage("登录后查看你的个人前五成绩。");
+          }
+        } catch (error) {
+          if (requestId !== refreshId) return;
+          showEmpty(globalList, error.message || "排行榜暂时无法加载。");
+          renderPersonalMessage("登录后即可查看个人记录。");
+        }
+      }
+
+      function showEmpty(container, message) {
+        container.replaceChildren();
+        const item = document.createElement("li");
+        item.className = "rank-empty";
+        item.textContent = message;
+        container.append(item);
+      }
+
+      function renderPersonalMessage(message) {
+        personalContent.replaceChildren();
+        const state = document.createElement("div");
+        state.className = "rank-locked";
+        const icon = document.createElement("span");
+        icon.className = "rank-lock-icon";
+        icon.setAttribute("aria-hidden", "true");
+        icon.textContent = "✦";
+        const title = document.createElement("strong");
+        title.textContent = message;
+        const description = document.createElement("p");
+        description.textContent = window.gameSite.user ? "完成一局并提交成绩，你的最佳表现会显示在这里。" : "登录后保存成绩，换设备也能继续挑战自己的纪录。";
+        state.append(icon, title, description);
+        if (!window.gameSite.user) {
+          const button = document.createElement("button");
+          button.className = "rank-login";
+          button.type = "button";
+          button.textContent = "登录 / 注册";
+          button.addEventListener("click", () => document.querySelector(".account-trigger").click());
+          state.append(button);
+        }
+        personalContent.append(state);
+      }
+
+      function renderScores(container, scores) {
+        container.replaceChildren();
+        if (!scores.length) {
+          showEmpty(container, "还没有成绩记录，来成为第一个上榜的玩家吧。");
+          return;
+        }
+        for (const [index, entry] of scores.entries()) {
+          const row = document.createElement("li");
+          row.className = "rank-row";
+          const place = document.createElement("span");
+          place.className = "rank-place";
+          place.textContent = String(index + 1).padStart(2, "0");
+          const player = document.createElement("span");
+          player.className = "rank-player";
+          const avatar = document.createElement("span");
+          avatar.className = "rank-avatar";
+          renderAvatar(avatar, entry.profiles && entry.profiles.avatar);
+          const info = document.createElement("span");
+          info.className = "rank-player-info";
+          const nickname = document.createElement("span");
+          nickname.className = "rank-nickname";
+          nickname.textContent = entry.profiles && entry.profiles.nickname || "玩家";
+          const date = document.createElement("time");
+          date.className = "rank-date";
+          date.dateTime = entry.created_at;
+          date.textContent = new Date(entry.created_at).toLocaleDateString("zh-CN");
+          info.append(nickname, date);
+          player.append(avatar, info);
+          const score = document.createElement("strong");
+          score.className = "rank-score";
+          score.textContent = `${entry.score} 分`;
+          row.append(place, player, score);
+          container.append(row);
+        }
+      }
+
+      function renderAvatar(container, value) {
+        const project = new URL(window.GAME_SITE_SUPABASE.url);
+        let imageUrl = null;
+        try {
+          const candidate = new URL(value);
+          if (candidate.origin === project.origin && candidate.pathname.startsWith("/storage/v1/object/public/profile-avatars/")) imageUrl = candidate.href;
+        } catch (error) {
+          imageUrl = null;
+        }
+        if (!imageUrl) {
+          container.textContent = value || "🟢";
+          return;
+        }
+        const image = document.createElement("img");
+        image.className = "rank-avatar-image";
+        image.alt = "";
+        image.src = imageUrl;
+        image.addEventListener("error", () => image.replaceWith(document.createTextNode("🟢")), { once: true });
+        container.append(image);
+      }
+    })();
+  </script>
+</body>
+</html>

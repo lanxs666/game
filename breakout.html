@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#090d12">
   <meta name="description" content="移动挡板，接住小球，击碎全部砖块。">
   <title>霓虹打砖块</title>
+  <link rel="stylesheet" href="account.css">
   <style>
     :root {
       color-scheme: dark;
@@ -73,6 +74,10 @@
 
     .home-link:hover { color: var(--cyan); }
     .home-link:focus-visible, button:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+    .game-nav-links { display: flex; align-items: center; gap: 16px; }
+    .rank-link { color: var(--cyan); font-size: 12px; text-decoration: none; }
+    .rank-link:hover { color: #b2f5ff; }
 
     .scoreboard { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 12px; }
 
@@ -223,19 +228,32 @@
     .leaderboard h2 { margin: 0; font-size: 14px; font-weight: 650; }
     .leaderboard-note { color: var(--muted); font-size: 11px; }
     .leaderboard-list { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+
+    .leaderboard-columns {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .leaderboard-panel { min-width: 0; }
+
     .leaderboard-row {
       display: grid;
-      grid-template-columns: 36px 1fr auto;
+      grid-template-columns: 25px minmax(0, 1fr) auto;
       align-items: center;
       min-height: 34px;
       border-top: 1px solid rgba(144, 166, 181, .08);
       color: #c3ced6;
-      font-size: 13px;
+      font-size: 11px;
     }
     .leaderboard-rank { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
     .leaderboard-row:first-child .leaderboard-rank,
     .leaderboard-row:first-child .leaderboard-score { color: var(--lime); }
-    .leaderboard-time { margin-left: 10px; color: var(--muted); font-size: 11px; }
+    .leaderboard-time { display: block; color: var(--muted); font-size: 9px; }
+    .leaderboard-person { display: flex; min-width: 0; align-items: center; gap: 6px; }
+    .leaderboard-avatar { font-size: 13px; }
+    .leaderboard-avatar img { display: block; width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
+    .leaderboard-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .leaderboard-score { font-variant-numeric: tabular-nums; font-weight: 650; }
     .leaderboard-empty { padding: 10px 0 3px; color: var(--muted); font-size: 12px; }
 
@@ -270,6 +288,7 @@
       .score-value { font-size: 20px; }
       .bottom-row { align-items: flex-start; flex-direction: column; gap: 6px; }
       .status { text-align: left; }
+      .leaderboard-columns { grid-template-columns: 1fr; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -281,13 +300,17 @@
   <main class="game" aria-label="霓虹打砖块游戏">
     <header class="topline">
       <div class="brand">
+        <button class="account-trigger" type="button" aria-label="登录或注册">🟢</button>
         <div class="brand-mark" aria-hidden="true">▤</div>
         <div>
           <h1>霓虹打砖块</h1>
           <p class="eyebrow">接住小球，击碎全部砖块。</p>
         </div>
       </div>
-      <a class="home-link" href="index.html">← 返回游戏库</a>
+      <div class="game-nav-links">
+        <a class="rank-link" href="leaderboard.html">全站排名 ↗</a>
+        <a class="home-link" href="index.html">← 返回游戏库</a>
+      </div>
     </header>
 
     <section class="scoreboard" aria-label="游戏状态">
@@ -326,15 +349,28 @@
       <div class="status" id="status" aria-live="polite">准备开始</div>
     </footer>
 
-    <section class="leaderboard" aria-labelledby="leaderboardTitle">
-      <div class="leaderboard-header">
-        <h2 id="leaderboardTitle">🏆 本地通关榜</h2>
-        <span class="leaderboard-note">按得分排序，同分用时更短者在前</span>
+    <section class="leaderboard" aria-label="打砖块排行榜">
+      <div class="leaderboard-columns">
+        <section class="leaderboard-panel" aria-labelledby="globalLeaderboardTitle">
+          <div class="leaderboard-header">
+            <h2 id="globalLeaderboardTitle">🏆 全站榜单</h2>
+            <a class="rank-link" href="leaderboard.html">查看完整排名 ↗</a>
+          </div>
+          <ol class="leaderboard-list" id="globalLeaderboardList" aria-live="polite"></ol>
+        </section>
+        <section class="leaderboard-panel" aria-labelledby="personalLeaderboardTitle">
+          <div class="leaderboard-header">
+            <h2 id="personalLeaderboardTitle">✨ 我的记录</h2>
+            <span class="leaderboard-note">个人前 5</span>
+          </div>
+          <ol class="leaderboard-list" id="personalLeaderboardList" aria-live="polite"></ol>
+        </section>
       </div>
-      <ol class="leaderboard-list" id="leaderboardList" aria-live="polite"></ol>
     </section>
   </main>
 
+  <script src="supabase-config.js"></script>
+  <script src="site-account.js"></script>
   <script>
     (() => {
       const canvas = document.getElementById("board");
@@ -342,7 +378,8 @@
       const scoreEl = document.getElementById("score");
       const bricksEl = document.getElementById("bricks");
       const statusEl = document.getElementById("status");
-      const leaderboardList = document.getElementById("leaderboardList");
+      const globalLeaderboardList = document.getElementById("globalLeaderboardList");
+      const personalLeaderboardList = document.getElementById("personalLeaderboardList");
       const overlay = document.getElementById("overlay");
       const overlayIcon = document.getElementById("overlayIcon");
       const overlayTitle = document.getElementById("overlayTitle");
@@ -356,7 +393,7 @@
       const brickConfig = { rows: 10, columns: 12, width: 72, height: 18, gap: 12, top: 66, left: 34 };
       const brickColors = { normal: "#8796a4", split: "#b583ff", triple: "#ffb84d", extend: "#8ee878" };
       const keys = { left: false, right: false };
-      const leaderboardKey = "neon-breakout-leaderboard";
+      const gameSlug = "neon-breakout";
       let bricks = [];
       let balls = [];
       let powerups = [];
@@ -419,32 +456,19 @@
         }
       }
 
-      function readLeaderboard() {
-        try {
-          const saved = JSON.parse(localStorage.getItem(leaderboardKey) || "[]");
-          if (!Array.isArray(saved)) return [];
-          return saved.filter((entry) => Number.isFinite(entry.score) && Number.isFinite(entry.time) && entry.score >= 0 && entry.time >= 0)
-            .sort((a, b) => b.score - a.score || a.time - b.time)
-            .slice(0, 10);
-        } catch (error) {
-          console.error("无法读取本地通关榜。", error);
-          return [];
-        }
-      }
-
       function formatTime(seconds) {
         const minutes = Math.floor(seconds / 60);
         const remainder = Math.floor(seconds % 60);
         return `${String(minutes).padStart(2, "0")}:${String(remainder).padStart(2, "0")}`;
       }
 
-      function renderLeaderboard(entries = readLeaderboard()) {
-        leaderboardList.replaceChildren();
+      function renderLeaderboard(list, entries, emptyMessage) {
+        list.replaceChildren();
         if (entries.length === 0) {
           const empty = document.createElement("li");
           empty.className = "leaderboard-empty";
-          empty.textContent = "还没有通关记录，完成挑战后就会登上榜单。";
-          leaderboardList.append(empty);
+          empty.textContent = emptyMessage;
+          list.append(empty);
           return;
         }
         entries.forEach((entry, index) => {
@@ -453,29 +477,82 @@
           const rank = document.createElement("span");
           rank.className = "leaderboard-rank";
           rank.textContent = String(index + 1).padStart(2, "0");
-          const time = document.createElement("span");
+          const person = document.createElement("span");
+          person.className = "leaderboard-person";
+          const avatar = document.createElement("span");
+          avatar.className = "leaderboard-avatar";
+          avatar.setAttribute("aria-hidden", "true");
+          renderLeaderboardAvatar(avatar, entry.profiles && entry.profiles.avatar);
+          const identity = document.createElement("span");
+          identity.className = "leaderboard-name";
+          const nickname = document.createElement("span");
+          nickname.textContent = entry.profiles && entry.profiles.nickname || "玩家";
+          const time = document.createElement("time");
           time.className = "leaderboard-time";
-          time.textContent = `用时 ${formatTime(entry.time)}`;
+          time.dateTime = entry.created_at;
+          time.textContent = new Date(entry.created_at).toLocaleDateString("zh-CN");
+          identity.append(nickname, time);
+          person.append(avatar, identity);
           const points = document.createElement("strong");
           points.className = "leaderboard-score";
           points.textContent = `${entry.score} 分`;
-          row.append(rank, time, points);
-          leaderboardList.append(row);
+          row.append(rank, person, points);
+          list.append(row);
         });
       }
 
-      function saveWin() {
-        const entries = readLeaderboard();
-        entries.push({ score, time: elapsedTime });
-        entries.sort((a, b) => b.score - a.score || a.time - b.time);
-        const topEntries = entries.slice(0, 10);
+      function renderLeaderboardAvatar(container, value) {
+        const config = window.GAME_SITE_SUPABASE;
         try {
-          localStorage.setItem(leaderboardKey, JSON.stringify(topEntries));
+          const photo = new URL(value);
+          const project = new URL(config.url);
+          if (photo.origin === project.origin && photo.pathname.startsWith("/storage/v1/object/public/profile-avatars/")) {
+            const image = document.createElement("img");
+            image.alt = "";
+            image.src = photo.href;
+            image.addEventListener("error", () => image.replaceWith(document.createTextNode("🟢")), { once: true });
+            container.append(image);
+            return;
+          }
         } catch (error) {
-          console.error("无法保存本地通关榜。", error);
-          statusEl.textContent = "通关成功，但榜单保存失败";
+          // Emoji avatars are not URLs.
         }
-        renderLeaderboard(topEntries);
+        container.textContent = value || "🟢";
+      }
+
+      async function refreshLeaderboards() {
+        if (!window.gameSite.isConfigured) {
+          renderLeaderboard(globalLeaderboardList, [], "排行榜服务尚未配置。");
+          renderLeaderboard(personalLeaderboardList, [], "排行榜服务尚未配置。");
+          return;
+        }
+        try {
+          const globalScores = await window.gameSite.getScores(gameSlug, "global", 10);
+          renderLeaderboard(globalLeaderboardList, globalScores, "还没有通关记录，完成挑战来登上榜单。");
+          if (window.gameSite.user) {
+            const personalScores = await window.gameSite.getScores(gameSlug, "personal", 5);
+            renderLeaderboard(personalLeaderboardList, personalScores, "完成挑战后，你的成绩会显示在这里。");
+          } else {
+            renderLeaderboard(personalLeaderboardList, [], "登录后查看并保存个人前五成绩。");
+          }
+        } catch (error) {
+          renderLeaderboard(globalLeaderboardList, [], "排行榜暂时无法加载。");
+          renderLeaderboard(personalLeaderboardList, [], "排行榜暂时无法加载。");
+          statusEl.textContent = error.message;
+        }
+      }
+
+      async function saveWin() {
+        if (score > 0) {
+          try {
+            await window.gameSite.submitScore(gameSlug, score);
+            statusEl.textContent = "通关成功，成绩已提交";
+          } catch (error) {
+            statusEl.textContent = error.message.includes("登录后") ? "通关成功，登录后可提交成绩" : error.message;
+            console.error("Unable to submit Breakout score.", error);
+          }
+        }
+        await refreshLeaderboards();
       }
 
       function playSound(kind) {
@@ -896,7 +973,8 @@
       startButton.addEventListener("click", launch);
       resetBricks();
       updateScoreboard();
-      renderLeaderboard();
+      refreshLeaderboards();
+      window.gameSite.onAuthChanged(() => refreshLeaderboards());
       draw();
       beginAnimation();
     })();
