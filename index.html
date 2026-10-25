@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#0b0d10">
   <meta name="description" content="探索独立游戏作品集，开启下一场冒险。">
   <title>夜游 | 独立游戏作品集</title>
+  <link rel="stylesheet" href="account.css">
   <style>
     :root {
       color-scheme: dark;
@@ -55,6 +56,12 @@
       height: 100%;
       align-items: center;
       justify-content: space-between;
+    }
+
+    .nav-identity {
+      display: flex;
+      align-items: center;
+      gap: 13px;
     }
 
     .brand {
@@ -333,54 +340,6 @@
       background: #1a3520;
     }
 
-    .brick-art {
-      position: relative;
-      width: min(230px, 72%);
-      padding-bottom: 24px;
-      filter: drop-shadow(0 0 14px rgba(101, 233, 255, .12));
-    }
-
-    .brick-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 7px;
-      margin-bottom: 7px;
-    }
-
-    .brick-row span {
-      height: 15px;
-      border: 1px solid rgba(255, 255, 255, .24);
-      border-radius: 4px;
-      background: linear-gradient(145deg, #ff9c7b, #f45a83);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18);
-    }
-
-    .brick-row:nth-child(2) span { background: linear-gradient(145deg, #ffc878, #ff8a65); }
-    .brick-row:nth-child(3) span { background: linear-gradient(145deg, #a9f17c, #52d6a2); }
-
-    .brick-ball {
-      position: absolute;
-      right: 26%;
-      bottom: 28px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #e9fcff;
-      box-shadow: 0 0 13px #65e9ff;
-    }
-
-    .brick-paddle {
-      position: absolute;
-      bottom: 4px;
-      left: 50%;
-      width: 72px;
-      height: 7px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #65e9ff, #9dffdb);
-      box-shadow: 0 0 16px rgba(101, 233, 255, .45);
-      transform: translateX(-50%);
-    }
-
     .food-orb {
       position: absolute;
       top: 37px;
@@ -572,6 +531,8 @@
     @media (max-width: 380px) {
       .shell { width: calc(100% - 28px); }
       .brand-name { font-size: 14px; }
+      .nav-identity { gap: 9px; }
+      .account-trigger { width: 34px; height: 34px; }
       .nav-links { gap: 12px; font-size: 12px; }
       .hero-meta { gap: 7px; }
       .meta-pill { padding-inline: 9px; font-size: 10px; }
@@ -589,10 +550,13 @@
 <body>
   <header class="site-header">
     <nav class="nav shell" aria-label="主导航">
-      <a class="brand" href="#" aria-label="夜游，返回首页">
-        <span class="brand-mark" aria-hidden="true">Y</span>
-        <span class="brand-name">夜游<span aria-hidden="true">.</span></span>
-      </a>
+      <div class="nav-identity">
+        <button class="account-trigger" type="button" aria-label="登录或注册">🟢</button>
+        <a class="brand" href="#" aria-label="夜游，返回首页">
+          <span class="brand-mark" aria-hidden="true">Y</span>
+          <span class="brand-name">夜游<span aria-hidden="true">.</span></span>
+        </a>
+      </div>
       <div class="nav-links">
         <a href="#games">游戏库</a>
         <a href="#about">关于</a>
@@ -607,7 +571,7 @@
       <h1 id="hero-title">灵感已就绪，<span>开始游戏。</span></h1>
       <p class="hero-copy">欢迎来到我的游戏角落。每一款小游戏，都是一个随时可以开启的小小新世界。</p>
       <div class="hero-meta" aria-label="作品集统计">
-        <span class="meta-pill"><strong>02</strong>款可玩游戏</span>
+        <span class="meta-pill"><strong>01</strong>款可玩游戏</span>
         <span class="meta-pill"><strong>FREE</strong>即点即玩</span>
         <span class="meta-pill">为好奇心而造</span>
       </div>
@@ -622,7 +586,7 @@
             <p class="section-subtitle">挑一款喜欢的，马上开始你的下一局。</p>
           </div>
         </div>
-        <span class="game-count"><strong>02</strong> / 02 已上线</span>
+        <span class="game-count"><strong>01</strong> / 01 已上线</span>
       </div>
 
       <div class="game-grid">
@@ -659,37 +623,6 @@
           </div>
         </article>
 
-        <article class="game-card">
-          <div class="game-art" aria-label="霓虹打砖块游戏封面">
-            <span class="art-label">ARCADE · 002</span>
-            <span class="art-glow" aria-hidden="true"></span>
-            <div class="brick-art" aria-hidden="true">
-              <div class="brick-row"><span></span><span></span><span></span><span></span></div>
-              <div class="brick-row"><span></span><span></span><span></span><span></span></div>
-              <div class="brick-row"><span></span><span></span><span></span><span></span></div>
-              <span class="brick-ball"></span>
-              <span class="brick-paddle"></span>
-            </div>
-            <span class="art-index" aria-hidden="true">NO. 002</span>
-          </div>
-          <div class="card-content">
-            <div class="card-topline">
-              <h3>霓虹打砖块</h3>
-              <span class="game-type">街机 · 挑战</span>
-            </div>
-            <p class="card-description">移动挡板接住小球，击碎彩色砖块，收集道具并在失去小球前赢下挑战。</p>
-            <div class="card-footer">
-              <div class="tag-list" aria-label="游戏标签">
-                <span class="tag">单人</span>
-                <span class="tag">键盘</span>
-              </div>
-              <a class="play-link" href="breakout.html">
-                开始游戏 <span class="arrow" aria-hidden="true">↗</span>
-              </a>
-            </div>
-          </div>
-        </article>
-
         <div class="coming-card" aria-label="更多游戏正在开发中">
           <span class="coming-icon" aria-hidden="true">＋</span>
           <strong>下一场冒险正在加载</strong>
@@ -705,5 +638,7 @@
       <span>用一点灵感，做一点好玩的。</span>
     </div>
   </footer>
+  <script src="supabase-config.js"></script>
+  <script src="site-account.js"></script>
 </body>
 </html>
