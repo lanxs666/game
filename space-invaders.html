@@ -45,8 +45,8 @@
 <body>
   <main class="game" aria-label="飞机大战游戏">
     <header class="topline"><div class="brand"><button class="account-trigger" type="button" aria-label="登录或注册">🟢</button><span class="brand-mark" aria-hidden="true">🚀</span><div><h1>飞机大战</h1><p class="eyebrow">穿越星空，迎战敌机与 Boss。</p></div></div><nav class="top-links" aria-label="游戏导航"><a href="leaderboard.html">全站排名 ↗</a><a href="index.html">← 游戏库</a></nav></header>
-    <section class="scoreboard" aria-label="游戏状态"><div class="stat"><span class="stat-label">得分</span><strong class="stat-value current" id="score">0</strong></div><div class="stat"><span class="stat-label">生命</span><strong class="stat-value" id="lives" aria-label="3 条生命">❤️❤️❤️</strong></div></section>
-    <div class="board-wrap"><canvas id="board" width="480" height="640" aria-label="飞机大战游戏区域，按住空格或鼠标左键射击，方向键或鼠标拖动移动"></canvas><div class="overlay" id="overlay"><div class="overlay-card"><h2 id="overlayTitle">准备起飞了吗？</h2><p id="overlayMessage">方向键或 WASD 移动。按住空格或鼠标左键持续射击，也可以按住鼠标拖动飞机。精英敌机有 30 点生命，会向下射击；每得 200 分迎战一架更强的 Boss！</p><button class="primary-button" id="startButton" type="button">开始游戏</button></div></div></div>
+    <section class="scoreboard" aria-label="游戏状态"><div class="stat"><span class="stat-label">得分</span><strong class="stat-value current" id="score">0</strong></div><div class="stat"><span class="stat-label">生命</span><strong class="stat-value" id="lives" aria-label="1 条生命">❤️</strong></div></section>
+    <div class="board-wrap"><canvas id="board" width="480" height="640" aria-label="飞机大战游戏区域，按住空格或鼠标左键射击，方向键或鼠标拖动移动"></canvas><div class="overlay" id="overlay"><div class="overlay-card"><h2 id="overlayTitle">准备起飞了吗？</h2><p id="overlayMessage">方向键或 WASD 移动。按住空格或鼠标左键持续射击，也可以按住鼠标拖动飞机。</p><button class="primary-button" id="startButton" type="button">开始游戏</button></div></div></div>
     <div class="controls"><span><kbd>↑←↓→</kbd> / <kbd>WASD</kbd> 移动 · 按住 <kbd>Space</kbd> 或鼠标左键射击</span><div class="touch-controls" aria-label="触屏操作"><button type="button" data-control="up" aria-label="向上移动">↑</button><button type="button" data-control="left" aria-label="向左移动">←</button><button type="button" data-control="fire" class="fire-button" aria-label="按住发射">发射</button><button type="button" data-control="right" aria-label="向右移动">→</button><button type="button" data-control="down" aria-label="向下移动">↓</button></div></div>
     <p class="status" id="status" aria-live="polite">准备开始</p>
     <section class="leaderboard" aria-label="飞机大战排行榜"><div class="leaderboard-columns"><section><div class="leaderboard-header"><h2>🏆 全站榜单</h2><a class="leaderboard-link" href="leaderboard.html">完整排名 ↗</a></div><ol class="leaderboard-list" id="globalList" aria-live="polite"></ol></section><section><div class="leaderboard-header"><h2>✨ 我的记录</h2><span class="leaderboard-link">个人前 5</span></div><ol class="leaderboard-list" id="personalList" aria-live="polite"></ol></section></div></section>
@@ -61,14 +61,14 @@
       const width = canvas.width, height = canvas.height, keys = { up: false, down: false, left: false, right: false, fire: false };
       const stars = Array.from({ length: 85 }, () => ({ x: Math.random() * width, y: Math.random() * height, size: Math.random() * 1.7 + .4, speed: 18 + Math.random() * 48, alpha: .35 + Math.random() * .65 }));
       let player, bullets = [], enemies = [], enemyBullets = [], pickups = [], particles = [], boss = null;
-      let score = 0, lives = 3, elapsed = 0, spawnTimer = 0, fireTimer = 0, doubleFireTimer = 0, shieldTimer = 0, invulnerableTimer = 0, bossThreshold = 200, bossNumber = 0;
+      let score = 0, lives = 1, elapsed = 0, spawnTimer = 0, fireTimer = 0, fireMode = 0, fireModeTimer = 0, shieldAvailable = false, invulnerableTimer = 0, bossThreshold = 200, bossNumber = 0;
       let state = "ready", lastFrame = 0, audioContext = null, pointerDown = false, pointerTarget = null;
       refreshLeaderboards(); window.gameSite.onAuthChanged(() => refreshLeaderboards());
 
       function resetGame() {
         player = { x: width / 2, y: height - 64, radius: 18, speed: 260 };
         bullets = []; enemies = []; enemyBullets = []; pickups = []; particles = []; boss = null;
-        score = 0; lives = 3; elapsed = 0; spawnTimer = .3; fireTimer = 0; doubleFireTimer = 0; shieldTimer = 0; invulnerableTimer = 0; bossThreshold = 200; bossNumber = 0; pointerDown = false; pointerTarget = null;
+        score = 0; lives = 1; elapsed = 0; spawnTimer = .3; fireTimer = 0; fireMode = 0; fireModeTimer = 0; shieldAvailable = false; invulnerableTimer = 0; bossThreshold = 200; bossNumber = 0; pointerDown = false; pointerTarget = null;
         Object.keys(keys).forEach((key) => { keys[key] = false; }); updateHud();
       }
       function startGame() {
@@ -82,7 +82,7 @@
       }
       function updateHud() {
         scoreEl.textContent = score.toLocaleString("en-US");
-        livesEl.textContent = `${"❤️".repeat(lives)}${"🖤".repeat(3 - lives)}`;
+        livesEl.textContent = "❤️".repeat(lives);
         livesEl.setAttribute("aria-label", `${lives} 条生命`);
       }
       function loop(timestamp) {
@@ -95,7 +95,9 @@
         elapsed += dt;
         stars.forEach((star) => { star.y += star.speed * dt; if (star.y > height) { star.y = 0; star.x = Math.random() * width; } });
         movePlayer(dt);
-        fireTimer -= dt; doubleFireTimer = Math.max(0, doubleFireTimer - dt); shieldTimer = Math.max(0, shieldTimer - dt); invulnerableTimer = Math.max(0, invulnerableTimer - dt);
+        fireTimer -= dt; fireModeTimer = Math.max(0, fireModeTimer - dt); invulnerableTimer = Math.max(0, invulnerableTimer - dt);
+        if (fireModeTimer === 0 && fireMode === 2) { fireMode = 1; fireModeTimer = 10; }
+        else if (fireModeTimer === 0 && fireMode === 1) fireMode = 0;
         if (keys.fire && fireTimer <= 0) shoot();
         const difficulty = Math.floor(elapsed / 10);
         const spawnInterval = Math.max(.32, 1 - difficulty * .08);
@@ -111,14 +113,17 @@
           if (enemy.elite) {
             enemy.fireTimer -= dt;
             if (enemy.fireTimer <= 0) {
-              enemyBullets.push({ x: enemy.x, y: enemy.y + enemy.radius, vx: 0, vy: 185 + Math.min(90, difficulty * 8), radius: 5, eliteShot: true });
+              const aimed = enemy.eliteType === "aimed", bulletX = enemy.x, bulletY = enemy.y + enemy.radius;
+              const dx = player.x - bulletX, dy = player.y - bulletY, distance = Math.hypot(dx, dy) || 1;
+              const bulletSpeed = 185 + Math.min(90, difficulty * 8);
+              enemyBullets.push({ x: bulletX, y: bulletY, vx: aimed ? dx / distance * bulletSpeed : 0, vy: aimed ? dy / distance * bulletSpeed : bulletSpeed, radius: 5, eliteShot: true });
               enemy.fireTimer = Math.max(.62, 1.15 - difficulty * .035);
             }
           }
         });
         enemies = enemies.filter((enemy) => enemy.y < height + 30);
         enemyBullets.forEach((bullet) => { bullet.x += bullet.vx * dt; bullet.y += bullet.vy * dt; });
-        enemyBullets = enemyBullets.filter((bullet) => bullet.y < height + 12 && bullet.x > -12 && bullet.x < width + 12);
+        enemyBullets = enemyBullets.filter((bullet) => bullet.y > -12 && bullet.y < height + 12 && bullet.x > -12 && bullet.x < width + 12);
         updateBoss(dt);
         checkCollisions();
         if (state !== "running") return;
@@ -126,7 +131,6 @@
         pickups = pickups.filter((pickup) => pickup.y < height + 20);
         particles.forEach((particle) => { particle.x += particle.vx * dt; particle.y += particle.vy * dt; particle.life -= dt; });
         particles = particles.filter((particle) => particle.life > 0);
-        if (doubleFireTimer === 0 && keys.fire && fireTimer <= 0) fireTimer = .08;
       }
       function movePlayer(dt) {
         let dx = Number(keys.right) - Number(keys.left), dy = Number(keys.down) - Number(keys.up);
@@ -141,7 +145,7 @@
         player.y = Math.max(player.radius + 8, Math.min(height - player.radius, player.y));
       }
       function shoot() {
-        const offsets = doubleFireTimer > 0 ? [-10, 10] : [0];
+        const offsets = fireMode === 1 ? [-10, 10] : fireMode === 2 ? [-14, 0, 14] : [0];
         offsets.forEach((offset) => bullets.push({ x: player.x + offset, y: player.y - 19, speed: 440, radius: 4 }));
         fireTimer = .2; playTone(660, .035, "sine");
       }
@@ -149,13 +153,13 @@
         const x = 24 + Math.random() * (width - 48);
         const activeElites = enemies.filter((enemy) => enemy.elite).length;
         if (activeElites < 2 && Math.random() < .18) {
-          enemies.push({ x, y: -28, radius: 21, speed: speed * .72, phase: Math.random() * Math.PI * 2, elite: true, hp: 30, maxHp: 30, fireTimer: .7 + Math.random() * .6 });
-        } else enemies.push({ x, y: -20, radius: 17, speed, phase: Math.random() * Math.PI * 2, elite: false });
+          const eliteType = Math.random() < .5 ? "aimed" : "straight";
+          enemies.push({ x, y: -28, radius: 21, speed: speed * .72, phase: Math.random() * Math.PI * 2, elite: true, eliteType, hp: 30, maxHp: 30, fireTimer: .7 + Math.random() * .6 });
+        } else enemies.push({ x, y: -20, radius: 17, speed, phase: Math.random() * Math.PI * 2, elite: false, hp: 3, maxHp: 3 });
       }
       function spawnBoss() {
         bossNumber += 1;
         boss = { x: width / 2, y: 82, width: 84, height: 58, hp: 50 + (bossNumber - 1) * 25, maxHp: 50 + (bossNumber - 1) * 25, speed: 95 + bossNumber * 12, direction: 1, fireTimer: 1 };
-        enemies = []; enemyBullets = [];
         statusEl.textContent = `Boss ${bossNumber} 来袭！`;
         playTone(220, .35, "sawtooth");
       }
@@ -180,19 +184,23 @@
           if (boss && bullet.x > boss.x - boss.width / 2 && bullet.x < boss.x + boss.width / 2 && bullet.y > boss.y - boss.height / 2 && bullet.y < boss.y + boss.height / 2) {
             bullet.y = -20; boss.hp -= 1; emitParticles(bullet.x, bullet.y, "#ff7895", 2);
             if (boss.hp <= 0) {
-              emitParticles(boss.x, boss.y, "#ff7895", 26); score += 500; boss = null; statusEl.textContent = "Boss 击破！+500"; playTone(880, .3, "triangle");
+              const defeatedBoss = boss;
+              emitParticles(defeatedBoss.x, defeatedBoss.y, "#ff7895", 26); dropPickup(defeatedBoss.x, defeatedBoss.y, "heart");
+              if (Math.random() < .1) dropPickup(defeatedBoss.x, defeatedBoss.y);
+              score += 500; updateHud(); boss = null; statusEl.textContent = "Boss 击破！+500"; playTone(880, .3, "triangle");
             }
             continue;
           }
           const hit = enemies.findIndex((enemy) => distanceSquared(bullet.x, bullet.y, enemy.x, enemy.y) < (enemy.radius + bullet.radius) ** 2);
           if (hit < 0) continue;
           const enemy = enemies[hit]; bullet.y = -20;
-          if (enemy.elite) {
-            enemy.hp -= 1; emitParticles(bullet.x, bullet.y, "#ff577d", 2);
+          if (enemy.hp > 1) {
+            enemy.hp -= 1; emitParticles(bullet.x, bullet.y, enemy.elite ? "#ff577d" : "#a5ff65", 2);
             if (enemy.hp > 0) continue;
           }
           enemies.splice(hit, 1); score += 10; emitParticles(enemy.x, enemy.y, enemy.elite ? "#ff577d" : "#ff8b68", enemy.elite ? 18 : 9); playTone(390, .065, "triangle"); updateHud();
-          if (Math.random() < .1) pickups.push({ x: enemy.x, y: enemy.y, type: Math.random() < .5 ? "shield" : "double", speed: 72, spin: 0 });
+          if (enemy.elite && Math.random() < .3) dropPickup(enemy.x, enemy.y, "heart");
+          if (Math.random() < .1) dropPickup(enemy.x, enemy.y);
         }
         bullets = bullets.filter((bullet) => bullet.y > 0);
         for (let index = enemies.length - 1; index >= 0; index -= 1) {
@@ -212,13 +220,23 @@
           const pickup = pickups[index];
           if (distanceSquared(player.x, player.y, pickup.x, pickup.y) > (player.radius + 12) ** 2) continue;
           pickups.splice(index, 1);
-          if (pickup.type === "shield") { shieldTimer = 5; statusEl.textContent = "护盾启动：5 秒无敌！"; }
-          else { doubleFireTimer = 10; statusEl.textContent = "火力提升：双发持续 10 秒！"; }
+          if (pickup.type === "heart") {
+            const wasAtMax = lives >= 3; lives = Math.min(3, lives + 1); updateHud(); statusEl.textContent = wasAtMax ? "生命已达上限。" : "拾取爱心：恢复 1 点生命！";
+          } else if (pickup.type === "shield") {
+            if (!shieldAvailable) { shieldAvailable = true; statusEl.textContent = "获得护盾：永久保留，可抵挡 1 次攻击。"; }
+          } else {
+            fireMode = Math.min(2, fireMode + 1); fireModeTimer = 10;
+            statusEl.textContent = `火力提升：${fireMode === 2 ? "三发" : "双发"}持续 10 秒！`;
+          }
           playTone(820, .15, "triangle");
         }
       }
       function damagePlayer() {
-        if (shieldTimer > 0 || invulnerableTimer > 0) return;
+        if (invulnerableTimer > 0) return;
+        if (shieldAvailable) {
+          shieldAvailable = false; invulnerableTimer = .35; statusEl.textContent = "护盾抵挡了一次攻击！";
+          emitParticles(player.x, player.y, "#65e9ff", 10); playTone(520, .16, "sine"); return;
+        }
         lives -= 1; invulnerableTimer = 1.3; updateHud(); emitParticles(player.x, player.y, "#65e9ff", 14); playTone(170, .22, "sawtooth");
         if (lives <= 0) endGame();
         else statusEl.textContent = `战机受损，剩余 ${lives} 条命。`;
@@ -230,30 +248,38 @@
           particles.push({ x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life, maxLife: life, radius: 1.5 + Math.random() * 2.5, color });
         }
       }
+      function dropPickup(x, y, type = Math.random() < .5 ? "shield" : "fire") {
+        pickups.push({ x, y, type, speed: 72, spin: 0 });
+      }
       function draw() {
         ctx.fillStyle = "#000"; ctx.fillRect(0, 0, width, height);
         stars.forEach((star) => { ctx.globalAlpha = star.alpha; ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2); ctx.fill(); }); ctx.globalAlpha = 1;
         if (boss) drawBoss();
         enemies.forEach((enemy) => {
           if (enemy.elite) {
-            ctx.strokeStyle = "rgba(255,87,125,.8)"; ctx.lineWidth = 2; ctx.shadowColor = "#ff577d"; ctx.shadowBlur = 14; ctx.beginPath(); ctx.arc(enemy.x, enemy.y, enemy.radius + 5, 0, Math.PI * 2); ctx.stroke(); ctx.shadowBlur = 0;
+            const eliteColor = enemy.eliteType === "aimed" ? "#c487ff" : "#ff577d";
+            ctx.strokeStyle = eliteColor; ctx.lineWidth = 2; ctx.shadowColor = eliteColor; ctx.shadowBlur = 14; ctx.beginPath(); ctx.arc(enemy.x, enemy.y, enemy.radius + 5, 0, Math.PI * 2); ctx.stroke(); ctx.shadowBlur = 0;
             drawEmoji("👾", enemy.x, enemy.y, 39);
             const barWidth = 42, barHeight = 4, barX = enemy.x - barWidth / 2, barY = enemy.y - enemy.radius - 9;
-            ctx.fillStyle = "#301923"; ctx.fillRect(barX, barY, barWidth, barHeight); ctx.fillStyle = "#ff577d"; ctx.fillRect(barX, barY, barWidth * enemy.hp / enemy.maxHp, barHeight);
-          } else drawEmoji("👾", enemy.x, enemy.y, 31);
+            ctx.fillStyle = "#301923"; ctx.fillRect(barX, barY, barWidth, barHeight); ctx.fillStyle = eliteColor; ctx.fillRect(barX, barY, barWidth * enemy.hp / enemy.maxHp, barHeight);
+          } else {
+            drawEmoji("👾", enemy.x, enemy.y, 31);
+            const barWidth = 28, barHeight = 3, barX = enemy.x - barWidth / 2, barY = enemy.y - enemy.radius - 6;
+            ctx.fillStyle = "#252c35"; ctx.fillRect(barX, barY, barWidth, barHeight); ctx.fillStyle = "#a5ff65"; ctx.fillRect(barX, barY, barWidth * enemy.hp / enemy.maxHp, barHeight);
+          }
         });
-        pickups.forEach((pickup) => { ctx.save(); ctx.translate(pickup.x, pickup.y); ctx.rotate(Math.sin(pickup.spin) * .12); ctx.shadowColor = pickup.type === "shield" ? "#65e9ff" : "#ffd74a"; ctx.shadowBlur = 16; drawEmoji(pickup.type === "shield" ? "🛡️" : "⚡", 0, 0, 27); ctx.restore(); });
+        pickups.forEach((pickup) => { ctx.save(); ctx.translate(pickup.x, pickup.y); ctx.rotate(Math.sin(pickup.spin) * .12); ctx.shadowColor = pickup.type === "shield" ? "#65e9ff" : pickup.type === "heart" ? "#ff6384" : "#ffd74a"; ctx.shadowBlur = 16; drawEmoji(pickup.type === "shield" ? "🛡️" : pickup.type === "heart" ? "❤️" : "⚡", 0, 0, 27); ctx.restore(); });
         bullets.forEach((bullet) => { ctx.fillStyle = "#ffd74a"; ctx.shadowColor = "#ffe77a"; ctx.shadowBlur = 14; ctx.beginPath(); ctx.arc(bullet.x, bullet.y, bullet.radius, 0, Math.PI * 2); ctx.fill(); }); ctx.shadowBlur = 0;
         enemyBullets.forEach((bullet) => { ctx.fillStyle = bullet.bossShot || bullet.eliteShot ? "#ff6384" : "#f783ff"; ctx.shadowColor = ctx.fillStyle; ctx.shadowBlur = 10; ctx.beginPath(); ctx.arc(bullet.x, bullet.y, bullet.radius || 4, 0, Math.PI * 2); ctx.fill(); }); ctx.shadowBlur = 0;
         particles.forEach((particle) => { ctx.globalAlpha = Math.max(0, particle.life / particle.maxLife); ctx.fillStyle = particle.color; ctx.beginPath(); ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2); ctx.fill(); }); ctx.globalAlpha = 1;
         if (player && !(invulnerableTimer > 0 && Math.floor(performance.now() / 90) % 2)) {
-          if (shieldTimer > 0) { ctx.strokeStyle = "rgba(101,233,255,.8)"; ctx.lineWidth = 2; ctx.shadowColor = "#65e9ff"; ctx.shadowBlur = 14; ctx.beginPath(); ctx.arc(player.x, player.y, player.radius + 8, 0, Math.PI * 2); ctx.stroke(); ctx.shadowBlur = 0; }
-          drawEmoji("🚀", player.x, player.y, 36);
+          if (shieldAvailable) { ctx.strokeStyle = "rgba(101,233,255,.8)"; ctx.lineWidth = 2; ctx.shadowColor = "#65e9ff"; ctx.shadowBlur = 14; ctx.beginPath(); ctx.arc(player.x, player.y, player.radius + 8, 0, Math.PI * 2); ctx.stroke(); ctx.shadowBlur = 0; }
+          ctx.save(); ctx.translate(player.x, player.y); ctx.rotate(-Math.PI / 4); drawEmoji("🚀", 0, 0, 36); ctx.restore();
         }
-        if (doubleFireTimer > 0 || shieldTimer > 0) {
+        if (fireMode > 0 || shieldAvailable) {
           ctx.fillStyle = "#d9e6ef"; ctx.font = "12px system-ui"; ctx.textAlign = "left";
-          if (doubleFireTimer > 0) ctx.fillText(`⚡ ${doubleFireTimer.toFixed(1)}s`, 12, height - 13);
-          if (shieldTimer > 0) ctx.fillText(`🛡️ ${shieldTimer.toFixed(1)}s`, width - 88, height - 13);
+          if (fireMode > 0) ctx.fillText(`${fireMode === 2 ? "⚡⚡ 三发" : "⚡ 双发"} ${fireModeTimer.toFixed(1)}s`, 12, height - 13);
+          if (shieldAvailable) ctx.fillText("🛡️ 抵挡 1 次", width - 102, height - 13);
         }
       }
       function drawEmoji(emoji, x, y, size) {
@@ -263,7 +289,6 @@
         drawEmoji("👾", boss.x, boss.y, 66);
         const barWidth = 96, barHeight = 7, x = boss.x - barWidth / 2, y = boss.y + 34;
         ctx.fillStyle = "#301923"; ctx.fillRect(x, y, barWidth, barHeight); ctx.fillStyle = "#ff6384"; ctx.fillRect(x, y, barWidth * boss.hp / boss.maxHp, barHeight);
-        ctx.fillStyle = "#fff"; ctx.font = "10px system-ui"; ctx.textAlign = "center"; ctx.fillText(`BOSS ${boss.hp}/${boss.maxHp}`, boss.x, y + 19);
       }
       function getAudio() {
         if (audioContext) { if (audioContext.state === "suspended") audioContext.resume().catch((error) => console.warn("Unable to resume airplane game audio.", error)); return audioContext; }
