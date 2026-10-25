@@ -128,6 +128,7 @@ a { color: inherit; }
 
 .rank-game-tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 7px;
   margin-top: 17px;
   padding-bottom: 15px;

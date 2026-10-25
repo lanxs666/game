@@ -411,6 +411,29 @@
       transform: rotate(-5deg);
     }
 
+    .classic-art {
+      display: grid;
+      width: 128px;
+      height: 116px;
+      place-items: center;
+      border: 1px solid rgba(101, 233, 255, .14);
+      border-radius: 15px;
+      background: rgba(10, 17, 23, .76);
+      color: var(--classic-color, #65e9ff);
+      font-size: 64px;
+      font-weight: 800;
+      line-height: 1;
+      text-shadow: 0 0 25px currentColor;
+      box-shadow: 0 0 35px color-mix(in srgb, var(--classic-color, #65e9ff) 12%, transparent);
+      transform: rotate(-4deg);
+    }
+
+    .classic-art.tetris-art { font-size: 48px; letter-spacing: -10px; }
+    .classic-art.space-art { font-size: 52px; }
+    .classic-art.mines-art { font-size: 48px; }
+    .classic-art.pacman-art { font-size: 68px; }
+    .classic-art.runner-art { font-size: 58px; }
+
     .number-tile {
       display: grid;
       aspect-ratio: 1;
@@ -658,7 +681,7 @@
       <h1 id="hero-title">灵感已就绪，<span>开始游戏。</span></h1>
       <p class="hero-copy">欢迎来到我的游戏角落。每一款小游戏，都是一个随时可以开启的小小新世界。</p>
       <div class="hero-meta" aria-label="作品集统计">
-        <span class="meta-pill"><strong>02</strong>款可玩游戏</span>
+        <span class="meta-pill"><strong>08</strong>款可玩游戏</span>
         <span class="meta-pill"><strong>FREE</strong>即点即玩</span>
         <span class="meta-pill">为好奇心而造</span>
       </div>
@@ -673,7 +696,7 @@
             <p class="section-subtitle">挑一款喜欢的，马上开始你的下一局。</p>
           </div>
         </div>
-        <span class="game-count"><strong>02</strong> 已上线 · 01 即将开放</span>
+        <span class="game-count"><strong>08</strong> 款游戏</span>
       </div>
 
       <div class="game-grid">
@@ -774,12 +797,77 @@
             <div class="card-footer">
               <div class="tag-list" aria-label="游戏标签">
                 <span class="tag">单人</span>
-                <span class="tag">即将开放</span>
+                <span class="tag">键盘 / 触控</span>
               </div>
               <a class="play-link" href="2048.html">
                 开始游戏 <span class="arrow" aria-hidden="true">↗</span>
               </a>
             </div>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-art" aria-label="俄罗斯方块游戏封面">
+            <span class="art-label">PUZZLE · 004</span><span class="art-glow" aria-hidden="true"></span>
+            <div class="classic-art tetris-art" style="--classic-color:#65e9ff" aria-hidden="true">▦▦</div>
+            <span class="art-index" aria-hidden="true">NO. 004</span>
+          </div>
+          <div class="card-content">
+            <div class="card-topline"><h3>俄罗斯方块</h3><span class="game-type">益智 · 街机</span></div>
+            <p class="card-description">旋转并堆叠七种方块，消除整行，挑战逐渐加快的节奏。</p>
+            <div class="card-footer"><div class="tag-list" aria-label="游戏标签"><span class="tag">单人</span><span class="tag">键盘 / 触控</span></div><a class="play-link" href="tetris.html">开始游戏 <span class="arrow" aria-hidden="true">↗</span></a></div>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-art" aria-label="太空侵略者游戏封面">
+            <span class="art-label">ARCADE · 005</span><span class="art-glow" aria-hidden="true"></span>
+            <div class="classic-art space-art" style="--classic-color:#a5ff65" aria-hidden="true">✦</div>
+            <span class="art-index" aria-hidden="true">NO. 005</span>
+          </div>
+          <div class="card-content">
+            <div class="card-topline"><h3>太空侵略者</h3><span class="game-type">街机 · 射击</span></div>
+            <p class="card-description">驾驶飞船迎战外星舰队，躲避反击并守住地球防线。</p>
+            <div class="card-footer"><div class="tag-list" aria-label="游戏标签"><span class="tag">单人</span><span class="tag">键盘 / 触控</span></div><a class="play-link" href="space-invaders.html">开始游戏 <span class="arrow" aria-hidden="true">↗</span></a></div>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-art" aria-label="扫雷游戏封面">
+            <span class="art-label">PUZZLE · 006</span><span class="art-glow" aria-hidden="true"></span>
+            <div class="classic-art mines-art" style="--classic-color:#ff7181" aria-hidden="true">⚑</div>
+            <span class="art-index" aria-hidden="true">NO. 006</span>
+          </div>
+          <div class="card-content">
+            <div class="card-topline"><h3>扫雷</h3><span class="game-type">益智 · 逻辑</span></div>
+            <p class="card-description">根据数字推理地雷位置，插旗标记，在安全揭格中赢得胜利。</p>
+            <div class="card-footer"><div class="tag-list" aria-label="游戏标签"><span class="tag">单人</span><span class="tag">鼠标 / 触控</span></div><a class="play-link" href="minesweeper.html">开始游戏 <span class="arrow" aria-hidden="true">↗</span></a></div>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-art" aria-label="吃豆人游戏封面">
+            <span class="art-label">ARCADE · 007</span><span class="art-glow" aria-hidden="true"></span>
+            <div class="classic-art pacman-art" style="--classic-color:#ffe05c" aria-hidden="true">◕</div>
+            <span class="art-index" aria-hidden="true">NO. 007</span>
+          </div>
+          <div class="card-content">
+            <div class="card-topline"><h3>吃豆人</h3><span class="game-type">街机 · 迷宫</span></div>
+            <p class="card-description">吃光迷宫里的豆子，利用大力丸反击拥有不同追踪策略的幽灵。</p>
+            <div class="card-footer"><div class="tag-list" aria-label="游戏标签"><span class="tag">单人</span><span class="tag">键盘 / 触屏</span></div><a class="play-link" href="pacman.html">开始游戏 <span class="arrow" aria-hidden="true">↗</span></a></div>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-art" aria-label="无尽跑酷游戏封面">
+            <span class="art-label">ARCADE · 008</span><span class="art-glow" aria-hidden="true"></span>
+            <div class="classic-art runner-art" style="--classic-color:#c487ff" aria-hidden="true">➜</div>
+            <span class="art-index" aria-hidden="true">NO. 008</span>
+          </div>
+          <div class="card-content">
+            <div class="card-topline"><h3>无尽跑酷</h3><span class="game-type">街机 · 反应</span></div>
+            <p class="card-description">把握跳跃时机，利用二段跳越过障碍，挑战不断加速的奔跑。</p>
+            <div class="card-footer"><div class="tag-list" aria-label="游戏标签"><span class="tag">单人</span><span class="tag">键盘 / 触控</span></div><a class="play-link" href="endless-runner.html">开始游戏 <span class="arrow" aria-hidden="true">↗</span></a></div>
           </div>
         </article>
 

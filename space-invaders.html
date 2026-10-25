@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090d12">
+  <meta name="description" content="驾驶飞船击退逐渐逼近的外星人，挑战太空侵略者最高纪录。">
+  <title>太空侵略者 | 畅游</title>
+  <link rel="stylesheet" href="account.css">
+  <style>
+    :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --page: #090d12; --line: #24313d; --text: #eaf2f7; --muted: #8b9aa7; --lime: #a5ff65; --cyan: #65e9ff; }
+    * { box-sizing: border-box; }
+    body { min-width: 320px; min-height: 100vh; margin: 0; display: grid; place-items: center; padding: 20px 14px; background: radial-gradient(ellipse at 50% 0%, rgba(33, 57, 68, .2), transparent 48%), var(--page); color: var(--text); }
+    button, a { font: inherit; } a { color: inherit; }
+    .game { width: min(100%, 600px); }
+    .topline { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-mark { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid rgba(101, 233, 255, .24); border-radius: 12px; background: rgba(101, 233, 255, .08); color: var(--cyan); font-size: 19px; }
+    h1 { margin: 0; font-size: 17px; } .eyebrow { margin: 3px 0 0; color: var(--muted); font-size: 11px; }
+    .top-links { display: flex; gap: 12px; } .top-links a { color: #a7b4be; font-size: 10px; text-decoration: none; white-space: nowrap; }
+    .scoreboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-bottom: 10px; }
+    .stat { padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; background: #10171e; }
+    .stat-label { color: var(--muted); font-size: 9px; letter-spacing: .1em; } .stat-value { display: block; margin-top: 3px; font-size: 20px; font-variant-numeric: tabular-nums; } .stat-value.current { color: var(--cyan); }
+    .board-wrap { position: relative; overflow: hidden; border: 1px solid #283440; border-radius: 13px; background: #071018; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+    canvas { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; }
+    .overlay { position: absolute; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(5,9,13,.75); backdrop-filter: blur(5px); text-align: center; }
+    .overlay[hidden] { display: none; } .overlay-card { width: min(100%, 300px); padding: 21px; border: 1px solid rgba(134,160,177,.22); border-radius: 14px; background: rgba(14,21,28,.96); }
+    .overlay h2 { margin: 0; font-size: 20px; } .overlay p { color: #9baab6; font-size: 12px; line-height: 1.6; }
+    .primary-button { min-height: 44px; padding: 0 22px; border: 0; border-radius: 9px; background: var(--lime); color: #10170e; cursor: pointer; font-weight: 750; }
+    .controls { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 10px 0; color: var(--muted); font-size: 10px; }
+    .touch-controls { display: flex; gap: 7px; } .touch-controls button { min-width: 44px; min-height: 40px; border: 1px solid var(--line); border-radius: 8px; background: #111922; color: var(--text); touch-action: none; }
+    kbd { padding: 2px 5px; border: 1px solid #293542; border-radius: 5px; background: #111922; color: #c1ccd5; }
+    .status { min-height: 15px; margin: 6px 2px; color: #c0cbd4; font-size: 10px; }
+    .leaderboard { margin-top: 13px; padding: 13px 14px 8px; border: 1px solid var(--line); border-radius: 12px; background: #10171e; }
+    .leaderboard-columns { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; } .leaderboard-header { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 7px; } .leaderboard h2 { margin: 0; font-size: 12px; }
+    .leaderboard-link { color: var(--cyan); font-size: 9px; text-decoration: none; } .leaderboard-list { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+    .leaderboard-row { display: grid; grid-template-columns: 22px minmax(0,1fr) auto; min-height: 29px; align-items: center; gap: 5px; border-top: 1px solid rgba(144,166,181,.08); color: #c3ced6; font-size: 9px; }
+    .leaderboard-rank, .leaderboard-date { color: var(--muted); } .leaderboard-row:first-child .leaderboard-rank, .leaderboard-row:first-child .leaderboard-score { color: var(--cyan); }
+    .leaderboard-person { display: flex; align-items: center; gap: 5px; min-width: 0; } .leaderboard-avatar { display: grid; width: 20px; height: 20px; flex: 0 0 auto; place-items: center; overflow: hidden; border-radius: 50%; background: #202830; } .leaderboard-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .leaderboard-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .leaderboard-date { display: block; font-size: 8px; } .leaderboard-empty { padding: 8px 0; color: var(--muted); font-size: 9px; }
+    @media (max-width: 520px) { body { padding: 14px 10px; } .controls { align-items: flex-start; flex-direction: column; } .leaderboard-columns { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="game" aria-label="太空侵略者游戏">
+    <header class="topline"><div class="brand"><button class="account-trigger" type="button" aria-label="登录或注册">🟢</button><span class="brand-mark" aria-hidden="true">✦</span><div><h1>太空侵略者</h1><p class="eyebrow">守住防线，击退外星舰队。</p></div></div><nav class="top-links" aria-label="游戏导航"><a href="leaderboard.html">全站排名 ↗</a><a href="index.html">← 游戏库</a></nav></header>
+    <section class="scoreboard" aria-label="游戏状态"><div class="stat"><span class="stat-label">得分</span><strong class="stat-value current" id="score">0</strong></div><div class="stat"><span class="stat-label">生命</span><strong class="stat-value" id="lives">♥ ♥ ♥</strong></div><div class="stat"><span class="stat-label">波次</span><strong class="stat-value" id="wave">1</strong></div></section>
+    <div class="board-wrap"><canvas id="board" width="480" height="640" aria-label="太空侵略者游戏区域"></canvas><div class="overlay" id="overlay"><div class="overlay-card"><h2 id="overlayTitle">准备好了吗？</h2><p id="overlayMessage">左右移动飞船，按空格发射。击落外星舰队并躲开它们的反击！</p><button class="primary-button" id="startButton" type="button">开始游戏</button></div></div></div>
+    <div class="controls"><span>使用 <kbd>←</kbd> <kbd>→</kbd> 移动，<kbd>Space</kbd> 射击</span><div class="touch-controls" aria-label="触屏操作"><button type="button" data-control="left" aria-label="向左移动">←</button><button type="button" data-control="fire" aria-label="发射">发射</button><button type="button" data-control="right" aria-label="向右移动">→</button></div></div>
+    <p class="status" id="status" aria-live="polite">准备开始</p>
+    <section class="leaderboard" aria-label="太空侵略者排行榜"><div class="leaderboard-columns"><section><div class="leaderboard-header"><h2>🏆 全站榜单</h2><a class="leaderboard-link" href="leaderboard.html">完整排名 ↗</a></div><ol class="leaderboard-list" id="globalList" aria-live="polite"></ol></section><section><div class="leaderboard-header"><h2>✨ 我的记录</h2><span class="leaderboard-link">个人前 5</span></div><ol class="leaderboard-list" id="personalList" aria-live="polite"></ol></section></div></section>
+  </main>
+  <script src="supabase-config.js"></script><script src="site-account.js"></script>
+  <script>
+    (() => {
+      const canvas = document.getElementById("board"), ctx = canvas.getContext("2d");
+      const scoreEl = document.getElementById("score"), livesEl = document.getElementById("lives"), waveEl = document.getElementById("wave");
+      const statusEl = document.getElementById("status"), overlay = document.getElementById("overlay"), titleEl = document.getElementById("overlayTitle"), messageEl = document.getElementById("overlayMessage"), startButton = document.getElementById("startButton");
+      const globalList = document.getElementById("globalList"), personalList = document.getElementById("personalList"), gameSlug = "space-invaders";
+      const keys = { left: false, right: false, fire: false };
+      const width = canvas.width, height = canvas.height;
+      let player, aliens, bullets, enemyBullets, score = 0, lives = 3, wave = 1, direction = 1, alienSpeed = 25, fireCooldown = 0, enemyCooldown = 1, invulnerable = 0, state = "ready", lastFrame = 0, audioContext = null;
+      const stars = Array.from({ length: 55 }, () => ({ x: Math.random() * width, y: Math.random() * height, size: Math.random() * 1.7 + .3 }));
+      refreshLeaderboards(); window.gameSite.onAuthChanged(() => refreshLeaderboards());
+
+      function resetWave() {
+        player = { x: width / 2, y: height - 48, width: 30, height: 22, speed: 235 };
+        aliens = [];
+        for (let row = 0; row < 3; row += 1) for (let col = 0; col < 8; col += 1) aliens.push({ x: 56 + col * 51, y: 68 + row * 42, width: 25, height: 19, row });
+        bullets = []; enemyBullets = []; direction = 1; alienSpeed = 24 + (wave - 1) * 6; fireCooldown = 0; enemyCooldown = .7; invulnerable = 1.2;
+      }
+      function startGame() {
+        if (state === "running") return;
+        if (state === "ready" || state === "over") { score = 0; lives = 3; wave = 1; updateHud(); resetWave(); }
+        state = "running"; overlay.hidden = true; statusEl.textContent = "舰队来袭"; getAudio(); lastFrame = 0; requestAnimationFrame(loop);
+      }
+      function endGame(message) {
+        if (state !== "running") return;
+        state = "over"; keys.left = false; keys.right = false; keys.fire = false;
+        titleEl.textContent = "防线失守"; messageEl.textContent = `${message} 本局得分：${score.toLocaleString("en-US")}。`; startButton.textContent = "再战一局"; overlay.hidden = false; statusEl.textContent = "游戏结束"; playTone(130, .25, "sawtooth"); submitScore();
+      }
+      function updateHud() { scoreEl.textContent = score.toLocaleString("en-US"); livesEl.textContent = `${"♥ ".repeat(lives).trim()}${"♡ ".repeat(3 - lives).trim()}`; waveEl.textContent = String(wave); }
+      function loop(timestamp) {
+        if (state !== "running") return;
+        const delta = Math.min((timestamp - (lastFrame || timestamp)) / 1000, .04); lastFrame = timestamp; update(delta); draw();
+        if (state === "running") requestAnimationFrame(loop);
+      }
+      function update(dt) {
+        if (keys.left) player.x -= player.speed * dt;
+        if (keys.right) player.x += player.speed * dt;
+        player.x = Math.max(18, Math.min(width - 18, player.x));
+        fireCooldown -= dt; enemyCooldown -= dt; invulnerable = Math.max(0, invulnerable - dt);
+        if (keys.fire && fireCooldown <= 0) { bullets.push({ x: player.x, y: player.y - 12, speed: 410 }); fireCooldown = .28; playTone(560, .045); }
+        bullets.forEach((bullet) => { bullet.y -= bullet.speed * dt; });
+        bullets = bullets.filter((bullet) => bullet.y > 0);
+        const minX = Math.min(...aliens.map((alien) => alien.x)), maxX = Math.max(...aliens.map((alien) => alien.x + alien.width));
+        if (aliens.length) {
+          const speed = alienSpeed + (24 - aliens.length) * 2.5;
+          if (maxX + speed * dt >= width - 12 || minX - speed * dt <= 12) {
+            direction *= -1;
+            aliens.forEach((alien) => { alien.y += 16; });
+            playTone(180 + wave * 12, .04, "square");
+          } else aliens.forEach((alien) => { alien.x += direction * speed * dt; });
+        }
+        if (enemyCooldown <= 0 && aliens.length) {
+          const shooter = aliens[Math.floor(Math.random() * aliens.length)];
+          enemyBullets.push({ x: shooter.x + shooter.width / 2, y: shooter.y + shooter.height, speed: 150 + Math.random() * 45 });
+          enemyCooldown = Math.max(.32, 1.15 - wave * .06) + Math.random() * .65;
+        }
+        enemyBullets.forEach((bullet) => { bullet.y += bullet.speed * dt; });
+        enemyBullets = enemyBullets.filter((bullet) => bullet.y < height);
+        bullets.forEach((bullet) => {
+          const hitIndex = aliens.findIndex((alien) => bullet.x >= alien.x && bullet.x <= alien.x + alien.width && bullet.y >= alien.y && bullet.y <= alien.y + alien.height);
+          if (hitIndex >= 0) {
+            const [hit] = aliens.splice(hitIndex, 1);
+            bullet.y = -20;
+            score += [30, 20, 10][hit.row] || 10;
+            playTone(330 + (2 - hit.row) * 80, .07, "triangle");
+            updateHud();
+          }
+        });
+        bullets = bullets.filter((bullet) => bullet.y > 0);
+        if (enemyBullets.some((bullet) => Math.abs(bullet.x - player.x) < 15 && bullet.y >= player.y - 12 && bullet.y <= player.y + 12) && invulnerable <= 0) {
+          enemyBullets = enemyBullets.filter((bullet) => !(Math.abs(bullet.x - player.x) < 15 && bullet.y >= player.y - 12 && bullet.y <= player.y + 12));
+          loseLife();
+        }
+        if (aliens.some((alien) => alien.y + alien.height >= player.y - 13)) { endGame("外星人突破了防线。"); return; }
+        if (!aliens.length) { wave += 1; resetWave(); statusEl.textContent = `第 ${wave} 波舰队来袭！`; updateHud(); playTone(780, .2, "triangle"); }
+      }
+      function loseLife() { lives -= 1; updateHud(); invulnerable = 1.35; playTone(170, .22, "sawtooth"); if (lives <= 0) endGame("飞船生命耗尽。"); else statusEl.textContent = `飞船受损，剩余 ${lives} 条命。`; }
+      function draw() {
+        ctx.fillStyle = "#071018"; ctx.fillRect(0, 0, width, height);
+        ctx.fillStyle = "rgba(200,230,255,.55)"; stars.forEach((star) => { ctx.fillRect(star.x, star.y, star.size, star.size); });
+        ctx.strokeStyle = "rgba(101,233,255,.12)"; ctx.beginPath(); ctx.moveTo(0, height - 26); ctx.lineTo(width, height - 26); ctx.stroke();
+        if (player && !(invulnerable > 0 && Math.floor(performance.now() / 95) % 2)) {
+          ctx.fillStyle = "#65e9ff"; ctx.shadowColor = "#65e9ff"; ctx.shadowBlur = 12;
+          ctx.beginPath(); ctx.moveTo(player.x, player.y - 14); ctx.lineTo(player.x - 16, player.y + 9); ctx.lineTo(player.x - 8, player.y + 7); ctx.lineTo(player.x, player.y + 11); ctx.lineTo(player.x + 8, player.y + 7); ctx.lineTo(player.x + 16, player.y + 9); ctx.closePath(); ctx.fill(); ctx.shadowBlur = 0;
+        }
+        aliens.forEach((alien) => drawAlien(alien));
+        ctx.fillStyle = "#a5ff65"; bullets.forEach((bullet) => { ctx.fillRect(bullet.x - 2, bullet.y - 8, 4, 11); });
+        ctx.fillStyle = "#ff6688"; enemyBullets.forEach((bullet) => { ctx.fillRect(bullet.x - 2, bullet.y - 1, 4, 9); });
+      }
+      function drawAlien(alien) {
+        const { x, y, width: w, height: h, row } = alien;
+        ctx.fillStyle = ["#a5ff65", "#65e9ff", "#c487ff"][row]; ctx.shadowColor = ctx.fillStyle; ctx.shadowBlur = 6;
+        ctx.fillRect(x + 6, y, w - 12, h - 5); ctx.fillRect(x + 2, y + 5, w - 4, h - 8); ctx.fillRect(x, y + 9, 5, 5); ctx.fillRect(x + w - 5, y + 9, 5, 5);
+        ctx.fillRect(x + 5, y + h - 5, 5, 5); ctx.fillRect(x + w - 10, y + h - 5, 5, 5); ctx.shadowBlur = 0;
+        ctx.fillStyle = "#071018"; ctx.fillRect(x + 7, y + 6, 3, 3); ctx.fillRect(x + w - 10, y + 6, 3, 3);
+      }
+      function getAudio() { if (audioContext) { if (audioContext.state === "suspended") audioContext.resume().catch(() => {}); return audioContext; } const Type = window.AudioContext || window.webkitAudioContext; if (!Type) return null; try { audioContext = new Type(); return audioContext; } catch (error) { console.warn("Unable to initialize space invaders audio.", error); return null; } }
+      function playTone(frequency, duration, type = "square") {
+        const audio = getAudio(); if (!audio) return;
+        const now = audio.currentTime, oscillator = audio.createOscillator(), gain = audio.createGain();
+        oscillator.type = type; oscillator.frequency.setValueAtTime(frequency, now); oscillator.frequency.exponentialRampToValueAtTime(Math.max(70, frequency * .55), now + duration);
+        gain.gain.setValueAtTime(.035, now); gain.gain.exponentialRampToValueAtTime(.001, now + duration); oscillator.connect(gain); gain.connect(audio.destination); oscillator.start(now); oscillator.stop(now + duration);
+      }
+      function renderLeaderboard(list, entries, emptyMessage) {
+        list.replaceChildren(); if (!entries.length) { const li = document.createElement("li"); li.className = "leaderboard-empty"; li.textContent = emptyMessage; list.append(li); return; }
+        entries.forEach((entry, index) => {
+          const row = document.createElement("li"); row.className = "leaderboard-row";
+          const rank = document.createElement("span"); rank.className = "leaderboard-rank"; rank.textContent = String(index + 1).padStart(2, "0");
+          const person = document.createElement("span"); person.className = "leaderboard-person";
+          const avatar = document.createElement("span"); avatar.className = "leaderboard-avatar"; avatar.textContent = entry.profiles && entry.profiles.avatar || "🟢";
+          try { const photo = new URL(avatar.textContent), project = new URL(window.GAME_SITE_SUPABASE.url); if (photo.origin === project.origin && photo.pathname.startsWith("/storage/v1/object/public/profile-avatars/")) { const image = document.createElement("img"); image.src = photo.href; image.alt = ""; avatar.replaceChildren(image); } } catch (error) { /* Emoji avatars are not URLs. */ }
+          const identity = document.createElement("span"); identity.className = "leaderboard-name"; identity.textContent = entry.profiles && entry.profiles.nickname || "玩家";
+          const date = document.createElement("time"); date.className = "leaderboard-date"; date.dateTime = entry.created_at; date.textContent = new Date(entry.created_at).toLocaleDateString("zh-CN"); identity.append(date); person.append(avatar, identity);
+          const points = document.createElement("strong"); points.className = "leaderboard-score"; points.textContent = Number(entry.score).toLocaleString("en-US"); row.append(rank, person, points); list.append(row);
+        });
+      }
+      async function refreshLeaderboards() {
+        if (!window.gameSite.isConfigured) { renderLeaderboard(globalList, [], "排行榜服务尚未配置。"); renderLeaderboard(personalList, [], "排行榜服务尚未配置。"); return; }
+        try { renderLeaderboard(globalList, await window.gameSite.getScores(gameSlug, "global", 10), "还没有上榜成绩，击退舰队来挑战吧。"); if (window.gameSite.user) renderLeaderboard(personalList, await window.gameSite.getScores(gameSlug, "personal", 5), "完成一局后查看个人成绩。"); else renderLeaderboard(personalList, [], "登录后查看个人前五成绩。"); }
+        catch (error) { renderLeaderboard(globalList, [], "排行榜暂时无法加载。"); renderLeaderboard(personalList, [], "排行榜暂时无法加载。"); statusEl.textContent = error.message; }
+      }
+      async function submitScore() {
+        if (!score) { refreshLeaderboards(); return; }
+        try { await window.gameSite.submitScore(gameSlug, score); await refreshLeaderboards(); }
+        catch (error) { statusEl.textContent = error.message.includes("登录后") ? "登录后可提交成绩。" : "成绩提交失败。"; console.error("Unable to submit space invaders score.", error); }
+      }
+      startButton.addEventListener("click", startGame);
+      document.addEventListener("keydown", (event) => {
+        if (["ArrowLeft", "ArrowRight", "Space"].includes(event.code)) event.preventDefault();
+        if (event.code === "ArrowLeft" || event.code === "KeyA") keys.left = true;
+        if (event.code === "ArrowRight" || event.code === "KeyD") keys.right = true;
+        if (event.code === "Space") { keys.fire = true; if (state !== "running" && !event.repeat) startGame(); }
+      });
+      document.addEventListener("keyup", (event) => { if (event.code === "ArrowLeft" || event.code === "KeyA") keys.left = false; if (event.code === "ArrowRight" || event.code === "KeyD") keys.right = false; if (event.code === "Space") keys.fire = false; });
+      document.querySelectorAll(".touch-controls button").forEach((button) => {
+        let timer = null;
+        const control = button.dataset.control;
+        const press = (event) => { event.preventDefault(); if (state !== "running") startGame(); keys[control] = true; if (control === "fire") timer = setInterval(() => { if (state === "running" && fireCooldown <= 0) { bullets.push({ x: player.x, y: player.y - 12, speed: 410 }); fireCooldown = .28; playTone(560, .045); } }, 70); };
+        const release = () => { keys[control] = false; clearInterval(timer); };
+        button.addEventListener("pointerdown", press); ["pointerup", "pointercancel", "pointerleave"].forEach((name) => button.addEventListener(name, release));
+      });
+      resetWave(); updateHud(); draw();
+    })();
+  </script>
+</body>
+</html>

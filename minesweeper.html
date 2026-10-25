@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090d12">
+  <meta name="description" content="揭开安全格子，标记 10x10 扫雷棋盘中的地雷。">
+  <title>扫雷 | 畅游</title>
+  <link rel="stylesheet" href="account.css">
+  <style>
+    :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --page: #090d12; --line: #24313d; --text: #eaf2f7; --muted: #8b9aa7; --lime: #a5ff65; --cyan: #65e9ff; }
+    * { box-sizing: border-box; }
+    body { min-width: 320px; min-height: 100vh; margin: 0; display: grid; place-items: center; padding: 22px 14px; background: radial-gradient(ellipse at 50% 0%, rgba(33,57,68,.2), transparent 48%), var(--page); color: var(--text); }
+    button, a { font: inherit; } a { color: inherit; }
+    .game { width: min(100%, 570px); }
+    .topline { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
+    .brand { display: flex; align-items: center; gap: 10px; } .brand-mark { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid rgba(165,255,101,.22); border-radius: 12px; background: rgba(165,255,101,.08); color: var(--lime); font-size: 19px; }
+    h1 { margin: 0; font-size: 17px; } .eyebrow { margin: 3px 0 0; color: var(--muted); font-size: 11px; } .top-links { display: flex; gap: 12px; } .top-links a { color: #a7b4be; font-size: 10px; text-decoration: none; white-space: nowrap; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 11px; background: #10171e; }
+    .counter { color: #ff7181; font-size: 19px; font-weight: 750; font-variant-numeric: tabular-nums; } .timer { color: var(--cyan); font-size: 19px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .reset-button { min-height: 38px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; background: #151e27; color: var(--text); cursor: pointer; font-size: 11px; }
+    .board-wrap { position: relative; padding: 7px; border: 1px solid #283440; border-radius: 12px; background: #0b1117; box-shadow: 0 20px 55px rgba(0,0,0,.28); }
+    .board { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 3px; aspect-ratio: 1; }
+    .cell { display: grid; min-width: 0; min-height: 0; place-items: center; border: 1px solid rgba(255,255,255,.06); border-radius: 4px; background: linear-gradient(145deg, #25303b, #18212a); color: #ecf3f8; cursor: pointer; font-size: clamp(11px, 3vw, 18px); font-weight: 800; user-select: none; }
+    .cell:hover:not(.revealed) { background: #303e4a; } .cell.revealed { border-color: rgba(144,166,181,.05); background: #111a22; cursor: default; } .cell.mine-hit { background: rgba(255,91,125,.34); }
+    .cell[data-number="1"] { color: #65baff; } .cell[data-number="2"] { color: #a5ff65; } .cell[data-number="3"] { color: #ff6d7a; } .cell[data-number="4"] { color: #aa9bff; } .cell[data-number="5"] { color: #ffad62; } .cell[data-number="6"] { color: #65e9ff; } .cell[data-number="7"] { color: #f1f5f8; } .cell[data-number="8"] { color: #8b9aa7; }
+    .status { min-height: 17px; margin: 8px 2px; color: #c0cbd4; font-size: 10px; }
+    .leaderboard { margin-top: 13px; padding: 13px 14px 8px; border: 1px solid var(--line); border-radius: 12px; background: #10171e; }
+    .leaderboard-columns { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; } .leaderboard-header { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 7px; } .leaderboard h2 { margin: 0; font-size: 12px; }
+    .leaderboard-link { color: var(--lime); font-size: 9px; text-decoration: none; } .leaderboard-list { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+    .leaderboard-row { display: grid; grid-template-columns: 22px minmax(0,1fr) auto; min-height: 29px; align-items: center; gap: 5px; border-top: 1px solid rgba(144,166,181,.08); color: #c3ced6; font-size: 9px; }
+    .leaderboard-rank, .leaderboard-date { color: var(--muted); } .leaderboard-row:first-child .leaderboard-rank, .leaderboard-row:first-child .leaderboard-score { color: var(--lime); }
+    .leaderboard-person { display: flex; align-items: center; gap: 5px; min-width: 0; } .leaderboard-avatar { display: grid; width: 20px; height: 20px; flex: 0 0 auto; place-items: center; overflow: hidden; border-radius: 50%; background: #202830; } .leaderboard-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .leaderboard-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .leaderboard-date { display: block; font-size: 8px; } .leaderboard-empty { padding: 8px 0; color: var(--muted); font-size: 9px; }
+    @media (max-width: 430px) { body { padding: 14px 9px; } .board { gap: 2px; } .board-wrap { padding: 5px; } .cell { border-radius: 2px; font-size: 11px; } .leaderboard-columns { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="game" aria-label="扫雷游戏">
+    <header class="topline"><div class="brand"><button class="account-trigger" type="button" aria-label="登录或注册">🟢</button><span class="brand-mark" aria-hidden="true">⚑</span><div><h1>扫雷</h1><p class="eyebrow">观察数字，找出所有地雷。</p></div></div><nav class="top-links" aria-label="游戏导航"><a href="leaderboard.html">全站排名 ↗</a><a href="index.html">← 游戏库</a></nav></header>
+    <div class="toolbar" aria-label="游戏状态"><strong class="counter" id="remaining" aria-label="剩余地雷">015</strong><button class="reset-button" id="resetButton" type="button" aria-label="重新开始">🙂 新游戏</button><strong class="timer" id="timer" aria-label="用时">000</strong></div>
+    <div class="board-wrap"><div class="board" id="board" role="grid" aria-label="10 乘 10 扫雷棋盘"></div></div>
+    <p class="status" id="status" aria-live="polite">左键揭开，右键插旗。第一次点击保证安全。</p>
+    <section class="leaderboard" aria-label="扫雷排行榜"><div class="leaderboard-columns"><section><div class="leaderboard-header"><h2>🏆 全站榜单</h2><a class="leaderboard-link" href="leaderboard.html">完整排名 ↗</a></div><ol class="leaderboard-list" id="globalList" aria-live="polite"></ol></section><section><div class="leaderboard-header"><h2>✨ 我的记录</h2><span class="leaderboard-link">个人前 5</span></div><ol class="leaderboard-list" id="personalList" aria-live="polite"></ol></section></div></section>
+  </main>
+  <script src="supabase-config.js"></script><script src="site-account.js"></script>
+  <script>
+    (() => {
+      const size = 10, mineCount = 15, board = document.getElementById("board"), remainingEl = document.getElementById("remaining"), timerEl = document.getElementById("timer"), statusEl = document.getElementById("status"), gameSlug = "classic-minesweeper";
+      const globalList = document.getElementById("globalList"), personalList = document.getElementById("personalList");
+      let cells = [], flags = 0, revealedCount = 0, seconds = 0, clock = null, started = false, ended = false, audioContext = null;
+      createBoard(); refreshLeaderboards(); window.gameSite.onAuthChanged(() => refreshLeaderboards());
+
+      function createBoard() {
+        clearInterval(clock); flags = 0; revealedCount = 0; seconds = 0; started = false; ended = false;
+        document.getElementById("resetButton").textContent = "🙂 新游戏";
+        timerEl.textContent = "000"; remainingEl.textContent = "015"; statusEl.textContent = "左键揭开，右键插旗。第一次点击保证安全。";
+        cells = Array.from({ length: size * size }, (_, index) => ({ row: Math.floor(index / size), column: index % size, mine: false, number: 0, revealed: false, flagged: false }));
+        render();
+      }
+      function neighbors(cell) {
+        const result = [];
+        for (let dy = -1; dy <= 1; dy += 1) for (let dx = -1; dx <= 1; dx += 1) {
+          if (!dx && !dy) continue;
+          const row = cell.row + dy, column = cell.column + dx;
+          if (row >= 0 && row < size && column >= 0 && column < size) result.push(cells[row * size + column]);
+        }
+        return result;
+      }
+      function placeMines(firstCell) {
+        const protectedCells = new Set([firstCell, ...neighbors(firstCell)]);
+        const available = cells.filter((cell) => !protectedCells.has(cell));
+        for (let index = available.length - 1; index > 0; index -= 1) {
+          const randomIndex = Math.floor(Math.random() * (index + 1));
+          [available[index], available[randomIndex]] = [available[randomIndex], available[index]];
+        }
+        available.slice(0, mineCount).forEach((cell) => { cell.mine = true; });
+        cells.forEach((cell) => { if (!cell.mine) cell.number = neighbors(cell).filter((neighbor) => neighbor.mine).length; });
+      }
+      function reveal(cell) {
+        if (ended || cell.revealed || cell.flagged) return;
+        if (!started) {
+          placeMines(cell); started = true;
+          clock = setInterval(() => { seconds += 1; timerEl.textContent = String(Math.min(seconds, 999)).padStart(3, "0"); }, 1000);
+        }
+        if (cell.mine) {
+          cell.hit = true; cells.filter((item) => item.mine).forEach((mine) => { mine.revealed = true; });
+          render(); finish(false); return;
+        }
+        const queue = [cell];
+        while (queue.length) {
+          const current = queue.pop();
+          if (current.revealed || current.flagged || current.mine) continue;
+          current.revealed = true; revealedCount += 1;
+          if (current.number === 0) neighbors(current).forEach((neighbor) => { if (!neighbor.revealed && !neighbor.flagged && !neighbor.mine) queue.push(neighbor); });
+        }
+        playTone(540 + Math.min(cell.number, 8) * 35, .045);
+        render();
+        if (revealedCount === size * size - mineCount) finish(true);
+      }
+      function toggleFlag(cell) {
+        if (ended || cell.revealed) return;
+        cell.flagged = !cell.flagged; flags += cell.flagged ? 1 : -1;
+        remainingEl.textContent = String(mineCount - flags).padStart(3, "0");
+        playTone(cell.flagged ? 310 : 230, .05, "triangle");
+        render();
+      }
+      function finish(won) {
+        ended = true; clearInterval(clock); clock = null;
+        statusEl.textContent = won ? `胜利！用时 ${seconds} 秒，所有安全格都已揭开。` : "踩到地雷了！再来一局吧。";
+        document.getElementById("resetButton").textContent = won ? "😎 再来一局" : "😵 再试一次";
+        playTone(won ? 780 : 150, won ? .18 : .22, won ? "sine" : "sawtooth");
+        if (won) submitScore();
+      }
+      function render() {
+        const fragment = document.createDocumentFragment();
+        cells.forEach((cell, index) => {
+          const button = document.createElement("button"); button.type = "button"; button.className = "cell"; button.setAttribute("role", "gridcell");
+          const content = cell.flagged ? "⚑" : cell.revealed && cell.mine ? "✹" : cell.revealed && cell.number ? String(cell.number) : "";
+          button.textContent = content;
+          if (cell.flagged) button.style.color = "#ff7181";
+          if (cell.revealed) button.classList.add("revealed");
+          if (cell.revealed && cell.number) button.dataset.number = String(cell.number);
+          if (cell.hit) button.classList.add("mine-hit");
+          if (cell.revealed && cell.mine) button.style.color = "#ff7181";
+          button.setAttribute("aria-label", cell.flagged ? `第 ${cell.row + 1} 行第 ${cell.column + 1} 列，旗帜` : cell.revealed ? `第 ${cell.row + 1} 行第 ${cell.column + 1} 列，${cell.mine ? "地雷" : cell.number ? `${cell.number} 个相邻地雷` : "空白"}` : `第 ${cell.row + 1} 行第 ${cell.column + 1} 列，未揭开`);
+          button.addEventListener("click", () => reveal(cells[index]));
+          button.addEventListener("contextmenu", (event) => { event.preventDefault(); toggleFlag(cells[index]); });
+          fragment.append(button);
+        });
+        board.replaceChildren(fragment);
+      }
+      function getAudio() {
+        if (audioContext) return audioContext;
+        const Type = window.AudioContext || window.webkitAudioContext; if (!Type) return null;
+        try { audioContext = new Type(); return audioContext; } catch (error) { console.warn("Unable to initialize Minesweeper audio.", error); return null; }
+      }
+      function playTone(frequency, duration, type = "sine") {
+        const audio = getAudio(); if (!audio) return;
+        if (audio.state === "suspended") audio.resume().catch((error) => console.warn("Unable to resume Minesweeper audio.", error));
+        const now = audio.currentTime, oscillator = audio.createOscillator(), gain = audio.createGain();
+        oscillator.type = type; oscillator.frequency.setValueAtTime(frequency, now); oscillator.frequency.exponentialRampToValueAtTime(Math.max(70, frequency * .7), now + duration);
+        gain.gain.setValueAtTime(.035, now); gain.gain.exponentialRampToValueAtTime(.001, now + duration); oscillator.connect(gain); gain.connect(audio.destination); oscillator.start(now); oscillator.stop(now + duration);
+      }
+      function renderLeaderboard(list, entries, empty) {
+        list.replaceChildren(); if (!entries.length) { const li = document.createElement("li"); li.className = "leaderboard-empty"; li.textContent = empty; list.append(li); return; }
+        entries.forEach((entry, index) => {
+          const row = document.createElement("li"); row.className = "leaderboard-row";
+          const rank = document.createElement("span"); rank.className = "leaderboard-rank"; rank.textContent = String(index + 1).padStart(2, "0");
+          const person = document.createElement("span"); person.className = "leaderboard-person";
+          const avatar = document.createElement("span"); avatar.className = "leaderboard-avatar"; avatar.textContent = entry.profiles && entry.profiles.avatar || "🟢";
+          try { const photo = new URL(avatar.textContent), project = new URL(window.GAME_SITE_SUPABASE.url); if (photo.origin === project.origin && photo.pathname.startsWith("/storage/v1/object/public/profile-avatars/")) { const image = document.createElement("img"); image.src = photo.href; image.alt = ""; avatar.replaceChildren(image); } } catch (error) { /* Emoji avatars are not URLs. */ }
+          const name = document.createElement("span"); name.className = "leaderboard-name"; name.textContent = entry.profiles && entry.profiles.nickname || "玩家";
+          const date = document.createElement("time"); date.className = "leaderboard-date"; date.dateTime = entry.created_at; date.textContent = new Date(entry.created_at).toLocaleDateString("zh-CN"); name.append(date); person.append(avatar, name);
+          const points = document.createElement("strong"); points.className = "leaderboard-score"; points.textContent = `${Number(entry.score).toLocaleString("en-US")} 分`; row.append(rank, person, points); list.append(row);
+        });
+      }
+      async function refreshLeaderboards() {
+        if (!window.gameSite.isConfigured) { renderLeaderboard(globalList, [], "排行榜服务尚未配置。"); renderLeaderboard(personalList, [], "排行榜服务尚未配置。"); return; }
+        try { renderLeaderboard(globalList, await window.gameSite.getScores(gameSlug, "global", 10), "还没有通关记录，完成挑战登上榜单吧。"); if (window.gameSite.user) renderLeaderboard(personalList, await window.gameSite.getScores(gameSlug, "personal", 5), "完成一局后查看个人成绩。"); else renderLeaderboard(personalList, [], "登录后查看个人前五成绩。"); }
+        catch (error) { renderLeaderboard(globalList, [], "排行榜暂时无法加载。"); renderLeaderboard(personalList, [], "排行榜暂时无法加载。"); statusEl.textContent = error.message; }
+      }
+      async function submitScore() {
+        const score = Math.max(1, 10000 - seconds * 10);
+        try { await window.gameSite.submitScore(gameSlug, score); await refreshLeaderboards(); }
+        catch (error) { statusEl.textContent = error.message.includes("登录后") ? `${statusEl.textContent} 登录后可提交成绩。` : `${statusEl.textContent} 成绩提交失败。`; console.error("Unable to submit Minesweeper score.", error); }
+      }
+      document.getElementById("resetButton").addEventListener("click", createBoard);
+      document.addEventListener("contextmenu", (event) => { if (board.contains(event.target)) event.preventDefault(); });
+    })();
+  </script>
+</body>
+</html>

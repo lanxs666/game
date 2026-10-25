@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090d12">
+  <meta name="description" content="旋转方块、填满整行，在经典俄罗斯方块中挑战最高分。">
+  <title>俄罗斯方块 | 畅游</title>
+  <link rel="stylesheet" href="account.css">
+  <style>
+    :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-synthesis: none; text-rendering: optimizeLegibility; --page: #090d12; --panel: #10171e; --line: #24313d; --text: #eaf2f7; --muted: #8b9aa7; --lime: #a5ff65; --cyan: #65e9ff; }
+    * { box-sizing: border-box; }
+    body { min-width: 320px; min-height: 100vh; margin: 0; display: grid; place-items: center; padding: 24px 16px; background: radial-gradient(ellipse at 50% 0%, rgba(33, 57, 68, .2), transparent 48%), var(--page); color: var(--text); }
+    button, a { font: inherit; }
+    a { color: inherit; }
+    .game { width: min(100%, 660px); }
+    .topline { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 16px; }
+    .brand { display: flex; min-width: 0; align-items: center; gap: 11px; }
+    .brand-mark { display: grid; width: 38px; height: 38px; flex: 0 0 auto; place-items: center; border: 1px solid rgba(101, 233, 255, .23); border-radius: 12px; background: rgba(101, 233, 255, .08); color: var(--cyan); font-size: 19px; font-weight: 800; }
+    h1 { margin: 0; font-size: 17px; font-weight: 700; }
+    .eyebrow { margin: 3px 0 0; color: var(--muted); font-size: 11px; }
+    .top-links { display: flex; align-items: center; gap: 14px; }
+    .top-links a { color: #a7b4be; font-size: 11px; text-decoration: none; white-space: nowrap; }
+    .top-links a:hover { color: var(--cyan); }
+    .scoreboard { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; margin-bottom: 11px; }
+    .stat { min-width: 0; padding: 10px 13px; border: 1px solid var(--line); border-radius: 11px; background: linear-gradient(145deg, rgba(18, 26, 35, .92), rgba(13, 19, 26, .96)); }
+    .stat-label { color: var(--muted); font-size: 9px; font-weight: 650; letter-spacing: .1em; }
+    .stat-value { display: block; margin-top: 3px; color: var(--text); font-size: 21px; font-variant-numeric: tabular-nums; }
+    .stat-value.current { color: var(--cyan); }
+    .play-area { display: grid; grid-template-columns: minmax(0, 1fr) 132px; justify-content: center; gap: 11px; }
+    .board-wrap { position: relative; width: min(100%, 330px); justify-self: center; overflow: hidden; border: 1px solid #283440; border-radius: 13px; background: #0b1117; box-shadow: 0 22px 60px rgba(0, 0, 0, .3); }
+    #board { display: block; width: 100%; height: auto; aspect-ratio: 1 / 2; touch-action: none; }
+    .side-panel { display: grid; align-content: start; gap: 10px; }
+    .panel { padding: 12px; border: 1px solid var(--line); border-radius: 11px; background: var(--panel); }
+    .panel h2 { margin: 0 0 8px; color: var(--muted); font-size: 10px; letter-spacing: .1em; }
+    #preview { display: block; width: 100%; height: auto; aspect-ratio: 1; }
+    .side-value { color: var(--cyan); font-size: 19px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .controls-hint { color: var(--muted); font-size: 10px; line-height: 1.8; }
+    kbd { padding: 2px 5px; border: 1px solid #293542; border-radius: 5px; background: #111922; color: #c1ccd5; font: inherit; }
+    .mobile-controls { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; margin-top: 11px; }
+    .mobile-controls button { min-height: 42px; border: 1px solid var(--line); border-radius: 8px; background: #111922; color: var(--text); touch-action: none; }
+    .mobile-controls button:active { border-color: var(--cyan); color: var(--cyan); }
+    .overlay { position: absolute; inset: 0; display: grid; place-items: center; padding: 16px; background: rgba(5, 9, 13, .75); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); text-align: center; }
+    .overlay[hidden] { display: none; }
+    .overlay-card { width: min(100%, 255px); padding: 19px 17px; border: 1px solid rgba(134, 160, 177, .22); border-radius: 14px; background: rgba(14, 21, 28, .96); }
+    .overlay h2 { margin: 0; font-size: 19px; }
+    .overlay p { margin: 8px 0 14px; color: #9baab6; font-size: 11px; line-height: 1.6; }
+    .primary-button { min-height: 42px; padding: 0 20px; border: 0; border-radius: 9px; background: var(--lime); color: #10170e; cursor: pointer; font-size: 13px; font-weight: 750; }
+    .status { min-height: 17px; margin: 8px 2px; color: #c0cbd4; font-size: 10px; }
+    .leaderboard { margin-top: 15px; padding: 14px 15px 9px; border: 1px solid var(--line); border-radius: 13px; background: linear-gradient(145deg, rgba(18, 26, 35, .92), rgba(13, 19, 26, .96)); }
+    .leaderboard-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 17px; }
+    .leaderboard-header { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+    .leaderboard h2 { margin: 0; font-size: 13px; }
+    .leaderboard-link { color: var(--cyan); font-size: 10px; text-decoration: none; }
+    .leaderboard-list { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+    .leaderboard-row { display: grid; grid-template-columns: 23px minmax(0, 1fr) auto; min-height: 32px; align-items: center; gap: 5px; border-top: 1px solid rgba(144, 166, 181, .08); color: #c3ced6; font-size: 10px; }
+    .leaderboard-rank { color: var(--muted); }
+    .leaderboard-row:first-child .leaderboard-rank, .leaderboard-row:first-child .leaderboard-score { color: var(--cyan); }
+    .leaderboard-person { display: flex; min-width: 0; align-items: center; gap: 6px; }
+    .leaderboard-avatar { display: grid; width: 22px; height: 22px; flex: 0 0 auto; overflow: hidden; place-items: center; border-radius: 50%; background: #202830; font-size: 11px; }
+    .leaderboard-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .leaderboard-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .leaderboard-date { display: block; color: var(--muted); font-size: 8px; }
+    .leaderboard-empty { padding: 9px 0; color: var(--muted); font-size: 10px; }
+    @media (max-width: 560px) {
+      body { padding: 16px 12px; }
+      .play-area { grid-template-columns: minmax(0, 1fr) 92px; gap: 8px; }
+      .panel { padding: 9px; }
+      .board-wrap { width: min(100%, 300px); }
+      .controls-hint { font-size: 9px; }
+      .leaderboard-columns { grid-template-columns: 1fr; gap: 12px; }
+    }
+    @media (max-width: 380px) { .top-links { flex-direction: column-reverse; align-items: flex-end; gap: 5px; } .play-area { grid-template-columns: minmax(0, 1fr) 78px; } .stat { padding-inline: 9px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <main class="game" aria-label="俄罗斯方块游戏">
+    <header class="topline">
+      <div class="brand">
+        <button class="account-trigger" type="button" aria-label="登录或注册">🟢</button>
+        <div class="brand-mark" aria-hidden="true">▦</div>
+        <div><h1>俄罗斯方块</h1><p class="eyebrow">旋转、堆叠，消除整行。</p></div>
+      </div>
+      <nav class="top-links" aria-label="游戏导航"><a href="leaderboard.html">全站排名 ↗</a><a href="index.html">← 返回游戏库</a></nav>
+    </header>
+    <section class="scoreboard" aria-label="游戏统计">
+      <div class="stat"><span class="stat-label">得分</span><strong class="stat-value current" id="score">0</strong></div>
+      <div class="stat"><span class="stat-label">等级</span><strong class="stat-value" id="level">1</strong></div>
+      <div class="stat"><span class="stat-label">消除行数</span><strong class="stat-value" id="lines">0</strong></div>
+    </section>
+    <div class="play-area">
+      <div class="board-wrap">
+        <canvas id="board" width="300" height="600" aria-label="俄罗斯方块游戏棋盘，10 列 20 行"></canvas>
+        <div class="overlay" id="overlay">
+          <div class="overlay-card"><h2 id="overlayTitle">准备好了吗？</h2><p id="overlayMessage">移动并旋转方块，填满整行即可消除。方块堆到顶部时游戏结束。</p><button class="primary-button" id="startButton" type="button">开始游戏</button></div>
+        </div>
+      </div>
+      <aside class="side-panel" aria-label="方块预览和操作说明">
+        <section class="panel"><h2>下一个</h2><canvas id="preview" width="120" height="120" aria-label="下一个方块预览"></canvas></section>
+        <section class="panel"><h2>最佳纪录</h2><strong class="side-value" id="best">0</strong></section>
+        <section class="panel controls-hint"><h2>操作</h2><kbd>←</kbd> <kbd>→</kbd> 移动<br><kbd>↑</kbd> 旋转<br><kbd>↓</kbd> 加速下落<br><kbd>Space</kbd> 直接落底<br><kbd>P</kbd> 暂停</section>
+      </aside>
+    </div>
+    <div class="mobile-controls" aria-label="触屏操作">
+      <button type="button" data-action="left" aria-label="向左移动">←</button><button type="button" data-action="rotate" aria-label="旋转">↻</button><button type="button" data-action="down" aria-label="加速下落">↓</button><button type="button" data-action="right" aria-label="向右移动">→</button><button type="button" data-action="drop" aria-label="直接落底">⇊</button>
+    </div>
+    <p class="status" id="status" aria-live="polite">准备开始</p>
+    <section class="leaderboard" aria-label="俄罗斯方块排行榜">
+      <div class="leaderboard-columns">
+        <section aria-labelledby="globalTitle"><div class="leaderboard-header"><h2 id="globalTitle">🏆 全站榜单</h2><a class="leaderboard-link" href="leaderboard.html">完整排名 ↗</a></div><ol class="leaderboard-list" id="globalList" aria-live="polite"></ol></section>
+        <section aria-labelledby="personalTitle"><div class="leaderboard-header"><h2 id="personalTitle">✨ 我的记录</h2><span class="leaderboard-link">个人前 5</span></div><ol class="leaderboard-list" id="personalList" aria-live="polite"></ol></section>
+      </div>
+    </section>
+  </main>
+  <script src="supabase-config.js"></script>
+  <script src="site-account.js"></script>
+  <script>
+    (() => {
+      const columns = 10;
+      const rows = 20;
+      const blockSize = 30;
+      const canvas = document.getElementById("board");
+      const ctx = canvas.getContext("2d");
+      const preview = document.getElementById("preview");
+      const previewContext = preview.getContext("2d");
+      const scoreElement = document.getElementById("score");
+      const levelElement = document.getElementById("level");
+      const linesElement = document.getElementById("lines");
+      const bestElement = document.getElementById("best");
+      const statusElement = document.getElementById("status");
+      const overlay = document.getElementById("overlay");
+      const overlayTitle = document.getElementById("overlayTitle");
+      const overlayMessage = document.getElementById("overlayMessage");
+      const startButton = document.getElementById("startButton");
+      const globalList = document.getElementById("globalList");
+      const personalList = document.getElementById("personalList");
+      const gameSlug = "classic-tetris";
+      const colors = { I: "#65e9ff", J: "#6488ff", L: "#ffad62", O: "#ffe16b", S: "#a5ff65", T: "#c487ff", Z: "#ff6688" };
+      const shapes = {
+        I: [[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]],
+        J: [[1, 0, 0], [1, 1, 1], [0, 0, 0]],
+        L: [[0, 0, 1], [1, 1, 1], [0, 0, 0]],
+        O: [[1, 1], [1, 1]],
+        S: [[0, 1, 1], [1, 1, 0], [0, 0, 0]],
+        T: [[0, 1, 0], [1, 1, 1], [0, 0, 0]],
+        Z: [[1, 1, 0], [0, 1, 1], [0, 0, 0]]
+      };
+      let grid;
+      let bag = [];
+      let active = null;
+      let nextType = null;
+      let score = 0;
+      let lines = 0;
+      let level = 1;
+      let best = readBest();
+      let state = "ready";
+      let lastFrame = 0;
+      let dropElapsed = 0;
+      let audioContext = null;
+
+      bestElement.textContent = format(best)[0];
+      resetGame();
+      renderBoard();
+      refreshLeaderboards();
+      window.gameSite.onAuthChanged(() => refreshLeaderboards());
+      requestAnimationFrame(frame);
+
+      function format(...values) { return values.map((value) => Number(value).toLocaleString("en-US")); }
+      function readBest() { try { return Number(localStorage.getItem("classic-tetris-best")) || 0; } catch (error) { return 0; } }
+      function saveBest() { try { localStorage.setItem("classic-tetris-best", String(best)); } catch (error) { statusElement.textContent = "本机无法保存最佳分数。"; } }
+      function makeGrid() { return Array.from({ length: rows }, () => Array(columns).fill(null)); }
+
+      function refillBag() {
+        bag = Object.keys(shapes);
+        for (let index = bag.length - 1; index > 0; index -= 1) {
+          const swapIndex = Math.floor(Math.random() * (index + 1));
+          [bag[index], bag[swapIndex]] = [bag[swapIndex], bag[index]];
+        }
+      }
+
+      function takePiece() {
+        if (!bag.length) refillBag();
+        const type = bag.pop();
+        return { type, matrix: shapes[type].map((row) => row.slice()), x: Math.floor((columns - shapes[type][0].length) / 2), y: -1 };
+      }
+
+      function resetGame() {
+        grid = makeGrid();
+        bag = [];
+        active = takePiece();
+        nextType = takePiece().type;
+        score = 0;
+        lines = 0;
+        level = 1;
+        dropElapsed = 0;
+        updateStats();
+        drawPreview();
+      }
+
+      function collides(piece, dx = 0, dy = 0, matrix = piece.matrix) {
+        return matrix.some((row, y) => row.some((value, x) => {
+          if (!value) return false;
+          const boardX = piece.x + x + dx;
+          const boardY = piece.y + y + dy;
+          return boardX < 0 || boardX >= columns || boardY >= rows || boardY >= 0 && grid[boardY][boardX];
+        }));
+      }
+
+      function rotateMatrix(matrix) {
+        return matrix[0].map((_, index) => matrix.map((row) => row[index]).reverse());
+      }
+
+      function rotate() {
+        if (state !== "running" || active.type === "O") return;
+        const rotated = rotateMatrix(active.matrix);
+        for (const offset of [0, -1, 1, -2, 2]) {
+          if (!collides(active, offset, 0, rotated)) {
+            active.x += offset;
+            active.matrix = rotated;
+            playTone(440, .045);
+            renderBoard();
+            return;
+          }
+        }
+      }
+
+      function movePiece(dx) {
+        if (state !== "running" || collides(active, dx)) return false;
+        active.x += dx;
+        renderBoard();
+        return true;
+      }
+
+      function lockPiece() {
+        if (active.matrix.some((row, y) => row.some((value, x) => value && active.y + y < 0))) {
+          finishGame();
+          return;
+        }
+        active.matrix.forEach((row, y) => row.forEach((value, x) => {
+          if (value && active.y + y >= 0) grid[active.y + y][active.x + x] = active.type;
+        }));
+        const fullRows = grid.reduce((total, row, index) => row.every(Boolean) ? total.concat(index) : total, []);
+        if (fullRows.length) {
+          const clearLevel = level;
+          grid = grid.filter((_, index) => !fullRows.includes(index));
+          while (grid.length < rows) grid.unshift(Array(columns).fill(null));
+          const points = [0, 100, 300, 500, 800][fullRows.length] || fullRows.length * 200;
+          lines += fullRows.length;
+          level = Math.floor(lines / 10) + 1;
+          score += points * clearLevel;
+          playClearSound(fullRows.length);
+          statusElement.textContent = `消除 ${fullRows.length} 行，获得 ${points.toLocaleString("en-US")} 分！`;
+        } else {
+          playTone(150, .035);
+        }
+        if (score > best) {
+          best = score;
+          saveBest();
+        }
+        updateStats();
+        active = { type: nextType, matrix: shapes[nextType].map((row) => row.slice()), x: Math.floor((columns - shapes[nextType][0].length) / 2), y: -1 };
+        nextType = takePiece().type;
+        drawPreview();
+        if (collides(active)) {
+          finishGame();
+          return;
+        }
+        renderBoard();
+      }
+
+      function softDrop() {
+        if (state !== "running") return;
+        if (collides(active, 0, 1)) lockPiece();
+        else { active.y += 1; score += 1; updateStats(); renderBoard(); }
+        dropElapsed = 0;
+      }
+
+      function hardDrop() {
+        if (state !== "running") return;
+        let distance = 0;
+        while (!collides(active, 0, 1)) { active.y += 1; distance += 1; }
+        score += distance * 2;
+        updateStats();
+        playTone(110, .08);
+        lockPiece();
+      }
+
+      function updateStats() {
+        scoreElement.textContent = format(score)[0];
+        linesElement.textContent = String(lines);
+        levelElement.textContent = String(level);
+        bestElement.textContent = format(best)[0];
+      }
+
+      function drawCell(context, x, y, size, color, alpha = 1) {
+        context.globalAlpha = alpha;
+        context.fillStyle = color;
+        context.fillRect(x + 1, y + 1, size - 2, size - 2);
+        context.fillStyle = "rgba(255,255,255,.17)";
+        context.fillRect(x + 3, y + 3, size - 6, 2);
+        context.fillStyle = "rgba(0,0,0,.17)";
+        context.fillRect(x + 3, y + size - 5, size - 6, 2);
+        context.globalAlpha = 1;
+      }
+
+      function drawPiece(context, piece, size, offsetX = 0, offsetY = 0, alpha = 1) {
+        piece.matrix.forEach((row, y) => row.forEach((value, x) => {
+          if (value) drawCell(context, offsetX + (piece.x + x) * size, offsetY + (piece.y + y) * size, size, colors[piece.type], alpha);
+        }));
+      }
+
+      function renderBoard() {
+        ctx.fillStyle = "#0b1117";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = "rgba(144,166,181,.08)";
+        ctx.lineWidth = 1;
+        for (let x = 0; x <= columns; x += 1) { ctx.beginPath(); ctx.moveTo(x * blockSize + .5, 0); ctx.lineTo(x * blockSize + .5, canvas.height); ctx.stroke(); }
+        for (let y = 0; y <= rows; y += 1) { ctx.beginPath(); ctx.moveTo(0, y * blockSize + .5); ctx.lineTo(canvas.width, y * blockSize + .5); ctx.stroke(); }
+        grid.forEach((row, y) => row.forEach((type, x) => { if (type) drawCell(ctx, x * blockSize, y * blockSize, blockSize, colors[type]); }));
+        if (active) {
+          const ghost = { ...active };
+          while (!collides(ghost, 0, 1)) ghost.y += 1;
+          drawPiece(ctx, ghost, blockSize, 0, 0, .18);
+          drawPiece(ctx, active, blockSize);
+        }
+      }
+
+      function drawPreview() {
+        const size = 24;
+        previewContext.fillStyle = "#0b1117";
+        previewContext.fillRect(0, 0, preview.width, preview.height);
+        const matrix = shapes[nextType];
+        if (!matrix) return;
+        const width = matrix[0].length * size;
+        const height = matrix.length * size;
+        const offsetX = (preview.width - width) / 2;
+        const offsetY = (preview.height - height) / 2;
+        matrix.forEach((row, y) => row.forEach((value, x) => { if (value) drawCell(previewContext, offsetX + x * size, offsetY + y * size, size, colors[nextType]); }));
+      }
+
+      function frame(timestamp) {
+        const delta = lastFrame ? Math.min(timestamp - lastFrame, 100) : 0;
+        lastFrame = timestamp;
+        if (state === "running") {
+          dropElapsed += delta;
+          const interval = Math.max(75, 850 * Math.pow(.82, level - 1));
+          while (dropElapsed >= interval && state === "running") {
+            dropElapsed -= interval;
+            if (collides(active, 0, 1)) lockPiece();
+            else active.y += 1;
+          }
+          renderBoard();
+        }
+        requestAnimationFrame(frame);
+      }
+
+      function startGame() {
+        if (state === "running") return;
+        if (state === "ready" || state === "over") resetGame();
+        state = "running";
+        overlay.hidden = true;
+        statusElement.textContent = "游戏进行中";
+        lastFrame = 0;
+        getAudio();
+      }
+
+      function pauseGame() {
+        if (state !== "running") return;
+        state = "paused";
+        overlayTitle.textContent = "游戏已暂停";
+        overlayMessage.textContent = "准备好后继续挑战。";
+        startButton.textContent = "继续游戏";
+        overlay.hidden = false;
+        statusElement.textContent = "已暂停";
+      }
+
+      function finishGame() {
+        state = "over";
+        playTone(190, .22, "triangle");
+        overlayTitle.textContent = "游戏结束";
+        overlayMessage.textContent = `本局得分：${format(score)[0]}，再来一局挑战更高纪录吧。`;
+        startButton.textContent = "再玩一局";
+        overlay.hidden = false;
+        statusElement.textContent = "方块堆到顶部，游戏结束";
+        submitScore();
+      }
+
+      startButton.addEventListener("click", startGame);
+      document.addEventListener("keydown", (event) => {
+        const controls = ["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp", "Space", "KeyP", "Escape"];
+        if (!controls.includes(event.code) || event.target.closest("button, a")) return;
+        event.preventDefault();
+        if (event.code === "KeyP" || event.code === "Escape") { if (state === "running") pauseGame(); else if (state === "paused") startGame(); return; }
+        if (state !== "running") { if (state === "ready" || state === "paused") startGame(); else return; }
+        if (event.code === "ArrowLeft") movePiece(-1);
+        if (event.code === "ArrowRight") movePiece(1);
+        if (event.code === "ArrowUp") rotate();
+        if (event.code === "ArrowDown") softDrop();
+        if (event.code === "Space") hardDrop();
+      });
+
+      document.querySelectorAll(".mobile-controls button").forEach((button) => {
+        let repeatTimer = null;
+        const act = () => {
+          if (state === "ready") startGame();
+          if (button.dataset.action === "left") movePiece(-1);
+          if (button.dataset.action === "right") movePiece(1);
+          if (button.dataset.action === "rotate") rotate();
+          if (button.dataset.action === "down") softDrop();
+          if (button.dataset.action === "drop") hardDrop();
+        };
+        button.addEventListener("pointerdown", (event) => {
+          event.preventDefault();
+          act();
+          if (button.dataset.action === "left" || button.dataset.action === "right" || button.dataset.action === "down") {
+            repeatTimer = setInterval(act, 105);
+          }
+        });
+        ["pointerup", "pointercancel", "pointerleave"].forEach((name) => button.addEventListener(name, () => { clearInterval(repeatTimer); repeatTimer = null; }));
+      });
+
+      function getAudio() {
+        if (audioContext) return audioContext;
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return null;
+        try { audioContext = new AudioContextClass(); return audioContext; } catch (error) { console.warn("Unable to initialize Tetris audio.", error); return null; }
+      }
+
+      function playTone(frequency, duration, type = "square") {
+        const audio = getAudio();
+        if (!audio) return;
+        if (audio.state === "suspended") audio.resume().catch((error) => console.warn("Unable to resume Tetris audio.", error));
+        const now = audio.currentTime;
+        const oscillator = audio.createOscillator();
+        const gain = audio.createGain();
+        oscillator.type = type;
+        oscillator.frequency.setValueAtTime(frequency, now);
+        oscillator.frequency.exponentialRampToValueAtTime(Math.max(60, frequency * .7), now + duration);
+        gain.gain.setValueAtTime(.035, now);
+        gain.gain.exponentialRampToValueAtTime(.001, now + duration);
+        oscillator.connect(gain);
+        gain.connect(audio.destination);
+        oscillator.start(now);
+        oscillator.stop(now + duration);
+      }
+
+      function playClearSound(count) {
+        for (let index = 0; index < Math.min(count, 4); index += 1) {
+          setTimeout(() => playTone(520 + index * 100, .12, "triangle"), index * 55);
+        }
+      }
+
+      async function refreshLeaderboards() {
+        if (!window.gameSite.isConfigured) { renderLeaderboard(globalList, [], "排行榜服务尚未配置。"); renderLeaderboard(personalList, [], "排行榜服务尚未配置。"); return; }
+        try {
+          renderLeaderboard(globalList, await window.gameSite.getScores(gameSlug, "global", 10), "还没有上榜成绩，完成一局来挑战吧。");
+          if (window.gameSite.user) renderLeaderboard(personalList, await window.gameSite.getScores(gameSlug, "personal", 5), "完成一局后，你的成绩会显示在这里。");
+          else renderLeaderboard(personalList, [], "登录后查看个人前五成绩。");
+        } catch (error) { renderLeaderboard(globalList, [], "排行榜暂时无法加载。"); renderLeaderboard(personalList, [], "排行榜暂时无法加载。"); statusElement.textContent = error.message; }
+      }
+
+      async function submitScore() {
+        if (score <= 0) { await refreshLeaderboards(); return; }
+        try { await window.gameSite.submitScore(gameSlug, score); await refreshLeaderboards(); }
+        catch (error) { statusElement.textContent = error.message.includes("登录后") ? "登录后可提交成绩。" : "成绩提交失败。"; console.error("Unable to submit Tetris score.", error); }
+      }
+
+      function renderLeaderboard(list, entries, emptyMessage) {
+        list.replaceChildren();
+        if (!entries.length) { const item = document.createElement("li"); item.className = "leaderboard-empty"; item.textContent = emptyMessage; list.append(item); return; }
+        entries.forEach((entry, index) => {
+          const row = document.createElement("li"); row.className = "leaderboard-row";
+          const rank = document.createElement("span"); rank.className = "leaderboard-rank"; rank.textContent = String(index + 1).padStart(2, "0");
+          const person = document.createElement("span"); person.className = "leaderboard-person";
+          const avatar = document.createElement("span"); avatar.className = "leaderboard-avatar"; avatar.textContent = entry.profiles && entry.profiles.avatar || "🟢";
+          try { const imageUrl = new URL(avatar.textContent); const config = new URL(window.GAME_SITE_SUPABASE.url); if (imageUrl.origin === config.origin && imageUrl.pathname.startsWith("/storage/v1/object/public/profile-avatars/")) { const image = document.createElement("img"); image.src = imageUrl.href; image.alt = ""; avatar.replaceChildren(image); } } catch (error) { /* Emoji avatars are not URLs. */ }
+          const identity = document.createElement("span"); identity.className = "leaderboard-name"; identity.textContent = entry.profiles && entry.profiles.nickname || "玩家";
+          const date = document.createElement("time"); date.className = "leaderboard-date"; date.dateTime = entry.created_at; date.textContent = new Date(entry.created_at).toLocaleDateString("zh-CN");
+          identity.append(date); person.append(avatar, identity);
+          const points = document.createElement("strong"); points.className = "leaderboard-score"; points.textContent = format(entry.score)[0];
+          row.append(rank, person, points); list.append(row);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

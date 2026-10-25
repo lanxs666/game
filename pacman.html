@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090d12">
+  <meta name="description" content="在迷宫中吃掉豆子、躲避幽灵，用大力丸反击。">
+  <title>吃豆人 | 畅游</title>
+  <link rel="stylesheet" href="account.css">
+  <style>
+    :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --page: #090d12; --line: #24313d; --text: #eaf2f7; --muted: #8b9aa7; --lime: #a5ff65; --cyan: #65e9ff; }
+    * { box-sizing: border-box; }
+    body { min-width: 320px; min-height: 100vh; margin: 0; display: grid; place-items: center; padding: 18px 12px; background: radial-gradient(ellipse at 50% 0%, rgba(33,57,68,.2), transparent 48%), var(--page); color: var(--text); }
+    button, a { font: inherit; } a { color: inherit; }
+    .game { width: min(100%, 650px); } .topline { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 13px; }
+    .brand { display: flex; align-items: center; gap: 9px; } .brand-mark { display: grid; width: 36px; height: 36px; place-items: center; border: 1px solid rgba(255,224,92,.24); border-radius: 11px; background: rgba(255,224,92,.08); color: #ffe05c; font-size: 18px; }
+    h1 { margin: 0; font-size: 16px; } .eyebrow { margin: 3px 0 0; color: var(--muted); font-size: 10px; } .top-links { display: flex; gap: 10px; } .top-links a { color: #a7b4be; font-size: 10px; text-decoration: none; white-space: nowrap; }
+    .scoreboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 9px; } .stat { padding: 8px 11px; border: 1px solid var(--line); border-radius: 9px; background: #10171e; }
+    .stat-label { color: var(--muted); font-size: 9px; } .stat-value { display: block; margin-top: 2px; font-size: 18px; font-variant-numeric: tabular-nums; } .stat-value.current { color: #ffe05c; }
+    .board-wrap { position: relative; overflow: hidden; border: 1px solid #283440; border-radius: 12px; background: #050913; box-shadow: 0 18px 55px rgba(0,0,0,.3); } canvas { display: block; width: 100%; height: auto; aspect-ratio: 1; }
+    .overlay { position: absolute; inset: 0; display: grid; place-items: center; padding: 18px; background: rgba(5,9,13,.74); backdrop-filter: blur(4px); text-align: center; } .overlay[hidden] { display: none; }
+    .overlay-card { width: min(100%, 290px); padding: 19px; border: 1px solid rgba(134,160,177,.22); border-radius: 14px; background: rgba(14,21,28,.96); }
+    .overlay h2 { margin: 0; font-size: 19px; } .overlay p { color: #9baab6; font-size: 11px; line-height: 1.6; } .primary-button { min-height: 41px; padding: 0 20px; border: 0; border-radius: 9px; background: #ffe05c; color: #201b0a; cursor: pointer; font-weight: 750; }
+    .controls { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 9px 0; color: var(--muted); font-size: 10px; } .dpad { display: grid; grid-template-columns: repeat(3, 38px); grid-template-rows: repeat(2, 34px); gap: 3px; }
+    .dpad button { border: 1px solid var(--line); border-radius: 7px; background: #111922; color: var(--text); touch-action: manipulation; } .dpad [data-dir="up"] { grid-column: 2; } .dpad [data-dir="left"] { grid-column: 1; grid-row: 2; } .dpad [data-dir="down"] { grid-column: 2; grid-row: 2; } .dpad [data-dir="right"] { grid-column: 3; grid-row: 2; }
+    .status { min-height: 15px; margin: 5px 2px; color: #c0cbd4; font-size: 10px; }
+    .leaderboard { margin-top: 12px; padding: 12px 13px 7px; border: 1px solid var(--line); border-radius: 11px; background: #10171e; } .leaderboard-columns { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; } .leaderboard-header { display: flex; justify-content: space-between; gap: 7px; margin-bottom: 6px; } .leaderboard h2 { margin: 0; font-size: 12px; }
+    .leaderboard-link { color: #ffe05c; font-size: 9px; text-decoration: none; } .leaderboard-list { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; } .leaderboard-row { display: grid; grid-template-columns: 21px minmax(0,1fr) auto; min-height: 28px; align-items: center; gap: 4px; border-top: 1px solid rgba(144,166,181,.08); color: #c3ced6; font-size: 9px; }
+    .leaderboard-rank, .leaderboard-date { color: var(--muted); } .leaderboard-row:first-child .leaderboard-rank, .leaderboard-row:first-child .leaderboard-score { color: #ffe05c; } .leaderboard-person { display: flex; align-items: center; gap: 5px; min-width: 0; } .leaderboard-avatar { display: grid; width: 19px; height: 19px; flex: 0 0 auto; overflow: hidden; place-items: center; border-radius: 50%; background: #202830; } .leaderboard-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .leaderboard-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .leaderboard-date { display: block; font-size: 8px; } .leaderboard-empty { padding: 7px 0; color: var(--muted); font-size: 9px; }
+    @media (max-width: 460px) { body { padding: 12px 8px; } .controls { align-items: flex-start; } .leaderboard-columns { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="game" aria-label="吃豆人游戏">
+    <header class="topline"><div class="brand"><button class="account-trigger" type="button" aria-label="登录或注册">🟢</button><span class="brand-mark" aria-hidden="true">◕</span><div><h1>吃豆人</h1><p class="eyebrow">吃掉豆子，小心幽灵！</p></div></div><nav class="top-links" aria-label="游戏导航"><a href="leaderboard.html">全站排名 ↗</a><a href="index.html">← 游戏库</a></nav></header>
+    <section class="scoreboard" aria-label="游戏状态"><div class="stat"><span class="stat-label">得分</span><strong class="stat-value current" id="score">0</strong></div><div class="stat"><span class="stat-label">生命</span><strong class="stat-value" id="lives">♥ ♥ ♥</strong></div><div class="stat"><span class="stat-label">豆子</span><strong class="stat-value" id="dots">0</strong></div></section>
+    <div class="board-wrap"><canvas id="board" width="600" height="600" aria-label="吃豆人迷宫游戏区域"></canvas><div class="overlay" id="overlay"><div class="overlay-card"><h2 id="overlayTitle">准备好了吗？</h2><p id="overlayMessage">吃光迷宫里的豆子！吃下大力丸后，趁幽灵变蓝时抓住机会反击。</p><button class="primary-button" id="startButton" type="button">开始游戏</button></div></div></div>
+    <div class="controls"><span>方向键 / WASD 移动　·　大力丸效果持续 5 秒</span><div class="dpad" aria-label="触屏方向键"><button data-dir="up" aria-label="向上">↑</button><button data-dir="left" aria-label="向左">←</button><button data-dir="down" aria-label="向下">↓</button><button data-dir="right" aria-label="向右">→</button></div></div>
+    <p class="status" id="status" aria-live="polite">准备开始</p>
+    <section class="leaderboard" aria-label="吃豆人排行榜"><div class="leaderboard-columns"><section><div class="leaderboard-header"><h2>🏆 全站榜单</h2><a class="leaderboard-link" href="leaderboard.html">完整排名 ↗</a></div><ol class="leaderboard-list" id="globalList" aria-live="polite"></ol></section><section><div class="leaderboard-header"><h2>✨ 我的记录</h2><span class="leaderboard-link">个人前 5</span></div><ol class="leaderboard-list" id="personalList" aria-live="polite"></ol></section></div></section>
+  </main>
+  <script src="supabase-config.js"></script><script src="site-account.js"></script>
+  <script>
+    (() => {
+      const size = 15, tile = 40, canvas = document.getElementById("board"), ctx = canvas.getContext("2d"), scoreEl = document.getElementById("score"), livesEl = document.getElementById("lives"), dotsEl = document.getElementById("dots"), statusEl = document.getElementById("status"), overlay = document.getElementById("overlay"), titleEl = document.getElementById("overlayTitle"), messageEl = document.getElementById("overlayMessage"), startButton = document.getElementById("startButton"), globalList = document.getElementById("globalList"), personalList = document.getElementById("personalList"), gameSlug = "classic-pacman";
+      const keyDirections = { ArrowUp: "up", KeyW: "up", ArrowDown: "down", KeyS: "down", ArrowLeft: "left", KeyA: "left", ArrowRight: "right", KeyD: "right" };
+      const vectors = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
+      let walls = [], dots = new Set(), powers = new Set(), player, ghosts = [], direction = "left", queuedDirection = "left", score = 0, lives = 3, poweredUntil = 0, playerElapsed = 0, ghostElapsed = 0, state = "ready", lastFrame = 0, audioContext = null;
+      refreshLeaderboards(); window.gameSite.onAuthChanged(() => refreshLeaderboards()); buildLevel(); draw();
+
+      function buildLevel() {
+        walls = Array.from({ length: size }, (_, y) => Array.from({ length: size }, (_, x) => x === 0 || y === 0 || x === size - 1 || y === size - 1 || x % 2 === 0 && y % 2 === 0));
+        dots = new Set(); powers = new Set(["1,13", "13,1"]); ghosts = [];
+        for (let y = 1; y < size - 1; y += 1) for (let x = 1; x < size - 1; x += 1) if (!walls[y][x]) dots.add(key(x, y));
+        powers.forEach((spot) => dots.delete(spot));
+        const spawn = { x: 7, y: 7 };
+        walls[spawn.y][spawn.x] = false;
+        player = { x: 1, y: 1 };
+        dots.delete(key(player.x, player.y));
+        ghosts = [
+          { x: 7, y: 6, color: "#ff5268", mode: "chase", name: "红" },
+          { x: 6, y: 7, color: "#65e9ff", mode: "ambush", name: "青" },
+          { x: 8, y: 7, color: "#ffad62", mode: "shy", name: "橙" }
+        ];
+        direction = "right"; queuedDirection = "right"; playerElapsed = 0; ghostElapsed = 0; poweredUntil = 0; updateHud();
+      }
+      function key(x, y) { return `${x},${y}`; }
+      function walkable(x, y) { return x >= 0 && x < size && y >= 0 && y < size && !walls[y][x]; }
+      function startGame() { if (state === "running") return; if (state === "ready" || state === "over") { score = 0; lives = 3; buildLevel(); } state = "running"; overlay.hidden = true; statusEl.textContent = "快吃豆子！"; lastFrame = 0; getAudio(); requestAnimationFrame(loop); }
+      function loop(timestamp) { if (state !== "running") return; const dt = Math.min((timestamp - (lastFrame || timestamp)) / 1000, .05); lastFrame = timestamp; playerElapsed += dt; ghostElapsed += dt; if (playerElapsed >= .115) { playerElapsed = 0; stepPlayer(); } if (ghostElapsed >= .19) { ghostElapsed = 0; stepGhosts(); } draw(); if (state === "running") requestAnimationFrame(loop); }
+      function stepPlayer() {
+        const [nextX, nextY] = vectors[queuedDirection]; if (walkable(player.x + nextX, player.y + nextY)) direction = queuedDirection;
+        const [dx, dy] = vectors[direction]; if (walkable(player.x + dx, player.y + dy)) { player.x += dx; player.y += dy; }
+        const current = key(player.x, player.y);
+        if (dots.delete(current)) { score += 10; playTone(540 + score % 3 * 90, .035); }
+        if (powers.delete(current)) { score += 50; poweredUntil = performance.now() + 5000; playTone(720, .18, "triangle"); }
+        checkCollisions(); updateHud();
+        if (dots.size === 0 && state === "running") { statusEl.textContent = "迷宫清空！"; endGame(true); }
+      }
+      function stepGhosts() {
+        ghosts.forEach((ghost, index) => {
+          if (ghost.eaten) {
+            if (performance.now() >= ghost.returnAt) {
+              ghost.x = [7, 6, 8][index];
+              ghost.y = [6, 7, 7][index];
+              ghost.eaten = false;
+            } else return;
+          }
+          const frightened = performance.now() < poweredUntil;
+          let target = { x: player.x, y: player.y };
+          if (!frightened && ghost.mode === "ambush") { const [dx, dy] = vectors[direction]; target = { x: player.x + dx * 3, y: player.y + dy * 3 }; }
+          if (!frightened && ghost.mode === "shy") { const distance = Math.abs(ghost.x - player.x) + Math.abs(ghost.y - player.y); if (distance < 5) target = { x: 1, y: 13 }; }
+          const distances = getDistances(target);
+          const options = Object.keys(vectors).filter((name) => { const [dx, dy] = vectors[name]; return walkable(ghost.x + dx, ghost.y + dy); });
+          if (!options.length) return;
+          options.sort((a, b) => {
+            const av = vectors[a], bv = vectors[b], da = distances.get(key(ghost.x + av[0], ghost.y + av[1])) ?? Infinity, db = distances.get(key(ghost.x + bv[0], ghost.y + bv[1])) ?? Infinity;
+            return frightened ? db - da : da - db;
+          });
+          const choice = options[0], [dx, dy] = vectors[choice]; ghost.x += dx; ghost.y += dy;
+        });
+        checkCollisions();
+      }
+      function getDistances(target) {
+        if (!walkable(target.x, target.y)) {
+          let closest = { x: player.x, y: player.y }, distance = Infinity;
+          for (let y = 1; y < size - 1; y += 1) for (let x = 1; x < size - 1; x += 1) {
+            const candidate = Math.abs(x - target.x) + Math.abs(y - target.y);
+            if (walkable(x, y) && candidate < distance) { closest = { x, y }; distance = candidate; }
+          }
+          target = closest;
+        }
+        const distances = new Map([[key(target.x, target.y), 0]]);
+        const queue = [target];
+        while (queue.length) {
+          const current = queue.shift();
+          const nextDistance = distances.get(key(current.x, current.y)) + 1;
+          Object.values(vectors).forEach(([dx, dy]) => {
+            const x = current.x + dx, y = current.y + dy, location = key(x, y);
+            if (walkable(x, y) && !distances.has(location)) { distances.set(location, nextDistance); queue.push({ x, y }); }
+          });
+        }
+        return distances;
+      }
+      function checkCollisions() {
+        ghosts.forEach((ghost) => {
+          if (ghost.eaten || ghost.x !== player.x || ghost.y !== player.y) return;
+          if (performance.now() < poweredUntil) { ghost.eaten = true; ghost.returnAt = performance.now() + 1500; score += 200; playTone(850, .13, "triangle"); }
+          else loseLife();
+        });
+        updateHud();
+      }
+      function loseLife() {
+        lives -= 1; playTone(150, .2, "sawtooth"); updateHud();
+        if (lives <= 0) { endGame(false); return; }
+        const position = [[1, 1], [1, 13], [13, 1]][3 - lives - 1] || [1, 1];
+        player = { x: position[0], y: position[1] }; poweredUntil = 0;
+        direction = "right"; queuedDirection = "right";
+        ghosts.forEach((ghost, index) => { ghost.x = [7, 6, 8][index]; ghost.y = [6, 7, 7][index]; ghost.eaten = false; });
+        statusEl.textContent = `小心！还剩 ${lives} 条命。`;
+      }
+      function endGame(won) {
+        if (state !== "running") return;
+        state = "over"; titleEl.textContent = won ? "迷宫清空！" : "游戏结束";
+        messageEl.textContent = won ? `太棒了！最终得分 ${score.toLocaleString("en-US")}。` : `幽灵抓住了你。本局得分：${score.toLocaleString("en-US")}。`;
+        startButton.textContent = "再玩一次"; overlay.hidden = false; statusEl.textContent = won ? "胜利！" : "三条命已用完"; submitScore();
+      }
+      function updateHud() { scoreEl.textContent = score.toLocaleString("en-US"); livesEl.textContent = `${"♥ ".repeat(lives).trim()}${"♡ ".repeat(3 - lives).trim()}`; dotsEl.textContent = String(dots.size); }
+      function draw() {
+        ctx.fillStyle = "#050913"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+        walls.forEach((row, y) => row.forEach((wall, x) => { if (wall) { ctx.fillStyle = "#142b7d"; ctx.fillRect(x * tile + 2, y * tile + 2, tile - 4, tile - 4); ctx.strokeStyle = "#4268ed"; ctx.lineWidth = 1; ctx.strokeRect(x * tile + 4, y * tile + 4, tile - 8, tile - 8); } }));
+        dots.forEach((spot) => { const [x, y] = spot.split(",").map(Number); ctx.fillStyle = "#ffe9a8"; ctx.beginPath(); ctx.arc((x + .5) * tile, (y + .5) * tile, 3, 0, Math.PI * 2); ctx.fill(); });
+        powers.forEach((spot) => { const [x, y] = spot.split(",").map(Number); ctx.fillStyle = "#fff3b0"; ctx.shadowColor = "#ffe05c"; ctx.shadowBlur = 13; ctx.beginPath(); ctx.arc((x + .5) * tile, (y + .5) * tile, 7, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0; });
+        const centerX = (player.x + .5) * tile, centerY = (player.y + .5) * tile, mouth = Math.abs(Math.sin(performance.now() / 65)) * .36;
+        const angle = { right: 0, down: Math.PI / 2, left: Math.PI, up: -Math.PI / 2 }[direction];
+        ctx.fillStyle = "#ffe05c"; ctx.shadowColor = "#ffe05c"; ctx.shadowBlur = 8; ctx.beginPath(); ctx.moveTo(centerX, centerY); ctx.arc(centerX, centerY, 15, angle + mouth, angle + Math.PI * 2 - mouth); ctx.closePath(); ctx.fill(); ctx.shadowBlur = 0;
+        ghosts.forEach((ghost) => {
+          const x = (ghost.x + .5) * tile, y = (ghost.y + .5) * tile, frightened = performance.now() < poweredUntil;
+          ctx.fillStyle = ghost.eaten ? "#192136" : frightened ? "#4075ff" : ghost.color; ctx.beginPath(); ctx.arc(x, y - 3, 13, Math.PI, 0); ctx.lineTo(x + 13, y + 11); ctx.lineTo(x + 6, y + 7); ctx.lineTo(x, y + 11); ctx.lineTo(x - 6, y + 7); ctx.lineTo(x - 13, y + 11); ctx.closePath(); ctx.fill();
+          if (!ghost.eaten) { ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(x - 5, y - 3, 4, 0, Math.PI * 2); ctx.arc(x + 5, y - 3, 4, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = frightened ? "#fff" : "#1a2a56"; ctx.beginPath(); ctx.arc(x - 5, y - 3, 2, 0, Math.PI * 2); ctx.arc(x + 5, y - 3, 2, 0, Math.PI * 2); ctx.fill(); }
+        });
+      }
+      function getAudio() { if (audioContext) return audioContext; const Type = window.AudioContext || window.webkitAudioContext; if (!Type) return null; try { audioContext = new Type(); return audioContext; } catch (error) { console.warn("Unable to initialize Pac-Man audio.", error); return null; } }
+      function playTone(frequency, duration, type = "square") { const audio = getAudio(); if (!audio) return; if (audio.state === "suspended") audio.resume().catch((error) => console.warn("Unable to resume Pac-Man audio.", error)); const now = audio.currentTime, oscillator = audio.createOscillator(), gain = audio.createGain(); oscillator.type = type; oscillator.frequency.setValueAtTime(frequency, now); oscillator.frequency.exponentialRampToValueAtTime(Math.max(70, frequency * .65), now + duration); gain.gain.setValueAtTime(.025, now); gain.gain.exponentialRampToValueAtTime(.001, now + duration); oscillator.connect(gain); gain.connect(audio.destination); oscillator.start(now); oscillator.stop(now + duration); }
+      function renderLeaderboard(list, entries, empty) {
+        list.replaceChildren(); if (!entries.length) { const li = document.createElement("li"); li.className = "leaderboard-empty"; li.textContent = empty; list.append(li); return; }
+        entries.forEach((entry, index) => {
+          const row = document.createElement("li"); row.className = "leaderboard-row"; const rank = document.createElement("span"); rank.className = "leaderboard-rank"; rank.textContent = String(index + 1).padStart(2, "0");
+          const person = document.createElement("span"); person.className = "leaderboard-person"; const avatar = document.createElement("span"); avatar.className = "leaderboard-avatar"; avatar.textContent = entry.profiles && entry.profiles.avatar || "🟢";
+          try { const photo = new URL(avatar.textContent), project = new URL(window.GAME_SITE_SUPABASE.url); if (photo.origin === project.origin && photo.pathname.startsWith("/storage/v1/object/public/profile-avatars/")) { const image = document.createElement("img"); image.src = photo.href; image.alt = ""; avatar.replaceChildren(image); } } catch (error) { /* Emoji avatars are not URLs. */ }
+          const identity = document.createElement("span"); identity.className = "leaderboard-name"; identity.textContent = entry.profiles && entry.profiles.nickname || "玩家"; const date = document.createElement("time"); date.className = "leaderboard-date"; date.dateTime = entry.created_at; date.textContent = new Date(entry.created_at).toLocaleDateString("zh-CN"); identity.append(date); person.append(avatar, identity);
+          const points = document.createElement("strong"); points.className = "leaderboard-score"; points.textContent = Number(entry.score).toLocaleString("en-US"); row.append(rank, person, points); list.append(row);
+        });
+      }
+      async function refreshLeaderboards() { if (!window.gameSite.isConfigured) { renderLeaderboard(globalList, [], "排行榜服务尚未配置。"); renderLeaderboard(personalList, [], "排行榜服务尚未配置。"); return; } try { renderLeaderboard(globalList, await window.gameSite.getScores(gameSlug, "global", 10), "还没有玩家上榜，开始冒险吧。"); if (window.gameSite.user) renderLeaderboard(personalList, await window.gameSite.getScores(gameSlug, "personal", 5), "完成一局后查看个人成绩。"); else renderLeaderboard(personalList, [], "登录后查看个人前五成绩。"); } catch (error) { renderLeaderboard(globalList, [], "排行榜暂时无法加载。"); renderLeaderboard(personalList, [], "排行榜暂时无法加载。"); statusEl.textContent = error.message; } }
+      async function submitScore() { if (!score) { refreshLeaderboards(); return; } try { await window.gameSite.submitScore(gameSlug, score); await refreshLeaderboards(); } catch (error) { statusEl.textContent = error.message.includes("登录后") ? `${statusEl.textContent} 登录后可提交成绩。` : `${statusEl.textContent} 成绩提交失败。`; console.error("Unable to submit Pac-Man score.", error); } }
+      function steer(name) { if (vectors[name]) { queuedDirection = name; if (state === "ready") startGame(); } }
+      startButton.addEventListener("click", startGame);
+      document.addEventListener("keydown", (event) => { const name = keyDirections[event.code]; if (!name) return; event.preventDefault(); steer(name); });
+      document.querySelectorAll(".dpad button").forEach((button) => button.addEventListener("click", () => steer(button.dataset.dir)));
+    })();
+  </script>
+</body>
+</html>
