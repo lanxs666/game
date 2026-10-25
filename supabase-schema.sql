@@ -9,9 +9,13 @@ create table if not exists public.game_scores (
   id bigint generated always as identity primary key,
   game_slug text not null,
   user_id uuid not null constraint game_scores_user_id_fkey references public.profiles (user_id) on delete cascade,
-  score integer not null check (score between 0 and 5720),
+  score integer not null,
   created_at timestamptz not null default now()
 );
+
+alter table public.game_scores drop constraint if exists game_scores_score_check;
+alter table public.game_scores
+  add constraint game_scores_score_check check (score between 0 and 1000000000);
 
 create index if not exists game_scores_leaderboard_idx
   on public.game_scores (game_slug, score desc, created_at asc);

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b0d10">
   <meta name="description" content="探索独立游戏作品集，开启下一场冒险。">
-  <title>夜游 | 独立游戏作品集</title>
+  <title>畅游 | 独立游戏作品集</title>
   <link rel="stylesheet" href="account.css">
   <style>
     :root {
@@ -398,6 +398,45 @@
       transform: translateX(-50%);
     }
 
+    .tiles-art {
+      display: grid;
+      width: 154px;
+      padding: 8px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+      border: 1px solid rgba(198, 250, 114, .15);
+      border-radius: 13px;
+      background: rgba(10, 17, 14, .8);
+      box-shadow: 0 0 35px rgba(198, 250, 114, .1);
+      transform: rotate(-5deg);
+    }
+
+    .number-tile {
+      display: grid;
+      aspect-ratio: 1;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, .09);
+      border-radius: 7px;
+      background: #1c2521;
+      color: #91a194;
+      font-size: 12px;
+      font-weight: 750;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .number-tile[data-value="2"] { background: #344538; color: #d9ffc1; }
+    .number-tile[data-value="4"] { background: #435a37; color: #e0ffb8; }
+    .number-tile[data-value="8"] { background: #6c7b35; color: #f0ffb1; }
+    .number-tile[data-value="16"] { background: #a17e31; color: #fff0b0; }
+    .number-tile[data-value="32"] { background: #bf613c; color: #ffe0c7; }
+    .number-tile[data-value="64"] { background: #bd4b48; color: #ffe0dc; }
+    .number-tile[data-value="128"] {
+      background: linear-gradient(145deg, #d6e769, #a6ca4d);
+      color: #202b13;
+      font-size: 10px;
+      box-shadow: 0 0 13px rgba(198, 250, 114, .24);
+    }
+
     .art-label {
       position: absolute;
       top: 14px;
@@ -599,9 +638,9 @@
     <nav class="nav shell" aria-label="主导航">
       <div class="nav-identity">
         <button class="account-trigger" type="button" aria-label="登录或注册">🟢</button>
-        <a class="brand" href="#" aria-label="夜游，返回首页">
+        <a class="brand" href="#" aria-label="畅游，返回首页">
           <span class="brand-mark" aria-hidden="true">Y</span>
-          <span class="brand-name">夜游<span aria-hidden="true">.</span></span>
+          <span class="brand-name">畅游<span aria-hidden="true">.</span></span>
         </a>
       </div>
       <div class="nav-links">
@@ -634,12 +673,12 @@
             <p class="section-subtitle">挑一款喜欢的，马上开始你的下一局。</p>
           </div>
         </div>
-        <span class="game-count"><strong>02</strong> / 02 已上线</span>
+        <span class="game-count"><strong>02</strong> 已上线 · 01 即将开放</span>
       </div>
 
       <div class="game-grid">
         <article class="game-card">
-          <div class="game-art" aria-label="霓虹贪吃蛇游戏封面">
+          <div class="game-art" aria-label="贪吃蛇游戏封面">
             <span class="art-label">ARCADE · 001</span>
             <span class="art-glow" aria-hidden="true"></span>
             <div class="snake-art" aria-hidden="true">
@@ -655,7 +694,7 @@
           </div>
           <div class="card-content">
             <div class="card-topline">
-              <h3>霓虹贪吃蛇</h3>
+              <h3>贪吃蛇</h3>
               <span class="game-type">街机 · 休闲</span>
             </div>
             <p class="card-description">在霓虹网格中灵活穿梭，吃下能量豆、不断成长，挑战你的最高纪录。</p>
@@ -672,7 +711,7 @@
         </article>
 
         <article class="game-card">
-          <div class="game-art" aria-label="霓虹打砖块游戏封面">
+          <div class="game-art" aria-label="打砖块游戏封面">
             <span class="art-label">ARCADE · 002</span>
             <span class="art-glow" aria-hidden="true"></span>
             <div class="brick-art" aria-hidden="true">
@@ -686,7 +725,7 @@
           </div>
           <div class="card-content">
             <div class="card-topline">
-              <h3>霓虹打砖块</h3>
+              <h3>打砖块</h3>
               <span class="game-type">街机 · 挑战</span>
             </div>
             <p class="card-description">移动挡板接住小球，击碎彩色砖块，收集道具并赢下挑战。</p>
@@ -696,6 +735,48 @@
                 <span class="tag">键盘 / 触屏</span>
               </div>
               <a class="play-link" href="breakout.html">
+                开始游戏 <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-art" aria-label="2048 数字方块游戏封面">
+            <span class="art-label">PUZZLE · 003</span>
+            <span class="art-glow" aria-hidden="true"></span>
+            <div class="tiles-art" aria-hidden="true">
+              <span class="number-tile" data-value="2">2</span>
+              <span class="number-tile"> </span>
+              <span class="number-tile" data-value="4">4</span>
+              <span class="number-tile"> </span>
+              <span class="number-tile"> </span>
+              <span class="number-tile" data-value="8">8</span>
+              <span class="number-tile" data-value="16">16</span>
+              <span class="number-tile"> </span>
+              <span class="number-tile" data-value="32">32</span>
+              <span class="number-tile" data-value="64">64</span>
+              <span class="number-tile" data-value="128">128</span>
+              <span class="number-tile"> </span>
+              <span class="number-tile"> </span>
+              <span class="number-tile"> </span>
+              <span class="number-tile"> </span>
+              <span class="number-tile"> </span>
+            </div>
+            <span class="art-index" aria-hidden="true">NO. 003</span>
+          </div>
+          <div class="card-content">
+            <div class="card-topline">
+              <h3>2048</h3>
+              <span class="game-type">益智 · 休闲</span>
+            </div>
+            <p class="card-description">滑动数字方块，合成 2048，挑战你的逻辑极限！</p>
+            <div class="card-footer">
+              <div class="tag-list" aria-label="游戏标签">
+                <span class="tag">单人</span>
+                <span class="tag">即将开放</span>
+              </div>
+              <a class="play-link" href="2048.html">
                 开始游戏 <span class="arrow" aria-hidden="true">↗</span>
               </a>
             </div>
@@ -713,7 +794,7 @@
 
   <footer class="site-footer" id="about">
     <div class="footer-inner shell">
-      <span class="footer-credit">夜游 <span aria-hidden="true">·</span> 一个人的游戏实验室</span>
+      <span class="footer-credit">畅游 <span aria-hidden="true">·</span> 一个人的游戏实验室</span>
       <span>用一点灵感，做一点好玩的。</span>
     </div>
   </footer>

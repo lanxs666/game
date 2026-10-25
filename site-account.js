@@ -408,7 +408,7 @@
     if (!configured) throw new Error("排行榜服务尚未配置。");
     if (!session) throw new Error("登录后才能将成绩提交到全站排行榜。");
     const value = Number(score);
-    if (!Number.isInteger(value) || value < 0 || value > 5720) throw new Error("成绩超出有效范围。");
+    if (!Number.isInteger(value) || value < 0 || value > 1000000000) throw new Error("成绩超出有效范围。");
     await request("/rest/v1/game_scores", {
       method: "POST",
       headers: { Prefer: "return=minimal" },

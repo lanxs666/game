@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#090d12">
   <meta name="description" content="移动挡板，接住小球，击碎全部砖块。">
-  <title>霓虹打砖块</title>
+  <title>打砖块</title>
   <link rel="stylesheet" href="account.css">
   <style>
     :root {
@@ -167,14 +167,14 @@
     .overlay p { margin: 8px 0 18px; color: #9baab6; font-size: 13px; line-height: 1.6; }
 
     .primary-button {
-      min-height: 42px;
-      padding: 0 18px;
+      min-height: 54px;
+      padding: 0 28px;
       border: 0;
       border-radius: 10px;
       background: var(--lime);
       color: #10170e;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 700;
       box-shadow: 0 4px 18px rgba(165, 255, 101, .13);
     }
@@ -297,13 +297,13 @@
   </style>
 </head>
 <body>
-  <main class="game" aria-label="霓虹打砖块游戏">
+  <main class="game" aria-label="打砖块游戏">
     <header class="topline">
       <div class="brand">
         <button class="account-trigger" type="button" aria-label="登录或注册">🟢</button>
         <div class="brand-mark" aria-hidden="true">▤</div>
         <div>
-          <h1>霓虹打砖块</h1>
+          <h1>打砖块</h1>
           <p class="eyebrow">接住小球，击碎全部砖块。</p>
         </div>
       </div>
@@ -729,10 +729,10 @@
         return { x, y, radius: 9, vx: speed * Math.sin(angle), vy: -speed * Math.cos(angle), speed };
       }
 
-      function addBallCluster(source) {
-        const angle = Math.atan2(source.vx, -source.vy);
-        for (const offset of [-0.5, -0.18, 0.18]) {
-          balls.push(createBall(angle + offset, source.speed, source.x, source.y));
+      function launchTripleFromPaddle() {
+        const speed = balls.length ? balls[0].speed : 360;
+        for (const angle of [-0.42, 0, 0.42]) {
+          balls.push(createBall(angle, speed));
         }
       }
 
@@ -771,8 +771,8 @@
           return;
         }
         if (type === "triple") {
-          if (balls.length > 0) addBallCluster(balls[0]);
-          statusEl.textContent = "额外增加 3 个小球！";
+          launchTripleFromPaddle();
+          statusEl.textContent = "挡板发射了 3 个小球！";
           return;
         }
         if (type === "extend") {
