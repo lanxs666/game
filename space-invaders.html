@@ -27,6 +27,9 @@
     .overlay[hidden] { display: none; } .overlay-card { width: min(100%, 320px); padding: 21px; border: 1px solid rgba(134,160,177,.22); border-radius: 14px; background: rgba(14,21,28,.96); }
     .overlay h2 { margin: 0; font-size: 20px; } .overlay p { color: #9baab6; font-size: 12px; line-height: 1.7; }
     .primary-button { min-height: 44px; padding: 0 22px; border: 0; border-radius: 9px; background: var(--lime); color: #10170e; cursor: pointer; font-weight: 750; }
+    .overlay-actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    .exit-button { display: inline-grid; min-height: 44px; padding: 0 22px; place-items: center; border: 1px solid var(--line); border-radius: 9px; color: #c1ccd5; text-decoration: none; }
+    .exit-button[hidden] { display: none; }
     .controls { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 10px 0; color: var(--muted); font-size: 10px; }
     .touch-controls { display: flex; gap: 7px; } .touch-controls button { min-width: 44px; min-height: 40px; border: 1px solid var(--line); border-radius: 8px; background: #111922; color: var(--text); touch-action: none; }
     .touch-controls .fire-button { border-color: rgba(255,215,74,.35); color: #ffd74a; }
@@ -46,7 +49,7 @@
   <main class="game" aria-label="飞机大战游戏">
     <header class="topline"><div class="brand"><button class="account-trigger" type="button" aria-label="登录或注册">🟢</button><span class="brand-mark" aria-hidden="true">🚀</span><div><h1>飞机大战</h1><p class="eyebrow">穿越星空，迎战敌机与 Boss。</p></div></div><nav class="top-links" aria-label="游戏导航"><a href="leaderboard.html">全站排名 ↗</a><a href="index.html">← 游戏库</a></nav></header>
     <section class="scoreboard" aria-label="游戏状态"><div class="stat"><span class="stat-label">得分</span><strong class="stat-value current" id="score">0</strong></div><div class="stat"><span class="stat-label">生命</span><strong class="stat-value" id="lives" aria-label="1 条生命">❤️</strong></div></section>
-    <div class="board-wrap"><canvas id="board" width="480" height="640" aria-label="飞机大战游戏区域，按住空格或鼠标左键射击，方向键或鼠标拖动移动"></canvas><div class="overlay" id="overlay"><div class="overlay-card"><h2 id="overlayTitle">准备起飞了吗？</h2><p id="overlayMessage">方向键或 WASD 移动。按住空格或鼠标左键持续射击，也可以按住鼠标拖动飞机。</p><button class="primary-button" id="startButton" type="button">开始游戏</button></div></div></div>
+    <div class="board-wrap"><canvas id="board" width="480" height="640" aria-label="飞机大战游戏区域，按住空格或鼠标左键射击，方向键或鼠标拖动移动"></canvas><div class="overlay" id="overlay"><div class="overlay-card"><h2 id="overlayTitle">准备起飞了吗？</h2><p id="overlayMessage">方向键或 WASD 移动。按住空格或鼠标左键持续射击，也可以按住鼠标拖动飞机。</p><div class="overlay-actions"><button class="primary-button" id="startButton" type="button">开始游戏</button><a class="exit-button" id="exitButton" href="index.html" hidden>退出</a></div></div></div></div>
     <div class="controls"><span><kbd>↑←↓→</kbd> / <kbd>WASD</kbd> 移动 · 按住 <kbd>Space</kbd> 或鼠标左键射击</span><div class="touch-controls" aria-label="触屏操作"><button type="button" data-control="up" aria-label="向上移动">↑</button><button type="button" data-control="left" aria-label="向左移动">←</button><button type="button" data-control="fire" class="fire-button" aria-label="按住发射">发射</button><button type="button" data-control="right" aria-label="向右移动">→</button><button type="button" data-control="down" aria-label="向下移动">↓</button></div></div>
     <p class="status" id="status" aria-live="polite">准备开始</p>
     <section class="leaderboard" aria-label="飞机大战排行榜"><div class="leaderboard-columns"><section><div class="leaderboard-header"><h2>🏆 全站榜单</h2><a class="leaderboard-link" href="leaderboard.html">完整排名 ↗</a></div><ol class="leaderboard-list" id="globalList" aria-live="polite"></ol></section><section><div class="leaderboard-header"><h2>✨ 我的记录</h2><span class="leaderboard-link">个人前 5</span></div><ol class="leaderboard-list" id="personalList" aria-live="polite"></ol></section></div></section>
@@ -56,7 +59,7 @@
     (() => {
       const canvas = document.getElementById("board"), ctx = canvas.getContext("2d");
       const scoreEl = document.getElementById("score"), livesEl = document.getElementById("lives");
-      const statusEl = document.getElementById("status"), overlay = document.getElementById("overlay"), titleEl = document.getElementById("overlayTitle"), messageEl = document.getElementById("overlayMessage"), startButton = document.getElementById("startButton");
+      const statusEl = document.getElementById("status"), overlay = document.getElementById("overlay"), titleEl = document.getElementById("overlayTitle"), messageEl = document.getElementById("overlayMessage"), startButton = document.getElementById("startButton"), exitButton = document.getElementById("exitButton");
       const globalList = document.getElementById("globalList"), personalList = document.getElementById("personalList"), gameSlug = "space-invaders";
       const width = canvas.width, height = canvas.height, keys = { up: false, down: false, left: false, right: false, fire: false };
       const stars = Array.from({ length: 85 }, () => ({ x: Math.random() * width, y: Math.random() * height, size: Math.random() * 1.7 + .4, speed: 18 + Math.random() * 48, alpha: .35 + Math.random() * .65 }));
@@ -73,12 +76,12 @@
       }
       function startGame() {
         if (state === "running") return;
-        resetGame(); state = "running"; overlay.hidden = true; statusEl.textContent = "起飞！"; getAudio(); lastFrame = 0; requestAnimationFrame(loop);
+        resetGame(); exitButton.hidden = true; state = "running"; overlay.hidden = true; statusEl.textContent = "起飞！"; getAudio(); lastFrame = 0; requestAnimationFrame(loop);
       }
       function endGame() {
         if (state !== "running") return;
         state = "over"; pointerDown = false; pointerTarget = null; Object.keys(keys).forEach((key) => { keys[key] = false; });
-        titleEl.textContent = "Game Over"; messageEl.textContent = `最终得分：${score.toLocaleString("en-US")}。`; startButton.textContent = "重新开始"; overlay.hidden = false; statusEl.textContent = "游戏结束"; playTone(130, .28, "sawtooth"); submitScore();
+        titleEl.textContent = "Game Over"; messageEl.textContent = `最终得分：${score.toLocaleString("en-US")}。`; startButton.textContent = "重新开始"; exitButton.hidden = false; overlay.hidden = false; statusEl.textContent = "游戏结束"; playTone(130, .28, "sawtooth"); submitScore();
       }
       function updateHud() {
         scoreEl.textContent = score.toLocaleString("en-US");
@@ -327,6 +330,7 @@
         return { x: (event.clientX - bounds.left) * width / bounds.width, y: (event.clientY - bounds.top) * height / bounds.height };
       }
       startButton.addEventListener("click", startGame);
+      exitButton.addEventListener("click", (event) => { if (window.history.length > 1) { event.preventDefault(); window.history.back(); } });
       canvas.addEventListener("pointerdown", (event) => {
         if (event.pointerType === "mouse" && event.button !== 0) return;
         event.preventDefault(); if (state !== "running") startGame();

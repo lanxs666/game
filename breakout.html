@@ -180,6 +180,9 @@
     }
 
     .primary-button:hover { filter: brightness(1.08); }
+    .overlay-actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    .exit-button { display: inline-grid; min-height: 54px; padding: 0 22px; place-items: center; border: 1px solid var(--line); border-radius: 10px; color: #c1ccd5; text-decoration: none; }
+    .exit-button[hidden] { display: none; }
 
     .bottom-row {
       display: flex;
@@ -331,7 +334,7 @@
           <div class="overlay-icon" id="overlayIcon" aria-hidden="true">↗</div>
           <h2 id="overlayTitle">准备好了吗？</h2>
           <p id="overlayMessage">用左右方向键移动挡板，按空格键发射小球。击碎特殊砖块可获得道具。</p>
-          <button class="primary-button" id="startButton" type="button">开始游戏</button>
+          <div class="overlay-actions"><button class="primary-button" id="startButton" type="button">开始游戏</button><a class="exit-button" id="exitButton" href="index.html" hidden>退出</a></div>
         </div>
       </div>
     </div>
@@ -385,6 +388,7 @@
       const overlayTitle = document.getElementById("overlayTitle");
       const overlayMessage = document.getElementById("overlayMessage");
       const startButton = document.getElementById("startButton");
+      const exitButton = document.getElementById("exitButton");
       const touchControls = document.querySelector(".touch-controls");
 
       const width = canvas.width;
@@ -693,6 +697,7 @@
         overlayMessage.textContent = message;
         startButton.textContent = buttonText;
         overlayIcon.textContent = icon;
+        exitButton.hidden = state !== "won" && state !== "lost";
         overlay.hidden = false;
       }
 
@@ -701,6 +706,7 @@
           startRound();
         }
         if (state === "running") return;
+        exitButton.hidden = true;
         ensureAudio();
         state = "running";
         elapsedTime = 0;
@@ -971,6 +977,7 @@
       });
 
       startButton.addEventListener("click", launch);
+      exitButton.addEventListener("click", (event) => { if (window.history.length > 1) { event.preventDefault(); window.history.back(); } });
       resetBricks();
       updateScoreboard();
       refreshLeaderboards();

@@ -431,7 +431,8 @@
     .classic-art.tetris-art { font-size: 48px; letter-spacing: -10px; }
     .classic-art.space-art { font-size: 52px; }
     .classic-art.mines-art { font-size: 48px; }
-    .classic-art.pacman-art { font-size: 68px; }
+    .classic-art.pacman-art { font-size: 0; }
+    .pacman-mascot { width: 94px; height: 94px; overflow: visible; filter: drop-shadow(0 0 14px rgba(255, 224, 92, .38)); }
     .classic-art.runner-art { font-size: unset; }
     .runner-mascot { width: 110px; height: 110px; overflow: visible; filter: drop-shadow(0 0 12px rgba(255, 216, 77, .3)); }
 
@@ -849,7 +850,12 @@
         <article class="game-card">
           <div class="game-art" aria-label="吃豆人游戏封面">
             <span class="art-label">ARCADE · 007</span><span class="art-glow" aria-hidden="true"></span>
-            <div class="classic-art pacman-art" style="--classic-color:#ffe05c" aria-hidden="true">🟡</div>
+            <div class="classic-art pacman-art" style="--classic-color:#ffe05c" aria-hidden="true">
+              <svg class="pacman-mascot" viewBox="0 0 100 100" role="img" aria-label="黄色吃豆人，张嘴并带有黑色眼睛">
+                <path d="M51 50L93 32A46 46 0 1 0 93 68Z" fill="#ffe05c"/>
+                <circle cx="52" cy="26" r="5" fill="#17191d"/>
+              </svg>
+            </div>
             <span class="art-index" aria-hidden="true">NO. 007</span>
           </div>
           <div class="card-content">
@@ -860,10 +866,10 @@
         </article>
 
         <article class="game-card">
-          <div class="game-art" aria-label="无尽跑酷游戏封面">
+          <div class="game-art" aria-label="小鸡快跑游戏封面">
             <span class="art-label">ARCADE · 008</span><span class="art-glow" aria-hidden="true"></span>
             <div class="classic-art runner-art" style="--classic-color:#ffd84d" aria-hidden="true">
-              <svg class="runner-mascot" viewBox="0 0 100 100" role="img" aria-label="无尽跑酷中的黄色小恐龙">
+              <svg class="runner-mascot" viewBox="0 0 100 100" role="img" aria-label="小鸡快跑中的小鸡">
                 <path d="M28 64C17 61 13 53 17 47C24 51 29 54 36 55Z" fill="#ffd84d"/>
                 <ellipse cx="51" cy="64" rx="31" ry="25" fill="#ffd84d"/>
                 <ellipse cx="61" cy="40" rx="23" ry="20" fill="#ffd84d"/>
@@ -879,8 +885,8 @@
             <span class="art-index" aria-hidden="true">NO. 008</span>
           </div>
           <div class="card-content">
-            <div class="card-topline"><h3>无尽跑酷</h3><span class="game-type">街机 · 反应</span></div>
-            <p class="card-description">操控黄色小恐龙，利用二段跳和下蹲躲过障碍，挑战不断加速的奔跑。</p>
+            <div class="card-topline"><h3>小鸡快跑</h3><span class="game-type">街机 · 反应</span></div>
+            <p class="card-description">操控小鸡，利用二段跳和下蹲躲过障碍，挑战不断加速的奔跑。</p>
             <div class="card-footer"><div class="tag-list" aria-label="游戏标签"><span class="tag">单人</span><span class="tag">跳跃 / 下蹲</span></div><a class="play-link" href="endless-runner.html">开始游戏 <span class="arrow" aria-hidden="true">↗</span></a></div>
           </div>
         </article>

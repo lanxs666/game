@@ -21,6 +21,9 @@
     .overlay { position: absolute; inset: 0; display: grid; place-items: center; padding: 18px; background: rgba(5,9,13,.74); backdrop-filter: blur(4px); text-align: center; } .overlay[hidden] { display: none; }
     .overlay-card { width: min(100%, 290px); padding: 19px; border: 1px solid rgba(134,160,177,.22); border-radius: 14px; background: rgba(14,21,28,.96); }
     .overlay h2 { margin: 0; font-size: 19px; } .overlay p { color: #9baab6; font-size: 11px; line-height: 1.6; } .primary-button { min-height: 41px; padding: 0 20px; border: 0; border-radius: 9px; background: #ffe05c; color: #201b0a; cursor: pointer; font-weight: 750; }
+    .overlay-actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    .exit-button { display: inline-grid; min-height: 41px; padding: 0 20px; place-items: center; border: 1px solid var(--line); border-radius: 9px; color: #c1ccd5; text-decoration: none; }
+    .exit-button[hidden] { display: none; }
     .controls { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 9px 0; color: var(--muted); font-size: 10px; } .dpad { display: grid; grid-template-columns: repeat(3, 38px); grid-template-rows: repeat(2, 34px); gap: 3px; }
     .dpad button { border: 1px solid var(--line); border-radius: 7px; background: #111922; color: var(--text); touch-action: manipulation; } .dpad [data-dir="up"] { grid-column: 2; } .dpad [data-dir="left"] { grid-column: 1; grid-row: 2; } .dpad [data-dir="down"] { grid-column: 2; grid-row: 2; } .dpad [data-dir="right"] { grid-column: 3; grid-row: 2; }
     .status { min-height: 15px; margin: 5px 2px; color: #c0cbd4; font-size: 10px; }
@@ -36,7 +39,7 @@
   <main class="game" aria-label="吃豆人游戏">
     <header class="topline"><div class="brand"><button class="account-trigger" type="button" aria-label="登录或注册">🟢</button><span class="brand-mark" aria-hidden="true">◕</span><div><h1>吃豆人</h1><p class="eyebrow">吃掉豆子，小心幽灵！</p></div></div><nav class="top-links" aria-label="游戏导航"><a href="leaderboard.html">全站排名 ↗</a><a href="index.html">← 游戏库</a></nav></header>
     <section class="scoreboard" aria-label="游戏状态"><div class="stat"><span class="stat-label">得分</span><strong class="stat-value current" id="score">0</strong></div><div class="stat"><span class="stat-label">生命</span><strong class="stat-value" id="lives">♥ ♥ ♥</strong></div><div class="stat"><span class="stat-label">豆子</span><strong class="stat-value" id="dots">0</strong></div><div class="stat"><span class="stat-label">用时</span><strong class="stat-value" id="elapsed">00:00</strong></div></section>
-    <div class="board-wrap"><canvas id="board" width="600" height="600" aria-label="吃豆人迷宫游戏区域"></canvas><div class="overlay" id="overlay"><div class="overlay-card"><h2 id="overlayTitle">准备好了吗？</h2><p id="overlayMessage">吃光迷宫里的豆子！吃下大力丸后，趁幽灵变蓝时抓住机会反击。</p><button class="primary-button" id="startButton" type="button">开始游戏</button></div></div></div>
+    <div class="board-wrap"><canvas id="board" width="600" height="600" aria-label="吃豆人迷宫游戏区域"></canvas><div class="overlay" id="overlay"><div class="overlay-card"><h2 id="overlayTitle">准备好了吗？</h2><p id="overlayMessage">吃光迷宫里的豆子！吃下大力丸后，趁幽灵变蓝时抓住机会反击。</p><div class="overlay-actions"><button class="primary-button" id="startButton" type="button">开始游戏</button><a class="exit-button" id="exitButton" href="index.html" hidden>退出</a></div></div></div></div>
     <div class="controls"><span>方向键 / WASD 移动　·　大力丸效果持续 5 秒</span><div class="dpad" aria-label="触屏方向键"><button data-dir="up" aria-label="向上">↑</button><button data-dir="left" aria-label="向左">←</button><button data-dir="down" aria-label="向下">↓</button><button data-dir="right" aria-label="向右">→</button></div></div>
     <p class="status" id="status" aria-live="polite">准备开始</p>
     <section class="leaderboard" aria-label="吃豆人排行榜"><div class="leaderboard-columns"><section><div class="leaderboard-header"><h2>🏆 全站榜单</h2><a class="leaderboard-link" href="leaderboard.html">完整排名 ↗</a></div><ol class="leaderboard-list" id="globalList" aria-live="polite"></ol></section><section><div class="leaderboard-header"><h2>✨ 我的记录</h2><span class="leaderboard-link">个人前 5</span></div><ol class="leaderboard-list" id="personalList" aria-live="polite"></ol></section></div></section>
@@ -44,7 +47,7 @@
   <script src="supabase-config.js"></script><script src="site-account.js"></script>
   <script>
     (() => {
-      const size = 15, tile = 40, canvas = document.getElementById("board"), ctx = canvas.getContext("2d"), scoreEl = document.getElementById("score"), livesEl = document.getElementById("lives"), dotsEl = document.getElementById("dots"), elapsedEl = document.getElementById("elapsed"), statusEl = document.getElementById("status"), overlay = document.getElementById("overlay"), titleEl = document.getElementById("overlayTitle"), messageEl = document.getElementById("overlayMessage"), startButton = document.getElementById("startButton"), globalList = document.getElementById("globalList"), personalList = document.getElementById("personalList"), gameSlug = "classic-pacman";
+      const size = 15, tile = 40, canvas = document.getElementById("board"), ctx = canvas.getContext("2d"), scoreEl = document.getElementById("score"), livesEl = document.getElementById("lives"), dotsEl = document.getElementById("dots"), elapsedEl = document.getElementById("elapsed"), statusEl = document.getElementById("status"), overlay = document.getElementById("overlay"), titleEl = document.getElementById("overlayTitle"), messageEl = document.getElementById("overlayMessage"), startButton = document.getElementById("startButton"), exitButton = document.getElementById("exitButton"), globalList = document.getElementById("globalList"), personalList = document.getElementById("personalList"), gameSlug = "classic-pacman";
       const keyDirections = { ArrowUp: "up", KeyW: "up", ArrowDown: "down", KeyS: "down", ArrowLeft: "left", KeyA: "left", ArrowRight: "right", KeyD: "right" };
       const vectors = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
       let walls = [], dots = new Set(), powers = new Set(), player, ghosts = [], direction = "left", queuedDirection = "left", score = 0, lives = 3, poweredUntil = 0, playerElapsed = 0, ghostElapsed = 0, elapsedTime = 0, state = "ready", lastFrame = 0, audioContext = null;
@@ -68,7 +71,7 @@
       }
       function key(x, y) { return `${x},${y}`; }
       function walkable(x, y) { return x >= 0 && x < size && y >= 0 && y < size && !walls[y][x]; }
-      function startGame() { if (state === "running") return; if (state === "ready" || state === "over") { score = 0; lives = 3; buildLevel(); } state = "running"; overlay.hidden = true; statusEl.textContent = "快吃豆子！"; lastFrame = 0; getAudio(); requestAnimationFrame(loop); }
+      function startGame() { if (state === "running") return; if (state === "ready" || state === "over") { score = 0; lives = 3; buildLevel(); } exitButton.hidden = true; state = "running"; overlay.hidden = true; statusEl.textContent = "快吃豆子！"; lastFrame = 0; getAudio(); requestAnimationFrame(loop); }
       function loop(timestamp) { if (state !== "running") return; const dt = Math.min((timestamp - (lastFrame || timestamp)) / 1000, .05); lastFrame = timestamp; elapsedTime += dt; playerElapsed += dt; ghostElapsed += dt; if (playerElapsed >= .115) { playerElapsed = 0; stepPlayer(); } if (ghostElapsed >= .25) { ghostElapsed = 0; stepGhosts(); } draw(); updateHud(); if (state === "running") requestAnimationFrame(loop); }
       function stepPlayer() {
         const [nextX, nextY] = vectors[queuedDirection]; if (walkable(player.x + nextX, player.y + nextY)) direction = queuedDirection;
@@ -145,8 +148,9 @@
         if (state !== "running") return;
         state = "over"; titleEl.textContent = won ? "迷宫清空！" : "游戏结束";
         messageEl.textContent = won ? `太棒了！最终得分 ${score.toLocaleString("en-US")}。` : `幽灵抓住了你。本局得分：${score.toLocaleString("en-US")}。`;
-        startButton.textContent = "再玩一次"; overlay.hidden = false; statusEl.textContent = won ? "胜利！" : "三条命已用完"; submitScore();
+        startButton.textContent = "再玩一次"; exitButton.hidden = false; overlay.hidden = false; statusEl.textContent = won ? "胜利！" : "三条命已用完"; submitScore();
       }
+      exitButton.addEventListener("click", (event) => { if (window.history.length > 1) { event.preventDefault(); window.history.back(); } });
       function updateHud() { scoreEl.textContent = score.toLocaleString("en-US"); livesEl.textContent = `${"♥ ".repeat(lives).trim()}${"♡ ".repeat(3 - lives).trim()}`; dotsEl.textContent = String(dots.size); elapsedEl.textContent = formatDuration(Math.floor(elapsedTime)); }
       function formatDuration(value) { const minutes = Math.floor(value / 60); const seconds = value % 60; return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`; }
       function draw() {

@@ -46,6 +46,9 @@
     .overlay h2 { margin: 0; font-size: 19px; }
     .overlay p { margin: 8px 0 14px; color: #9baab6; font-size: 11px; line-height: 1.6; }
     .primary-button { min-height: 42px; padding: 0 20px; border: 0; border-radius: 9px; background: var(--lime); color: #10170e; cursor: pointer; font-size: 13px; font-weight: 750; }
+    .overlay-actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    .exit-button { display: inline-grid; min-height: 42px; padding: 0 20px; place-items: center; border: 1px solid var(--line); border-radius: 9px; color: #c1ccd5; text-decoration: none; }
+    .exit-button[hidden] { display: none; }
     .status { min-height: 17px; margin: 8px 2px; color: #c0cbd4; font-size: 10px; }
     .leaderboard { margin-top: 15px; padding: 14px 15px 9px; border: 1px solid var(--line); border-radius: 13px; background: linear-gradient(145deg, rgba(18, 26, 35, .92), rgba(13, 19, 26, .96)); }
     .leaderboard-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 17px; }
@@ -93,7 +96,7 @@
       <div class="board-wrap">
         <canvas id="board" width="300" height="600" aria-label="俄罗斯方块游戏棋盘，10 列 20 行"></canvas>
         <div class="overlay" id="overlay">
-          <div class="overlay-card"><h2 id="overlayTitle">准备好了吗？</h2><p id="overlayMessage">移动并旋转方块，填满整行即可消除。方块堆到顶部时游戏结束。</p><button class="primary-button" id="startButton" type="button">开始游戏</button></div>
+          <div class="overlay-card"><h2 id="overlayTitle">准备好了吗？</h2><p id="overlayMessage">移动并旋转方块，填满整行即可消除。方块堆到顶部时游戏结束。</p><div class="overlay-actions"><button class="primary-button" id="startButton" type="button">开始游戏</button><a class="exit-button" id="exitButton" href="index.html" hidden>退出</a></div></div>
         </div>
       </div>
       <aside class="side-panel" aria-label="方块预览和操作说明">
@@ -133,6 +136,7 @@
       const overlayTitle = document.getElementById("overlayTitle");
       const overlayMessage = document.getElementById("overlayMessage");
       const startButton = document.getElementById("startButton");
+      const exitButton = document.getElementById("exitButton");
       const globalList = document.getElementById("globalList");
       const personalList = document.getElementById("personalList");
       const gameSlug = "classic-tetris";
@@ -359,6 +363,7 @@
       function startGame() {
         if (state === "running") return;
         if (state === "ready" || state === "over") resetGame();
+        exitButton.hidden = true;
         state = "running";
         overlay.hidden = true;
         statusElement.textContent = "游戏进行中";
@@ -370,6 +375,7 @@
         if (state !== "running") return;
         state = "paused";
         overlayTitle.textContent = "游戏已暂停";
+        exitButton.hidden = true;
         overlayMessage.textContent = "准备好后继续挑战。";
         startButton.textContent = "继续游戏";
         overlay.hidden = false;
@@ -380,6 +386,7 @@
         state = "over";
         playTone(190, .22, "triangle");
         overlayTitle.textContent = "游戏结束";
+        exitButton.hidden = false;
         overlayMessage.textContent = `本局得分：${format(score)[0]}，再来一局挑战更高纪录吧。`;
         startButton.textContent = "再玩一局";
         overlay.hidden = false;
@@ -388,6 +395,7 @@
       }
 
       startButton.addEventListener("click", startGame);
+      exitButton.addEventListener("click", (event) => { if (window.history.length > 1) { event.preventDefault(); window.history.back(); } });
       document.addEventListener("keydown", (event) => {
         const controls = ["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp", "Space", "KeyA", "KeyD", "KeyS", "KeyE", "KeyP", "Escape"];
         if (!controls.includes(event.code) || event.target.closest("button, a")) return;

@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#090d12">
-  <meta name="description" content="操控黄色小恐龙跳跃或下蹲，躲过不断加速的跑酷障碍。">
-  <title>无尽跑酷 | 畅游</title>
+  <meta name="description" content="操控小鸡跳跃或下蹲，躲过不断加速的跑酷障碍。">
+  <title>小鸡快跑 | 畅游</title>
   <link rel="stylesheet" href="account.css">
   <style>
     :root { color-scheme: dark; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --page: #090d12; --line: #24313d; --text: #eaf2f7; --muted: #8b9aa7; --lime: #a5ff65; --cyan: #65e9ff; }
@@ -21,6 +21,9 @@
     .overlay { position: absolute; inset: 0; display: grid; place-items: center; padding: 18px; background: rgba(5,9,13,.7); backdrop-filter: blur(4px); text-align: center; } .overlay[hidden] { display: none; }
     .overlay-card { width: min(100%, 310px); padding: 20px; border: 1px solid rgba(134,160,177,.22); border-radius: 14px; background: rgba(14,21,28,.96); } .overlay h2 { margin: 0; font-size: 20px; } .overlay p { color: #9baab6; font-size: 12px; line-height: 1.6; }
     .primary-button { min-height: 44px; padding: 0 23px; border: 0; border-radius: 9px; background: var(--lime); color: #10170e; cursor: pointer; font-weight: 750; }
+    .overlay-actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    .exit-button { display: inline-grid; min-height: 44px; padding: 0 22px; place-items: center; border: 1px solid var(--line); border-radius: 9px; color: #c1ccd5; text-decoration: none; }
+    .exit-button[hidden] { display: none; }
     .controls { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 10px 0; color: var(--muted); font-size: 10px; } .action-buttons { display: flex; gap: 7px; } .action-buttons button { min-width: 94px; min-height: 43px; border: 1px solid rgba(165,255,101,.3); border-radius: 9px; background: rgba(165,255,101,.09); color: var(--lime); font-weight: 700; touch-action: none; } .action-buttons .duck-button { border-color: rgba(101,233,255,.3); background: rgba(101,233,255,.08); color: var(--cyan); }
     kbd { padding: 2px 5px; border: 1px solid #293542; border-radius: 5px; background: #111922; color: #c1ccd5; }
     .status { min-height: 15px; margin: 5px 2px; color: #c0cbd4; font-size: 10px; }
@@ -32,23 +35,23 @@
   </style>
 </head>
 <body>
-  <main class="game" aria-label="无尽跑酷游戏">
-    <header class="topline"><div class="brand"><button class="account-trigger" type="button" aria-label="登录或注册">🟢</button><span class="brand-mark" aria-hidden="true">🐲</span><div><h1>无尽跑酷</h1><p class="eyebrow">操控黄色小恐龙，跳跃或下蹲躲避障碍。</p></div></div><nav class="top-links" aria-label="游戏导航"><a href="leaderboard.html">全站排名 ↗</a><a href="index.html">← 游戏库</a></nav></header>
+  <main class="game" aria-label="小鸡快跑游戏">
+    <header class="topline"><div class="brand"><button class="account-trigger" type="button" aria-label="登录或注册">🟢</button><span class="brand-mark" aria-hidden="true">🐲</span><div><h1>小鸡快跑</h1><p class="eyebrow">操控小鸡，跳跃或下蹲躲避障碍。</p></div></div><nav class="top-links" aria-label="游戏导航"><a href="leaderboard.html">全站排名 ↗</a><a href="index.html">← 游戏库</a></nav></header>
     <section class="scoreboard" aria-label="游戏统计"><div class="stat"><span class="stat-label">得分</span><strong class="stat-value current" id="score">0</strong></div><div class="stat"><span class="stat-label">速度</span><strong class="stat-value" id="speed">1.0×</strong></div></section>
-    <div class="board-wrap"><canvas id="board" width="800" height="400" aria-label="黄色小恐龙无尽跑酷游戏区域"></canvas><div class="overlay" id="overlay"><div class="overlay-card"><h2 id="overlayTitle">准备好了吗？</h2><p id="overlayMessage">按空格或上方向键跳跃，最多二段跳；按住 S 键或下方向键下蹲。红色障碍要跳过，蓝色障碍要下蹲，悬浮障碍可以跳过或下蹲，金色高障碍需要二连跳才能越过。</p><button class="primary-button" id="startButton" type="button">开始奔跑</button></div></div></div>
+    <div class="board-wrap"><canvas id="board" width="800" height="400" aria-label="小鸡快跑游戏区域"></canvas><div class="overlay" id="overlay"><div class="overlay-card"><h2 id="overlayTitle">准备好了吗？</h2><p id="overlayMessage">按空格或上方向键跳跃，最多二段跳；按住 S 键或下方向键下蹲。红色障碍要跳过，蓝色顶端尖刺只能下蹲通过，悬浮障碍可以跳过或下蹲，金色高障碍需要二连跳才能越过。</p><div class="overlay-actions"><button class="primary-button" id="startButton" type="button">开始奔跑</button><a class="exit-button" id="exitButton" href="index.html" hidden>退出</a></div></div></div></div>
     <div class="controls"><span><kbd>Space</kbd> / <kbd>↑</kbd> 跳跃（二段跳）　·　按住 <kbd>S</kbd> / <kbd>↓</kbd> 下蹲</span><div class="action-buttons"><button class="jump-button" id="jumpButton" type="button">跳 跃</button><button class="duck-button" id="duckButton" type="button">按住下蹲</button></div></div>
     <p class="status" id="status" aria-live="polite">准备开始</p>
-    <section class="leaderboard" aria-label="无尽跑酷排行榜"><div class="leaderboard-columns"><section><div class="leaderboard-header"><h2>🏆 全站榜单</h2><a class="leaderboard-link" href="leaderboard.html">完整排名 ↗</a></div><ol class="leaderboard-list" id="globalList" aria-live="polite"></ol></section><section><div class="leaderboard-header"><h2>✨ 我的记录</h2><span class="leaderboard-link">个人前 5</span></div><ol class="leaderboard-list" id="personalList" aria-live="polite"></ol></section></div></section>
+    <section class="leaderboard" aria-label="小鸡快跑排行榜"><div class="leaderboard-columns"><section><div class="leaderboard-header"><h2>🏆 全站榜单</h2><a class="leaderboard-link" href="leaderboard.html">完整排名 ↗</a></div><ol class="leaderboard-list" id="globalList" aria-live="polite"></ol></section><section><div class="leaderboard-header"><h2>✨ 我的记录</h2><span class="leaderboard-link">个人前 5</span></div><ol class="leaderboard-list" id="personalList" aria-live="polite"></ol></section></div></section>
   </main>
   <script src="supabase-config.js"></script><script src="site-account.js"></script>
   <script>
     (() => {
-      const canvas = document.getElementById("board"), ctx = canvas.getContext("2d"), scoreEl = document.getElementById("score"), speedEl = document.getElementById("speed"), statusEl = document.getElementById("status"), overlay = document.getElementById("overlay"), titleEl = document.getElementById("overlayTitle"), messageEl = document.getElementById("overlayMessage"), startButton = document.getElementById("startButton"), globalList = document.getElementById("globalList"), personalList = document.getElementById("personalList"), gameSlug = "endless-runner";
+      const canvas = document.getElementById("board"), ctx = canvas.getContext("2d"), scoreEl = document.getElementById("score"), speedEl = document.getElementById("speed"), statusEl = document.getElementById("status"), overlay = document.getElementById("overlay"), titleEl = document.getElementById("overlayTitle"), messageEl = document.getElementById("overlayMessage"), startButton = document.getElementById("startButton"), exitButton = document.getElementById("exitButton"), globalList = document.getElementById("globalList"), personalList = document.getElementById("personalList"), gameSlug = "endless-runner";
       const width = canvas.width, height = canvas.height, groundY = 326;
       let player, obstacles = [], score = 0, speed = 270, spawnIn = 1, groundOffset = 0, jumpsLeft = 2, duckHeld = false, state = "ready", lastFrame = 0, audioContext = null;
       refreshLeaderboards(); window.gameSite.onAuthChanged(() => refreshLeaderboards()); reset(); draw();
       function reset() { player = { x: 92, y: groundY - 42, width: 38, height: 42, velocityY: 0, crouched: false }; obstacles = []; score = 0; speed = 270; spawnIn = .95; groundOffset = 0; jumpsLeft = 2; duckHeld = false; scoreEl.textContent = "0"; speedEl.textContent = "1.0×"; }
-      function startGame() { if (state === "running") return; if (state === "ready" || state === "over") reset(); state = "running"; overlay.hidden = true; statusEl.textContent = "奔跑中！"; lastFrame = 0; getAudio(); requestAnimationFrame(loop); }
+      function startGame() { if (state === "running") return; if (state === "ready" || state === "over") reset(); exitButton.hidden = true; state = "running"; overlay.hidden = true; statusEl.textContent = "奔跑中！"; lastFrame = 0; getAudio(); requestAnimationFrame(loop); }
       function jump() { if (state !== "running") { if (state === "ready" || state === "over") startGame(); if (state !== "running") return; } if (jumpsLeft <= 0) return; duckHeld = false; player.crouched = false; player.height = 42; if (player.velocityY === 0) player.y = groundY - player.height; player.velocityY = jumpsLeft === 2 ? -465 : -405; jumpsLeft -= 1; playTone(jumpsLeft ? 510 : 680, .08); }
       function setDuck(held) { if (state !== "running") { if (held && (state === "ready" || state === "over")) startGame(); if (state !== "running") return; } duckHeld = held; }
       function loop(timestamp) { if (state !== "running") return; const dt = Math.min((timestamp - (lastFrame || timestamp)) / 1000, .04); lastFrame = timestamp; update(dt); draw(); if (state === "running") requestAnimationFrame(loop); }
@@ -68,8 +71,8 @@
             const h = 36 + Math.random() * 18, w = 21 + Math.random() * 12;
             obstacle = { type: "jump", x: width + 8, y: groundY - h, width: w, height: h };
           } else if (roll < .8) {
-            const w = 45 + Math.random() * 22, h = 21;
-            obstacle = { type: "duck", x: width + 8, y: groundY - 52, width: w, height: h };
+            const w = 45 + Math.random() * 22, h = groundY - 30;
+            obstacle = { type: "duck", x: width + 8, y: 0, width: w, height: h };
           } else if (roll < .9) {
             const w = 29 + Math.random() * 15, h = 8;
             obstacle = { type: "either", x: width + 8, y: groundY - 34, width: w, height: h };
@@ -100,9 +103,14 @@
           ctx.fillStyle = color; ctx.shadowColor = color; ctx.shadowBlur = 10;
           if (obstacle.type === "jump") {
             ctx.beginPath(); ctx.moveTo(obstacle.x, groundY); ctx.lineTo(obstacle.x + obstacle.width * .5, obstacle.y); ctx.lineTo(obstacle.x + obstacle.width, groundY); ctx.closePath(); ctx.fill();
+          } else if (obstacle.type === "duck") {
+            ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, 9);
+            for (let offset = 0; offset < obstacle.width; offset += 14) {
+              const spikeWidth = Math.min(14, obstacle.width - offset);
+              ctx.beginPath(); ctx.moveTo(obstacle.x + offset, obstacle.y + 8); ctx.lineTo(obstacle.x + offset + spikeWidth / 2, obstacle.height); ctx.lineTo(obstacle.x + offset + spikeWidth, obstacle.y + 8); ctx.closePath(); ctx.fill();
+            }
           } else {
             ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
-            if (obstacle.type === "duck") { ctx.fillRect(obstacle.x + 5, obstacle.y + obstacle.height, 5, groundY - obstacle.y - obstacle.height); ctx.fillRect(obstacle.x + obstacle.width - 10, obstacle.y + obstacle.height, 5, groundY - obstacle.y - obstacle.height); }
           }
           ctx.shadowBlur = 0;
         });
@@ -127,7 +135,7 @@
       }
       function endGame() {
         if (state !== "running") return;
-        state = "over"; titleEl.textContent = "撞上障碍！"; messageEl.textContent = `成功躲过 ${score / 10} 个障碍，获得 ${score} 分。`; startButton.textContent = "再跑一次"; overlay.hidden = false; statusEl.textContent = "本局结束，碰撞不计入得分。"; playTone(160, .25, "sawtooth"); submitScore();
+        state = "over"; titleEl.textContent = "撞上障碍！"; messageEl.textContent = `成功躲过 ${score / 10} 个障碍，获得 ${score} 分。`; startButton.textContent = "再跑一次"; exitButton.hidden = false; overlay.hidden = false; statusEl.textContent = "本局结束，碰撞不计入得分。"; playTone(160, .25, "sawtooth"); submitScore();
       }
       function getAudio() { if (audioContext) return audioContext; const Type = window.AudioContext || window.webkitAudioContext; if (!Type) return null; try { audioContext = new Type(); return audioContext; } catch (error) { console.warn("Unable to initialize runner audio.", error); return null; } }
       function playTone(frequency, duration, type = "square") { const audio = getAudio(); if (!audio) return; if (audio.state === "suspended") audio.resume().catch((error) => console.warn("Unable to resume runner audio.", error)); const now = audio.currentTime, oscillator = audio.createOscillator(), gain = audio.createGain(); oscillator.type = type; oscillator.frequency.setValueAtTime(frequency, now); oscillator.frequency.exponentialRampToValueAtTime(Math.max(70, frequency * .65), now + duration); gain.gain.setValueAtTime(.03, now); gain.gain.exponentialRampToValueAtTime(.001, now + duration); oscillator.connect(gain); gain.connect(audio.destination); oscillator.start(now); oscillator.stop(now + duration); }
@@ -145,6 +153,7 @@
       async function submitScore() { if (!score) { refreshLeaderboards(); return; } try { await window.gameSite.submitScore(gameSlug, score); await refreshLeaderboards(); } catch (error) { statusEl.textContent = error.message.includes("登录后") ? "登录后可提交成绩。" : "成绩提交失败。"; console.error("Unable to submit runner score.", error); } }
       const duckButton = document.getElementById("duckButton");
       startButton.addEventListener("click", startGame);
+      exitButton.addEventListener("click", (event) => { if (window.history.length > 1) { event.preventDefault(); window.history.back(); } });
       document.getElementById("jumpButton").addEventListener("click", jump);
       duckButton.addEventListener("pointerdown", (event) => { event.preventDefault(); duckButton.setPointerCapture(event.pointerId); setDuck(true); });
       ["pointerup", "pointercancel", "lostpointercapture"].forEach((name) => duckButton.addEventListener(name, () => setDuck(false)));

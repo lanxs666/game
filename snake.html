@@ -24,6 +24,9 @@
       --pink: #ff5b9d;
       --cyan: #65e9ff;
     }
+    .overlay-actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    .exit-button { display: inline-grid; min-height: 54px; padding: 0 22px; place-items: center; border: 1px solid var(--line); border-radius: 10px; color: #c1ccd5; text-decoration: none; }
+    .exit-button[hidden] { display: none; }
 
     * { box-sizing: border-box; }
 
@@ -453,7 +456,7 @@
           <div class="overlay-icon" id="overlayIcon" aria-hidden="true">↗</div>
           <h2 id="overlayTitle">准备好了吗？</h2>
           <p id="overlayMessage">吃掉发光能量豆，别撞到墙壁或自己的身体。</p>
-          <button class="primary-button" id="startButton" type="button">开始游戏</button>
+          <div class="overlay-actions"><button class="primary-button" id="startButton" type="button">开始游戏</button><a class="exit-button" id="exitButton" href="index.html" hidden>退出</a></div>
         </div>
       </div>
     </div>
@@ -507,6 +510,7 @@
       const overlayTitle = document.getElementById("overlayTitle");
       const overlayMessage = document.getElementById("overlayMessage");
       const startButton = document.getElementById("startButton");
+      const exitButton = document.getElementById("exitButton");
       const gameSlug = "neon-snake";
 
       const cells = 24;
@@ -824,6 +828,7 @@
       function startGame() {
         if (state === "over") resetRound();
         if (state === "running") return;
+        exitButton.hidden = true;
         state = "running";
         statusText.textContent = "游戏进行中";
         overlay.hidden = true;
@@ -844,6 +849,7 @@
         overlayTitle.textContent = title;
         overlayMessage.textContent = message;
         startButton.textContent = buttonText;
+        exitButton.hidden = title !== "游戏结束";
         overlay.hidden = false;
       }
 
@@ -903,6 +909,7 @@
       }
 
       startButton.addEventListener("click", startGame);
+      exitButton.addEventListener("click", (event) => { if (window.history.length > 1) { event.preventDefault(); window.history.back(); } });
 
       document.addEventListener("keydown", (event) => {
         const directionName = keyDirections[event.code];

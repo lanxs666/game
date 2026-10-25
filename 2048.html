@@ -241,6 +241,9 @@
     }
 
     .primary-button:hover { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 6px 22px rgba(165, 255, 101, .25); }
+    .overlay-actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    .exit-button { display: inline-grid; min-height: 52px; padding: 0 22px; place-items: center; border: 1px solid var(--line); border-radius: 10px; color: #c1ccd5; text-decoration: none; }
+    .exit-button[hidden] { display: none; }
 
     .game-controls {
       display: flex;
@@ -356,7 +359,10 @@
         <div class="overlay-card">
           <h3 id="overlayTitle"></h3>
           <p id="overlayMessage"></p>
-          <button class="primary-button" id="overlayButton" type="button">开始游戏</button>
+          <div class="overlay-actions">
+            <button class="primary-button" id="overlayButton" type="button">开始游戏</button>
+            <a class="exit-button" id="exitButton" href="index.html" hidden>退出</a>
+          </div>
         </div>
       </div>
     </div>
@@ -400,6 +406,7 @@
       const overlayTitle = document.getElementById("overlayTitle");
       const overlayMessage = document.getElementById("overlayMessage");
       const overlayButton = document.getElementById("overlayButton");
+      const exitButton = document.getElementById("exitButton");
       const globalList = document.getElementById("globalList");
       const personalList = document.getElementById("personalList");
       const gameSlug = "2048";
@@ -664,6 +671,7 @@
         overlayMessage.textContent = message;
         overlayButton.textContent = buttonText;
         overlayButton.dataset.action = action;
+        exitButton.hidden = action !== "restart";
         overlay.hidden = false;
       }
 
@@ -800,6 +808,7 @@
       boardWrap.addEventListener("pointercancel", () => { pointerStart = null; });
 
       overlayButton.addEventListener("click", handleOverlayAction);
+      exitButton.addEventListener("click", (event) => { if (window.history.length > 1) { event.preventDefault(); window.history.back(); } });
       document.getElementById("restartButton").addEventListener("click", async () => {
         if (won && !submittedScore) await submitScore();
         startNewGame();

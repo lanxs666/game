@@ -21,6 +21,14 @@
     .reset-button { min-height: 38px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; background: #151e27; color: var(--text); cursor: pointer; font-size: 11px; }
     .board-wrap { position: relative; padding: 7px; border: 1px solid #283440; border-radius: 12px; background: #0b1117; box-shadow: 0 20px 55px rgba(0,0,0,.28); }
     .board { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 3px; aspect-ratio: 1; }
+    .overlay { position: absolute; inset: 7px; z-index: 2; display: grid; place-items: center; padding: 18px; border-radius: 8px; background: rgba(5,9,13,.76); backdrop-filter: blur(4px); text-align: center; }
+    .overlay[hidden] { display: none; }
+    .overlay-card { width: min(100%, 290px); padding: 20px; border: 1px solid rgba(134,160,177,.22); border-radius: 14px; background: rgba(14,21,28,.96); }
+    .overlay h2 { margin: 0; font-size: 20px; } .overlay p { color: #9baab6; font-size: 12px; line-height: 1.6; }
+    .overlay-actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    .overlay-button { min-height: 40px; padding: 0 17px; border: 0; border-radius: 8px; background: var(--lime); color: #10170e; cursor: pointer; font-weight: 750; }
+    .exit-button { display: inline-grid; min-height: 40px; padding: 0 18px; place-items: center; border: 1px solid var(--line); border-radius: 8px; color: #c1ccd5; text-decoration: none; }
+    .exit-button[hidden] { display: none; }
     .cell { display: grid; min-width: 0; min-height: 0; place-items: center; border: 1px solid rgba(255,255,255,.06); border-radius: 4px; background: linear-gradient(145deg, #25303b, #18212a); color: #ecf3f8; cursor: pointer; font-size: clamp(11px, 3vw, 18px); font-weight: 800; user-select: none; }
     .cell:hover:not(.revealed) { background: #303e4a; } .cell.revealed { border-color: rgba(144,166,181,.05); background: #111a22; cursor: default; } .cell.mine-hit { background: rgba(255,91,125,.34); }
     .cell[data-number="1"] { color: #65baff; } .cell[data-number="2"] { color: #a5ff65; } .cell[data-number="3"] { color: #ff6d7a; } .cell[data-number="4"] { color: #aa9bff; } .cell[data-number="5"] { color: #ffad62; } .cell[data-number="6"] { color: #65e9ff; } .cell[data-number="7"] { color: #f1f5f8; } .cell[data-number="8"] { color: #8b9aa7; }
@@ -40,14 +48,14 @@
   <main class="game" aria-label="扫雷游戏">
     <header class="topline"><div class="brand"><button class="account-trigger" type="button" aria-label="登录或注册">🟢</button><span class="brand-mark" aria-hidden="true">⚑</span><div><h1>扫雷</h1><p class="eyebrow">观察数字，找出所有地雷。</p></div></div><nav class="top-links" aria-label="游戏导航"><a href="leaderboard.html">全站排名 ↗</a><a href="index.html">← 游戏库</a></nav></header>
     <div class="toolbar" aria-label="游戏状态"><button class="reset-button" id="resetButton" type="button" aria-label="重新开始">🙂 新游戏</button><strong class="timer" id="timer" aria-label="用时">000</strong></div>
-    <div class="board-wrap"><div class="board" id="board" role="grid" aria-label="10 乘 10 扫雷棋盘"></div></div>
+    <div class="board-wrap"><div class="board" id="board" role="grid" aria-label="10 乘 10 扫雷棋盘"></div><div class="overlay" id="overlay" hidden><div class="overlay-card"><h2 id="overlayTitle"></h2><p id="overlayMessage"></p><div class="overlay-actions"><button class="overlay-button" id="overlayResetButton" type="button">再来一局</button><a class="exit-button" id="exitButton" href="index.html">退出</a></div></div></div></div>
     <p class="status" id="status" aria-live="polite">左键揭开，右键插旗。第一次点击保证安全。</p>
     <section class="leaderboard" aria-label="扫雷排行榜"><div class="leaderboard-columns"><section><div class="leaderboard-header"><h2>🏆 全站榜单</h2><a class="leaderboard-link" href="leaderboard.html">完整排名 ↗</a></div><ol class="leaderboard-list" id="globalList" aria-live="polite"></ol></section><section><div class="leaderboard-header"><h2>✨ 我的记录</h2><span class="leaderboard-link">个人前 5</span></div><ol class="leaderboard-list" id="personalList" aria-live="polite"></ol></section></div></section>
   </main>
   <script src="supabase-config.js"></script><script src="site-account.js"></script>
   <script>
     (() => {
-      const size = 10, mineCount = 15, board = document.getElementById("board"), timerEl = document.getElementById("timer"), statusEl = document.getElementById("status"), gameSlug = "classic-minesweeper";
+      const size = 10, mineCount = 15, board = document.getElementById("board"), timerEl = document.getElementById("timer"), statusEl = document.getElementById("status"), overlay = document.getElementById("overlay"), overlayTitle = document.getElementById("overlayTitle"), overlayMessage = document.getElementById("overlayMessage"), gameSlug = "classic-minesweeper";
       const globalList = document.getElementById("globalList"), personalList = document.getElementById("personalList");
       let cells = [], revealedCount = 0, seconds = 0, clock = null, started = false, ended = false, audioContext = null;
       createBoard(); refreshLeaderboards(); window.gameSite.onAuthChanged(() => refreshLeaderboards());
@@ -55,6 +63,7 @@
       function createBoard() {
         clearInterval(clock); revealedCount = 0; seconds = 0; started = false; ended = false;
         document.getElementById("resetButton").textContent = "🙂 新游戏";
+        overlay.hidden = true;
         timerEl.textContent = "000"; statusEl.textContent = "左键揭开，右键插旗。第一次点击保证安全。";
         cells = Array.from({ length: size * size }, (_, index) => ({ row: Math.floor(index / size), column: index % size, mine: false, number: 0, revealed: false, flagged: false }));
         render();
@@ -108,10 +117,15 @@
       function finish(won) {
         ended = true; clearInterval(clock); clock = null;
         statusEl.textContent = won ? `胜利！用时 ${seconds} 秒，所有安全格都已揭开。` : "踩到地雷了！再来一局吧。";
+        overlayTitle.textContent = won ? "扫雷成功！" : "游戏结束";
+        overlayMessage.textContent = won ? `用时 ${seconds} 秒，所有安全格都已揭开。` : "踩到地雷了，再来一局吧。";
+        overlay.hidden = false;
         document.getElementById("resetButton").textContent = won ? "😎 再来一局" : "😵 再试一次";
         playTone(won ? 780 : 150, won ? .18 : .22, won ? "sine" : "sawtooth");
         if (won) submitScore();
       }
+      document.getElementById("overlayResetButton").addEventListener("click", createBoard);
+      document.getElementById("exitButton").addEventListener("click", (event) => { if (window.history.length > 1) { event.preventDefault(); window.history.back(); } });
       function render() {
         const fragment = document.createDocumentFragment();
         cells.forEach((cell, index) => {
