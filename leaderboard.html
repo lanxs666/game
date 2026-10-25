@@ -44,7 +44,7 @@
             <button class="rank-game-tab" type="button" data-game="neon-breakout" aria-pressed="false">打砖块</button>
             <button class="rank-game-tab" type="button" data-game="2048" aria-pressed="false">2048</button>
             <button class="rank-game-tab" type="button" data-game="classic-tetris" aria-pressed="false">俄罗斯方块</button>
-            <button class="rank-game-tab" type="button" data-game="space-invaders" aria-pressed="false">太空侵略者</button>
+            <button class="rank-game-tab" type="button" data-game="space-invaders" aria-pressed="false">飞机大战</button>
             <button class="rank-game-tab" type="button" data-game="classic-minesweeper" aria-pressed="false">扫雷</button>
             <button class="rank-game-tab" type="button" data-game="classic-pacman" aria-pressed="false">吃豆人</button>
             <button class="rank-game-tab" type="button" data-game="endless-runner" aria-pressed="false">无尽跑酷</button>
@@ -194,9 +194,24 @@
           const score = document.createElement("strong");
           score.className = "rank-score";
           score.textContent = `${entry.score} 分`;
-          row.append(place, player, score);
+          const scoreDetails = document.createElement("span");
+          scoreDetails.className = "rank-score-details";
+          scoreDetails.append(score);
+          if (Number.isInteger(entry.duration_seconds)) {
+            const duration = document.createElement("span");
+            duration.className = "rank-duration";
+            duration.textContent = `用时 ${formatDuration(entry.duration_seconds)}`;
+            scoreDetails.append(duration);
+          }
+          row.append(place, player, scoreDetails);
           container.append(row);
         }
+      }
+
+      function formatDuration(value) {
+        const minutes = Math.floor(value / 60);
+        const seconds = value % 60;
+        return minutes ? `${minutes}分${String(seconds).padStart(2, "0")}秒` : `${seconds}秒`;
       }
 
       function renderAvatar(container, value) {

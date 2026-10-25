@@ -10,8 +10,12 @@ create table if not exists public.game_scores (
   game_slug text not null,
   user_id uuid not null constraint game_scores_user_id_fkey references public.profiles (user_id) on delete cascade,
   score integer not null,
+  duration_seconds integer check (duration_seconds >= 0),
   created_at timestamptz not null default now()
 );
+
+alter table public.game_scores
+  add column if not exists duration_seconds integer check (duration_seconds >= 0);
 
 alter table public.game_scores drop constraint if exists game_scores_score_check;
 alter table public.game_scores
@@ -21,6 +25,12 @@ create index if not exists game_scores_leaderboard_idx
   on public.game_scores (game_slug, score desc, created_at asc);
 create index if not exists game_scores_player_idx
   on public.game_scores (game_slug, user_id, score desc, created_at asc);
+create index if not exists game_scores_minesweeper_leaderboard_idx
+  on public.game_scores (game_slug, score desc, duration_seconds asc nulls last, created_at asc)
+  where game_slug = 'classic-minesweeper';
+create index if not exists game_scores_pacman_leaderboard_idx
+  on public.game_scores (game_slug, score desc, duration_seconds asc nulls last, created_at asc)
+  where game_slug = 'classic-pacman';
 
 alter table public.profiles enable row level security;
 alter table public.game_scores enable row level security;

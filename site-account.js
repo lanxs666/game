@@ -391,10 +391,11 @@
 
   async function getScores(gameSlug, scope, limit) {
     if (!configured) throw new Error("排行榜服务尚未配置。");
+    const hasDuration = gameSlug === "classic-minesweeper" || gameSlug === "classic-pacman";
     const filters = new URLSearchParams({
-      select: "id,score,created_at,user_id,profiles(nickname,avatar)",
+      select: `id,score,created_at,user_id${hasDuration ? ",duration_seconds" : ""},profiles(nickname,avatar)`,
       game_slug: `eq.${gameSlug}`,
-      order: "score.desc,created_at.asc",
+      order: hasDuration ? "score.desc,duration_seconds.asc.nullslast,created_at.asc" : "score.desc,created_at.asc",
       limit: String(limit)
     });
     if (scope === "personal") {
@@ -404,15 +405,21 @@
     return request(`/rest/v1/game_scores?${filters.toString()}`, {}, false);
   }
 
-  async function submitScore(gameSlug, score) {
+  async function submitScore(gameSlug, score, metadata = {}) {
     if (!configured) throw new Error("排行榜服务尚未配置。");
     if (!session) throw new Error("登录后才能将成绩提交到全站排行榜。");
     const value = Number(score);
     if (!Number.isInteger(value) || value < 0 || value > 1000000000) throw new Error("成绩超出有效范围。");
+    const durationSeconds = metadata.durationSeconds;
+    if (durationSeconds !== undefined && (!Number.isInteger(durationSeconds) || durationSeconds < 0 || durationSeconds > 2147483647)) {
+      throw new Error("通关时间超出有效范围。");
+    }
+    const submission = { game_slug: gameSlug, user_id: session.user.id, score: value };
+    if (durationSeconds !== undefined) submission.duration_seconds = durationSeconds;
     await request("/rest/v1/game_scores", {
       method: "POST",
       headers: { Prefer: "return=minimal" },
-      body: JSON.stringify({ game_slug: gameSlug, user_id: session.user.id, score: value })
+      body: JSON.stringify(submission)
     });
   }
 })();

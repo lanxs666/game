@@ -222,6 +222,9 @@ a { color: inherit; }
   font-weight: 750;
 }
 
+.rank-score-details { display: grid; justify-items: end; gap: 3px; }
+.rank-duration { color: #65e9ff; font-size: 9px; font-variant-numeric: tabular-nums; }
+
 .rank-empty {
   padding: 31px 12px;
   color: var(--muted);

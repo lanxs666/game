@@ -16,8 +16,8 @@
     .topline { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
     .brand { display: flex; align-items: center; gap: 10px; } .brand-mark { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid rgba(165,255,101,.22); border-radius: 12px; background: rgba(165,255,101,.08); color: var(--lime); font-size: 19px; }
     h1 { margin: 0; font-size: 17px; } .eyebrow { margin: 3px 0 0; color: var(--muted); font-size: 11px; } .top-links { display: flex; gap: 12px; } .top-links a { color: #a7b4be; font-size: 10px; text-decoration: none; white-space: nowrap; }
-    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 11px; background: #10171e; }
-    .counter { color: #ff7181; font-size: 19px; font-weight: 750; font-variant-numeric: tabular-nums; } .timer { color: var(--cyan); font-size: 19px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .toolbar { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 11px; background: #10171e; }
+    .timer { color: var(--cyan); font-size: 19px; font-weight: 700; font-variant-numeric: tabular-nums; }
     .reset-button { min-height: 38px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; background: #151e27; color: var(--text); cursor: pointer; font-size: 11px; }
     .board-wrap { position: relative; padding: 7px; border: 1px solid #283440; border-radius: 12px; background: #0b1117; box-shadow: 0 20px 55px rgba(0,0,0,.28); }
     .board { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 3px; aspect-ratio: 1; }
@@ -30,6 +30,7 @@
     .leaderboard-link { color: var(--lime); font-size: 9px; text-decoration: none; } .leaderboard-list { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
     .leaderboard-row { display: grid; grid-template-columns: 22px minmax(0,1fr) auto; min-height: 29px; align-items: center; gap: 5px; border-top: 1px solid rgba(144,166,181,.08); color: #c3ced6; font-size: 9px; }
     .leaderboard-rank, .leaderboard-date { color: var(--muted); } .leaderboard-row:first-child .leaderboard-rank, .leaderboard-row:first-child .leaderboard-score { color: var(--lime); }
+    .leaderboard-score-wrap { text-align: right; } .leaderboard-duration { display: block; margin-top: 2px; color: var(--cyan); font-size: 8px; font-variant-numeric: tabular-nums; }
     .leaderboard-person { display: flex; align-items: center; gap: 5px; min-width: 0; } .leaderboard-avatar { display: grid; width: 20px; height: 20px; flex: 0 0 auto; place-items: center; overflow: hidden; border-radius: 50%; background: #202830; } .leaderboard-avatar img { width: 100%; height: 100%; object-fit: cover; }
     .leaderboard-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .leaderboard-date { display: block; font-size: 8px; } .leaderboard-empty { padding: 8px 0; color: var(--muted); font-size: 9px; }
     @media (max-width: 430px) { body { padding: 14px 9px; } .board { gap: 2px; } .board-wrap { padding: 5px; } .cell { border-radius: 2px; font-size: 11px; } .leaderboard-columns { grid-template-columns: 1fr; } }
@@ -38,7 +39,7 @@
 <body>
   <main class="game" aria-label="扫雷游戏">
     <header class="topline"><div class="brand"><button class="account-trigger" type="button" aria-label="登录或注册">🟢</button><span class="brand-mark" aria-hidden="true">⚑</span><div><h1>扫雷</h1><p class="eyebrow">观察数字，找出所有地雷。</p></div></div><nav class="top-links" aria-label="游戏导航"><a href="leaderboard.html">全站排名 ↗</a><a href="index.html">← 游戏库</a></nav></header>
-    <div class="toolbar" aria-label="游戏状态"><strong class="counter" id="remaining" aria-label="剩余地雷">015</strong><button class="reset-button" id="resetButton" type="button" aria-label="重新开始">🙂 新游戏</button><strong class="timer" id="timer" aria-label="用时">000</strong></div>
+    <div class="toolbar" aria-label="游戏状态"><button class="reset-button" id="resetButton" type="button" aria-label="重新开始">🙂 新游戏</button><strong class="timer" id="timer" aria-label="用时">000</strong></div>
     <div class="board-wrap"><div class="board" id="board" role="grid" aria-label="10 乘 10 扫雷棋盘"></div></div>
     <p class="status" id="status" aria-live="polite">左键揭开，右键插旗。第一次点击保证安全。</p>
     <section class="leaderboard" aria-label="扫雷排行榜"><div class="leaderboard-columns"><section><div class="leaderboard-header"><h2>🏆 全站榜单</h2><a class="leaderboard-link" href="leaderboard.html">完整排名 ↗</a></div><ol class="leaderboard-list" id="globalList" aria-live="polite"></ol></section><section><div class="leaderboard-header"><h2>✨ 我的记录</h2><span class="leaderboard-link">个人前 5</span></div><ol class="leaderboard-list" id="personalList" aria-live="polite"></ol></section></div></section>
@@ -46,15 +47,15 @@
   <script src="supabase-config.js"></script><script src="site-account.js"></script>
   <script>
     (() => {
-      const size = 10, mineCount = 15, board = document.getElementById("board"), remainingEl = document.getElementById("remaining"), timerEl = document.getElementById("timer"), statusEl = document.getElementById("status"), gameSlug = "classic-minesweeper";
+      const size = 10, mineCount = 15, board = document.getElementById("board"), timerEl = document.getElementById("timer"), statusEl = document.getElementById("status"), gameSlug = "classic-minesweeper";
       const globalList = document.getElementById("globalList"), personalList = document.getElementById("personalList");
-      let cells = [], flags = 0, revealedCount = 0, seconds = 0, clock = null, started = false, ended = false, audioContext = null;
+      let cells = [], revealedCount = 0, seconds = 0, clock = null, started = false, ended = false, audioContext = null;
       createBoard(); refreshLeaderboards(); window.gameSite.onAuthChanged(() => refreshLeaderboards());
 
       function createBoard() {
-        clearInterval(clock); flags = 0; revealedCount = 0; seconds = 0; started = false; ended = false;
+        clearInterval(clock); revealedCount = 0; seconds = 0; started = false; ended = false;
         document.getElementById("resetButton").textContent = "🙂 新游戏";
-        timerEl.textContent = "000"; remainingEl.textContent = "015"; statusEl.textContent = "左键揭开，右键插旗。第一次点击保证安全。";
+        timerEl.textContent = "000"; statusEl.textContent = "左键揭开，右键插旗。第一次点击保证安全。";
         cells = Array.from({ length: size * size }, (_, index) => ({ row: Math.floor(index / size), column: index % size, mine: false, number: 0, revealed: false, flagged: false }));
         render();
       }
@@ -100,8 +101,7 @@
       }
       function toggleFlag(cell) {
         if (ended || cell.revealed) return;
-        cell.flagged = !cell.flagged; flags += cell.flagged ? 1 : -1;
-        remainingEl.textContent = String(mineCount - flags).padStart(3, "0");
+        cell.flagged = !cell.flagged;
         playTone(cell.flagged ? 310 : 230, .05, "triangle");
         render();
       }
@@ -152,9 +152,13 @@
           try { const photo = new URL(avatar.textContent), project = new URL(window.GAME_SITE_SUPABASE.url); if (photo.origin === project.origin && photo.pathname.startsWith("/storage/v1/object/public/profile-avatars/")) { const image = document.createElement("img"); image.src = photo.href; image.alt = ""; avatar.replaceChildren(image); } } catch (error) { /* Emoji avatars are not URLs. */ }
           const name = document.createElement("span"); name.className = "leaderboard-name"; name.textContent = entry.profiles && entry.profiles.nickname || "玩家";
           const date = document.createElement("time"); date.className = "leaderboard-date"; date.dateTime = entry.created_at; date.textContent = new Date(entry.created_at).toLocaleDateString("zh-CN"); name.append(date); person.append(avatar, name);
-          const points = document.createElement("strong"); points.className = "leaderboard-score"; points.textContent = `${Number(entry.score).toLocaleString("en-US")} 分`; row.append(rank, person, points); list.append(row);
+          const scoreWrap = document.createElement("span"); scoreWrap.className = "leaderboard-score-wrap";
+          const points = document.createElement("strong"); points.className = "leaderboard-score"; points.textContent = `${Number(entry.score).toLocaleString("en-US")} 分`; scoreWrap.append(points);
+          if (Number.isInteger(entry.duration_seconds)) { const duration = document.createElement("span"); duration.className = "leaderboard-duration"; duration.textContent = `用时 ${formatDuration(entry.duration_seconds)}`; scoreWrap.append(duration); }
+          row.append(rank, person, scoreWrap); list.append(row);
         });
       }
+      function formatDuration(value) { const minutes = Math.floor(value / 60); const remainder = value % 60; return minutes ? `${minutes}分${String(remainder).padStart(2, "0")}秒` : `${remainder}秒`; }
       async function refreshLeaderboards() {
         if (!window.gameSite.isConfigured) { renderLeaderboard(globalList, [], "排行榜服务尚未配置。"); renderLeaderboard(personalList, [], "排行榜服务尚未配置。"); return; }
         try { renderLeaderboard(globalList, await window.gameSite.getScores(gameSlug, "global", 10), "还没有通关记录，完成挑战登上榜单吧。"); if (window.gameSite.user) renderLeaderboard(personalList, await window.gameSite.getScores(gameSlug, "personal", 5), "完成一局后查看个人成绩。"); else renderLeaderboard(personalList, [], "登录后查看个人前五成绩。"); }
@@ -162,7 +166,7 @@
       }
       async function submitScore() {
         const score = Math.max(1, 10000 - seconds * 10);
-        try { await window.gameSite.submitScore(gameSlug, score); await refreshLeaderboards(); }
+        try { await window.gameSite.submitScore(gameSlug, score, { durationSeconds: seconds }); await refreshLeaderboards(); }
         catch (error) { statusEl.textContent = error.message.includes("登录后") ? `${statusEl.textContent} 登录后可提交成绩。` : `${statusEl.textContent} 成绩提交失败。`; console.error("Unable to submit Minesweeper score.", error); }
       }
       document.getElementById("resetButton").addEventListener("click", createBoard);
