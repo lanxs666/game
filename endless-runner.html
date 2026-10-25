@@ -35,7 +35,7 @@
   <main class="game" aria-label="无尽跑酷游戏">
     <header class="topline"><div class="brand"><button class="account-trigger" type="button" aria-label="登录或注册">🟢</button><span class="brand-mark" aria-hidden="true">🐲</span><div><h1>无尽跑酷</h1><p class="eyebrow">操控黄色小恐龙，跳跃或下蹲躲避障碍。</p></div></div><nav class="top-links" aria-label="游戏导航"><a href="leaderboard.html">全站排名 ↗</a><a href="index.html">← 游戏库</a></nav></header>
     <section class="scoreboard" aria-label="游戏统计"><div class="stat"><span class="stat-label">得分</span><strong class="stat-value current" id="score">0</strong></div><div class="stat"><span class="stat-label">速度</span><strong class="stat-value" id="speed">1.0×</strong></div></section>
-    <div class="board-wrap"><canvas id="board" width="800" height="400" aria-label="黄色小恐龙无尽跑酷游戏区域"></canvas><div class="overlay" id="overlay"><div class="overlay-card"><h2 id="overlayTitle">准备好了吗？</h2><p id="overlayMessage">按空格或上方向键跳跃，最多二段跳；按住 S 键或下方向键下蹲。红色障碍要跳过，蓝色障碍要下蹲，悬浮障碍可以跳过或下蹲。</p><button class="primary-button" id="startButton" type="button">开始奔跑</button></div></div></div>
+    <div class="board-wrap"><canvas id="board" width="800" height="400" aria-label="黄色小恐龙无尽跑酷游戏区域"></canvas><div class="overlay" id="overlay"><div class="overlay-card"><h2 id="overlayTitle">准备好了吗？</h2><p id="overlayMessage">按空格或上方向键跳跃，最多二段跳；按住 S 键或下方向键下蹲。红色障碍要跳过，蓝色障碍要下蹲，悬浮障碍可以跳过或下蹲，金色高障碍需要二连跳才能越过。</p><button class="primary-button" id="startButton" type="button">开始奔跑</button></div></div></div>
     <div class="controls"><span><kbd>Space</kbd> / <kbd>↑</kbd> 跳跃（二段跳）　·　按住 <kbd>S</kbd> / <kbd>↓</kbd> 下蹲</span><div class="action-buttons"><button class="jump-button" id="jumpButton" type="button">跳 跃</button><button class="duck-button" id="duckButton" type="button">按住下蹲</button></div></div>
     <p class="status" id="status" aria-live="polite">准备开始</p>
     <section class="leaderboard" aria-label="无尽跑酷排行榜"><div class="leaderboard-columns"><section><div class="leaderboard-header"><h2>🏆 全站榜单</h2><a class="leaderboard-link" href="leaderboard.html">完整排名 ↗</a></div><ol class="leaderboard-list" id="globalList" aria-live="polite"></ol></section><section><div class="leaderboard-header"><h2>✨ 我的记录</h2><span class="leaderboard-link">个人前 5</span></div><ol class="leaderboard-list" id="personalList" aria-live="polite"></ol></section></div></section>
@@ -64,15 +64,18 @@
         if (spawnIn <= 0) {
           const roll = Math.random();
           let obstacle;
-          if (roll < .4) {
+          if (roll < .5) {
             const h = 36 + Math.random() * 18, w = 21 + Math.random() * 12;
             obstacle = { type: "jump", x: width + 8, y: groundY - h, width: w, height: h };
-          } else if (roll < .7) {
+          } else if (roll < .8) {
             const w = 45 + Math.random() * 22, h = 21;
             obstacle = { type: "duck", x: width + 8, y: groundY - 52, width: w, height: h };
-          } else {
+          } else if (roll < .9) {
             const w = 29 + Math.random() * 15, h = 8;
             obstacle = { type: "either", x: width + 8, y: groundY - 34, width: w, height: h };
+          } else {
+            const h = 108 + Math.random() * 12, w = 26 + Math.random() * 8;
+            obstacle = { type: "double", x: width + 8, y: groundY - h, width: w, height: h };
           }
           obstacles.push({ ...obstacle, passed: false });
           spawnIn = Math.max(.78, 1.3 + Math.random() * .75 - (speed - 270) / 1000);
@@ -93,7 +96,7 @@
         ctx.fillStyle = "#1b2930"; ctx.fillRect(0, groundY, width, height - groundY); ctx.strokeStyle = "#65e9ff"; ctx.globalAlpha = .52; ctx.beginPath(); ctx.moveTo(0, groundY + .5); ctx.lineTo(width, groundY + .5); ctx.stroke(); ctx.globalAlpha = 1;
         ctx.strokeStyle = "rgba(165,255,101,.18)"; ctx.lineWidth = 2; for (let x = -groundOffset; x < width; x += 42) { ctx.beginPath(); ctx.moveTo(x, groundY + 20); ctx.lineTo(x - 15, groundY + 25); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x - 14, groundY + 37); ctx.lineTo(x + 7, groundY + 37); ctx.stroke(); }
         obstacles.forEach((obstacle) => {
-          const color = obstacle.type === "jump" ? "#ff6688" : obstacle.type === "duck" ? "#65e9ff" : "#c487ff";
+          const color = obstacle.type === "jump" ? "#ff6688" : obstacle.type === "duck" ? "#65e9ff" : obstacle.type === "double" ? "#ffd84d" : "#c487ff";
           ctx.fillStyle = color; ctx.shadowColor = color; ctx.shadowBlur = 10;
           if (obstacle.type === "jump") {
             ctx.beginPath(); ctx.moveTo(obstacle.x, groundY); ctx.lineTo(obstacle.x + obstacle.width * .5, obstacle.y); ctx.lineTo(obstacle.x + obstacle.width, groundY); ctx.closePath(); ctx.fill();

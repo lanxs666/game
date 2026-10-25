@@ -432,7 +432,8 @@
     .classic-art.space-art { font-size: 52px; }
     .classic-art.mines-art { font-size: 48px; }
     .classic-art.pacman-art { font-size: 68px; }
-    .classic-art.runner-art { font-size: 58px; }
+    .classic-art.runner-art { font-size: unset; }
+    .runner-mascot { width: 110px; height: 110px; overflow: visible; filter: drop-shadow(0 0 12px rgba(255, 216, 77, .3)); }
 
     .number-tile {
       display: grid;
@@ -835,7 +836,7 @@
         <article class="game-card">
           <div class="game-art" aria-label="扫雷游戏封面">
             <span class="art-label">PUZZLE · 006</span><span class="art-glow" aria-hidden="true"></span>
-            <div class="classic-art mines-art" style="--classic-color:#ff7181" aria-hidden="true">⚑</div>
+            <div class="classic-art mines-art" style="--classic-color:#ff7181" aria-hidden="true">💣</div>
             <span class="art-index" aria-hidden="true">NO. 006</span>
           </div>
           <div class="card-content">
@@ -848,7 +849,7 @@
         <article class="game-card">
           <div class="game-art" aria-label="吃豆人游戏封面">
             <span class="art-label">ARCADE · 007</span><span class="art-glow" aria-hidden="true"></span>
-            <div class="classic-art pacman-art" style="--classic-color:#ffe05c" aria-hidden="true">◕</div>
+            <div class="classic-art pacman-art" style="--classic-color:#ffe05c" aria-hidden="true">🟡</div>
             <span class="art-index" aria-hidden="true">NO. 007</span>
           </div>
           <div class="card-content">
@@ -861,7 +862,20 @@
         <article class="game-card">
           <div class="game-art" aria-label="无尽跑酷游戏封面">
             <span class="art-label">ARCADE · 008</span><span class="art-glow" aria-hidden="true"></span>
-            <div class="classic-art runner-art" style="--classic-color:#ffd84d" aria-hidden="true">◕</div>
+            <div class="classic-art runner-art" style="--classic-color:#ffd84d" aria-hidden="true">
+              <svg class="runner-mascot" viewBox="0 0 100 100" role="img" aria-label="无尽跑酷中的黄色小恐龙">
+                <path d="M28 64C17 61 13 53 17 47C24 51 29 54 36 55Z" fill="#ffd84d"/>
+                <ellipse cx="51" cy="64" rx="31" ry="25" fill="#ffd84d"/>
+                <ellipse cx="61" cy="40" rx="23" ry="20" fill="#ffd84d"/>
+                <path d="M43 27L49 12L56 29ZM61 24L72 9L73 30Z" fill="#ffd84d"/>
+                <ellipse cx="70" cy="38" rx="7" ry="9" fill="#fff"/>
+                <circle cx="73" cy="39" r="3.5" fill="#26313a"/>
+                <ellipse cx="83" cy="47" rx="7" ry="4" fill="#e99a42"/>
+                <ellipse cx="52" cy="68" rx="12" ry="15" fill="#ffe994" opacity=".8"/>
+                <ellipse cx="40" cy="86" rx="9" ry="4" fill="#c99125"/>
+                <ellipse cx="68" cy="86" rx="9" ry="4" fill="#c99125"/>
+              </svg>
+            </div>
             <span class="art-index" aria-hidden="true">NO. 008</span>
           </div>
           <div class="card-content">
