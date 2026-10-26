@@ -709,383 +709,6 @@
     .truth-button { top: auto; right: 10px; bottom: 12px; }
   }
 </style>
-<style>
-  :root {
-    --bg: #080b10;
-    --panel: #10151c;
-    --line: rgba(137, 164, 184, .22);
-    --text: #d6dce0;
-    --muted: #87949c;
-    --violet: #8ca5b4;
-  }
-
-  body {
-    color: #cbd2d6;
-    background:
-      radial-gradient(ellipse at 50% 4%, rgba(47, 63, 76, .23), transparent 54%),
-      radial-gradient(ellipse at 8% 100%, rgba(75, 22, 30, .2), transparent 38%),
-      repeating-linear-gradient(112deg, transparent 0 13px, rgba(157, 179, 190, .012) 14px, transparent 15px 27px),
-      #080b10;
-  }
-
-  .app { width: min(1120px, 100%); padding-bottom: 190px; }
-  .layout { display: block; }
-  .side-panel { display: none; }
-  .topbar { border-color: rgba(128, 152, 167, .2); }
-  .brand-mark {
-    border-color: #566775;
-    border-radius: 3px;
-    background: linear-gradient(145deg, #28343e, #111820);
-    box-shadow: 0 0 24px rgba(83, 111, 131, .17), inset 0 0 12px #0008;
-    color: #c2d0d7;
-  }
-  .brand h1 { color: #d3d9dc; }
-  .brand p, .eyebrow { color: #82939d; }
-  .run-tag {
-    border-color: #485864;
-    border-radius: 3px;
-    background: #11171d;
-    color: #a4b2ba;
-  }
-  .quest-book {
-    border-color: rgba(119, 144, 160, .38);
-    border-radius: 3px;
-    background: linear-gradient(112deg, rgba(27, 36, 44, .98), rgba(13, 18, 24, .98));
-    box-shadow: inset 0 0 18px #0009, 0 8px 22px #0005;
-  }
-  .quest-title-row h2, .quest-content p { color: #c4cdd1; }
-  .quest-title-row span, .quest-progress { color: #8c9da6; }
-  .quest-icon { color: #a3b6bf; text-shadow: 0 0 12px #8099aa44; }
-  .metal-button {
-    border-color: #748894;
-    border-radius: 3px;
-    background: linear-gradient(180deg, #45535d, #27313a 55%, #171f25);
-    box-shadow: inset 0 1px #e8f3f41c, 0 4px 0 #090d11, 0 8px 16px #0006;
-    color: #d5dde0;
-  }
-  .metal-button:hover { filter: brightness(1.2); }
-  .altar {
-    min-height: 280px;
-    border-color: rgba(120, 146, 160, .31);
-    border-radius: 4px;
-    background:
-      radial-gradient(ellipse at 50% 100%, rgba(69, 87, 100, .2), transparent 58%),
-      repeating-radial-gradient(circle at 50% 50%, transparent 0 43px, rgba(154, 174, 184, .025) 44px 45px, transparent 46px 82px),
-      linear-gradient(160deg, #151c23, #0b1015 72%);
-    box-shadow: 0 20px 52px #0008, inset 0 0 34px #0008;
-  }
-  .altar::before, .altar::after { border-color: rgba(144, 164, 175, .12); }
-  .essence {
-    color: #d9e1e4;
-    text-shadow: 0 0 22px rgba(138, 168, 182, .3), 0 0 48px #98b4c01c;
-  }
-  .rate-line { color: #899aa3; }
-  .rate-line strong { color: #b7c6cd; }
-  .stat-pill { border-color: #57677266; background: #070b10a8; color: #91a1aa; }
-  .stat-pill strong { color: #d0d9dd; }
-  .progress-caption { color: #8c9ba3; }
-  .progress-track { background: #030608; }
-  .progress-fill { background: linear-gradient(90deg, #435b6c, #a0b3bd); box-shadow: 0 0 12px #8fa7b64a; }
-  .shade { background: rgba(1, 4, 7, .84); }
-  .modal {
-    border-color: #657b88;
-    border-radius: 4px;
-    background: radial-gradient(ellipse at 50% 0, #34434d44, transparent 58%), #121920;
-    box-shadow: 0 26px 90px #000c, 0 0 38px #6f89941c, inset 0 0 22px #0006;
-  }
-  .modal h2 { color: #d1d9dc; }
-  .modal > p, .selection-tip { color: #96a4ab; }
-  .modal-symbol { border-color: #657b88; background: #455c692c; color: #d1dde1; }
-  .offer-card {
-    border-color: #687a84;
-    background: linear-gradient(155deg, #202a31, #11171d);
-    color: #cbd3d6;
-  }
-  .offer-card .card-description { color: #aab6bc; }
-  .story-shade { background: rgba(1, 4, 7, .88); }
-  .story-modal {
-    border-color: #657b88;
-    background: repeating-linear-gradient(8deg, transparent 0 11px, #9bb3bc08 12px, transparent 13px 21px), radial-gradient(ellipse at 50% 0, #26333c, #151d24 72%, #10161c);
-    box-shadow: inset 0 0 0 4px #90a7ad0b, inset 0 0 30px #0009, 0 25px 80px #000d;
-    color: #cbd3d6;
-  }
-  .story-modal::before, .story-modal::after { border-color: #778b95; }
-  .story-seal, .story-kicker { color: #9badb5; text-shadow: none; }
-  .story-modal h2 { color: #d9e0e2; }
-  .story-modal > p:not(.story-kicker) { color: #abb7bc; }
-  .story-modal .metal-button { border-color: #718590; background: linear-gradient(180deg, #45555f, #29343d 55%, #171f25); color: #d8e0e2; }
-  .shop-item { border-color: #55656e; background: #9daeb20b; }
-  .shop-item strong { color: #d8e0e2; }
-  .shop-item span { color: #a6b2b8; }
-  .discard-toast {
-    border-color: #748792;
-    background: linear-gradient(145deg, #222d35f7, #10171df7);
-    color: #cbd4d8;
-  }
-
-  .grimoire-pages {
-    position: fixed;
-    z-index: 6;
-    right: 22px;
-    bottom: 122px;
-    display: none;
-    width: min(720px, calc(100vw - 44px));
-    min-height: 230px;
-    padding: 15px 20px 10px;
-    border: 1px solid #756950;
-    border-radius: 3px 10px 4px 5px;
-    background:
-      linear-gradient(90deg, rgba(0, 0, 0, .36), transparent 5%, transparent 95%, rgba(0, 0, 0, .28)),
-      repeating-linear-gradient(0deg, transparent 0 24px, rgba(77, 81, 79, .16) 25px, transparent 26px),
-      linear-gradient(105deg, #b7b09b, #d0c9b3 48%, #aaa58f);
-    box-shadow: 0 16px 42px #000c, inset 0 0 0 5px rgba(36, 30, 23, .2), inset 0 0 28px rgba(25, 23, 19, .38);
-    color: #292d2d;
-    transform-origin: 95% 100%;
-  }
-  body.hand-open .grimoire-pages, body.discard-mode .grimoire-pages { display: block; animation: pages-unfold .32s cubic-bezier(.2,.75,.25,1) both; }
-  @keyframes pages-unfold { from { opacity: 0; transform: perspective(800px) rotateX(-18deg) scale(.88) translateY(20px); } to { opacity: 1; transform: perspective(800px) rotateX(0) scale(1) translateY(0); } }
-  .pages-heading {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 0 4px 7px;
-    border-bottom: 1px solid rgba(55, 57, 52, .35);
-    color: #343a39;
-    font: 600 11px var(--title-font);
-    letter-spacing: .08em;
-  }
-  .pages-heading span:last-child { color: #555e5f; font: 12px var(--body-font); letter-spacing: 0; text-align: right; }
-  .pages-footnote { padding: 0 4px; color: #62665f; font: 12px var(--body-font); text-align: center; }
-  .hand {
-    display: flex;
-    min-height: 184px;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 15px 26px 6px;
-    scrollbar-color: #555d5b66 transparent;
-  }
-  .empty-hand {
-    display: grid;
-    min-width: 100%;
-    min-height: 145px;
-    place-items: center;
-    border: 1px dashed rgba(56, 61, 59, .34);
-    color: #5f6562;
-    font: 15px var(--body-font);
-  }
-  .hand .card {
-    flex: 0 0 148px;
-    min-height: 160px;
-    margin-left: -63px;
-    padding: 15px 13px;
-    clip-path: polygon(4% 2%,12% 3%,18% 1%,27% 3%,35% 1%,43% 3%,51% 1%,60% 3%,69% 1%,78% 3%,88% 1%,97% 3%,96% 97%,87% 96%,79% 99%,69% 96%,60% 98%,50% 96%,40% 99%,30% 96%,20% 98%,11% 96%,3% 98%);
-    border: 0;
-    background:
-      radial-gradient(ellipse at 50% 0, color-mix(in srgb, var(--accent) 10%, transparent), transparent 65%),
-      repeating-linear-gradient(172deg, transparent 0 12px, rgba(225, 221, 202, .025) 13px, transparent 14px 23px),
-      linear-gradient(158deg, #353b3c, #1a2023 72%, #11171a);
-    box-shadow: 0 10px 18px #0008, inset 0 0 0 1px #bec8c51c, inset 0 0 16px #0008;
-    color: #c7cdcc;
-    transform: rotate(var(--fan-angle, 0deg)) translateY(var(--fan-lift, 0px));
-    transform-origin: 50% 118%;
-    transition: transform .2s ease, filter .2s ease;
-  }
-  .hand .card:first-child { margin-left: 0; }
-  .hand .card:hover, .hand .card:focus-visible {
-    transform: translateY(-24px) rotate(var(--fan-angle, 0deg)) scale(1.055);
-    filter: brightness(1.18);
-  }
-  .hand .card-school { color: color-mix(in srgb, var(--accent) 72%, #d2d8d8); font: 700 9px var(--title-font); }
-  .hand .card-name { color: #e0dfd7; font: 700 12px var(--title-font); text-shadow: 0 1px #000; }
-  .hand .card-rarity { color: #aeb8b8; font: 13px var(--body-font); }
-  .hand .card-mark { color: color-mix(in srgb, var(--accent) 75%, #d0d5d1); }
-  .hand .card-tooltip {
-    top: auto;
-    bottom: calc(100% + 8px);
-    border-color: #6d7c7c;
-    border-radius: 2px;
-    background: #11181ceF;
-    color: #cbd4d4;
-  }
-  .hand .card-tooltip strong { color: #e0e2d9; }
-  .hand .discard-card {
-    cursor: grab;
-    touch-action: none;
-    outline: 1px solid #8a4549;
-    background: linear-gradient(155deg, #3b292c, #20191c 72%, #141215);
-  }
-  .hand .discard-card::after {
-    right: 14px;
-    bottom: 10px;
-    color: #dfa4a3;
-    content: "拖入恶魔";
-    font: 700 9px var(--title-font);
-    opacity: .9;
-  }
-  .hand .discard-card:hover { cursor: grabbing; border-color: #d57775; }
-  .hand .card.dragging {
-    z-index: 50 !important;
-    cursor: grabbing;
-    filter: brightness(1.35) drop-shadow(0 10px 14px #000b);
-    transform: translate(var(--drag-x), var(--drag-y)) rotate(var(--fan-angle, 0deg)) scale(1.08);
-    transition: none;
-  }
-  .hand .card.swallowed { pointer-events: none; animation: page-swallowed .48s cubic-bezier(.5,0,.8,.2) forwards; }
-  @keyframes page-swallowed {
-    to { opacity: 0; filter: brightness(.2) blur(5px); transform: translate(var(--swallow-x), var(--swallow-y)) rotate(24deg) scale(.08); }
-  }
-
-  .demon-dock {
-    position: fixed;
-    z-index: 7;
-    bottom: 12px;
-    left: 18px;
-    display: grid;
-    width: 186px;
-    justify-items: center;
-    gap: 0;
-    padding: 5px 12px 8px;
-    border: 1px solid rgba(99, 61, 68, .54);
-    border-radius: 48% 48% 5px 5px / 32% 32% 5px 5px;
-    background: radial-gradient(ellipse at 50% 78%, rgba(89, 27, 35, .28), transparent 66%), linear-gradient(180deg, rgba(20, 22, 26, .85), rgba(7, 9, 12, .96));
-    box-shadow: 0 10px 32px #000c, inset 0 0 24px #0009;
-    transition: border-color .2s, box-shadow .2s, transform .2s;
-  }
-  .demon-glow {
-    position: absolute;
-    right: 22%;
-    bottom: 32px;
-    left: 22%;
-    height: 25px;
-    border-radius: 50%;
-    background: #741d2c;
-    filter: blur(24px);
-    opacity: .38;
-    transition: opacity .2s;
-  }
-  .demon-face { position: relative; z-index: 1; width: 148px; height: 118px; overflow: visible; filter: drop-shadow(0 5px 8px #000a); }
-  .demon-horn { fill: #25282a; stroke: #778184; stroke-width: 4; stroke-linejoin: round; }
-  .demon-head { fill: #22282a; stroke: #718087; stroke-width: 2.5; }
-  .demon-brow { fill: none; stroke: #111719; stroke-width: 8; stroke-linecap: round; }
-  .demon-eye { fill: #bd5352; filter: drop-shadow(0 0 5px #bd3948); }
-  .demon-mouth { fill: #09090c; stroke: #8c4448; stroke-width: 3; transform-box: fill-box; transform-origin: center top; }
-  .demon-tooth { fill: #b7b4a5; stroke: #68645d; stroke-width: 1; }
-  .demon-caption { position: relative; z-index: 1; color: #aab3b3; font: 600 10px var(--title-font); letter-spacing: .14em; }
-  .demon-instruction { position: relative; z-index: 1; color: #777f82; font: 12px var(--body-font); }
-  .demon-dock.drop-ready {
-    border-color: #d47170;
-    box-shadow: 0 0 28px #a5394a66, inset 0 0 28px #8b253a44;
-    transform: scale(1.06);
-  }
-  .demon-dock.drop-ready .demon-glow { opacity: .9; }
-  .demon-dock.eating { animation: demon-devour .42s ease-in-out; }
-  .demon-dock.eating .demon-mouth { animation: demon-bite .42s ease-in-out; }
-  @keyframes demon-devour { 35% { transform: scale(1.1) translateY(-5px); } 70% { transform: scale(.96,1.06); } }
-  @keyframes demon-bite { 35% { transform: scaleY(1.7); } 72% { transform: scaleY(.7); } }
-
-  .grimoire-dock { position: fixed; z-index: 7; right: 20px; bottom: 14px; }
-  .grimoire-button {
-    position: relative;
-    display: grid;
-    width: 94px;
-    justify-items: center;
-    gap: 3px;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: #c7c0ab;
-    cursor: pointer;
-    filter: drop-shadow(0 9px 12px #000b);
-    transition: transform .2s, filter .2s;
-  }
-  .grimoire-button:hover, .grimoire-button:focus-visible { transform: translateY(-6px) rotate(2deg); filter: drop-shadow(0 12px 18px #000c) brightness(1.15); outline: none; }
-  .book-cover {
-    position: relative;
-    display: grid;
-    width: 78px;
-    height: 96px;
-    align-content: center;
-    justify-items: center;
-    gap: 5px;
-    border: 2px solid #69736e;
-    border-radius: 4px 9px 7px 3px;
-    background:
-      linear-gradient(90deg, #111619 0 10%, transparent 11%),
-      repeating-linear-gradient(0deg, transparent 0 15px, #aab3a414 16px, transparent 17px 25px),
-      linear-gradient(135deg, #3c4140, #1a2022 62%, #101517);
-    box-shadow: inset 0 0 0 4px rgba(8, 11, 12, .45), inset 5px 0 9px #0009, 3px 5px 0 #0a0d0f;
-    transform: perspective(140px) rotateY(-8deg);
-  }
-  .book-cover::before, .book-cover::after { position: absolute; right: 7px; left: 13px; height: 1px; background: #9aa39b55; content: ""; }
-  .book-cover::before { top: 10px; }
-  .book-cover::after { bottom: 10px; }
-  .book-emblem { display: grid; width: 28px; height: 28px; place-items: center; border: 1px solid #9f9b82; border-radius: 50%; color: #c8bd93; font-size: 15px; text-shadow: 0 0 10px #ddd0a244; }
-  .book-title { color: #b8b39f; font: 600 8px/1.25 var(--title-font); letter-spacing: .08em; text-align: center; }
-  .book-caption { color: #939c9d; font: 12px var(--title-font); letter-spacing: .07em; text-shadow: 0 2px 4px #000; }
-  .book-count {
-    position: absolute;
-    top: -5px;
-    right: -2px;
-    display: grid;
-    min-width: 22px;
-    height: 22px;
-    place-items: center;
-    padding: 0 5px;
-    border: 1px solid #7e8986;
-    border-radius: 50%;
-    background: #171d20;
-    color: #d5d8cd;
-    font: 11px var(--title-font);
-  }
-
-  body.tutorial-intro .demon-dock, body.tutorial-intro .grimoire-dock,
-  body.tutorial-meditate .demon-dock, body.tutorial-meditate .grimoire-dock,
-  body.tutorial-curse-story .demon-dock, body.tutorial-curse-story .grimoire-dock,
-  body.tutorial-after-curse .demon-dock, body.tutorial-after-curse .grimoire-dock,
-  body.tutorial-draw-stage .demon-dock, body.tutorial-draw-stage .grimoire-dock { visibility: hidden; }
-  body.tutorial-curse .grimoire-pages { display: block; }
-  body.tutorial-curse .pages-footnote { display: none; }
-  body.tutorial-curse .demon-dock { bottom: 12px; }
-  body.tutorial-curse .hand .card { flex-basis: 190px; min-height: 155px; }
-  body.tutorial-curse .hand { min-height: 184px; overflow: visible; }
-
-  @media (max-width: 700px) {
-    .app { padding: 14px 12px 210px; }
-    .grimoire-pages { right: 10px; bottom: 174px; width: calc(100vw - 20px); min-height: 210px; padding: 12px 11px 8px; }
-    .hand { min-height: 164px; justify-content: flex-start; padding: 14px 22px 8px; }
-    .hand .card { flex-basis: 132px; min-height: 145px; margin-left: -66px; }
-    .hand .card:first-child { margin-left: 0; }
-    .demon-dock { bottom: 8px; left: 8px; width: 144px; padding: 2px 8px 6px; }
-    .demon-face { width: 118px; height: 94px; }
-    .demon-instruction { font-size: 10px; }
-    .grimoire-dock { right: 9px; bottom: 9px; }
-    .grimoire-button { width: 78px; }
-    .book-cover { width: 62px; height: 76px; }
-    .book-emblem { width: 23px; height: 23px; }
-    .book-title { font-size: 7px; }
-    .pages-heading { font-size: 10px; }
-    .pages-heading span:last-child { font-size: 11px; }
-    .altar { min-height: 260px; }
-    .story-modal > p:not(.story-kicker) { font-size: 17px; }
-  }
-
-  @media (max-width: 380px) {
-    .demon-dock { width: 126px; left: 4px; }
-    .demon-face { width: 106px; height: 85px; }
-    .grimoire-dock { right: 4px; }
-    .grimoire-pages { bottom: 164px; }
-    .hand .card { flex-basis: 122px; margin-left: -72px; }
-    .hand .card:first-child { margin-left: 0; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .grimoire-pages, .demon-dock.eating, .demon-dock.eating .demon-mouth, .hand .card.swallowed { animation-duration: .01ms !important; }
-  }
-</style>
 </head>
 <body class="tutorial-intro">
 <div class="app">
@@ -1093,10 +716,9 @@
 <section class="quest-book" id="questBook" aria-label="古书残页任务"><div class="quest-icon" aria-hidden="true">❖</div><div class="quest-content"><div class="quest-title-row"><h2 id="questTitle">学徒的试炼</h2><span id="questCount">任务 1 / 4</span></div><p id="questDescription">累计获得 500 精华</p><div class="quest-track"><div class="quest-fill" id="questFill"></div></div><div class="quest-progress" id="questProgress">0 / 500</div></div><button class="metal-button small-button" id="inkShopButton" type="button">墨水商店 · <span id="inkCount">0</span></button></section>
 <div class="layout" id="gameLayout"><main class="main-column">
 <section class="altar" aria-label="精华与产出"><div class="altar-content"><div class="eyebrow">当前魔法精华</div><div class="essence" id="essence">0</div><div class="rate-line">每秒净产出 <strong id="rate">1</strong> 精华 / s</div><div class="stats"><div class="stat-pill">手牌 <strong id="handCount">0 / 8</strong></div><div class="stat-pill">已选卡牌 <strong id="draftCount">0</strong></div><div class="stat-pill">金币抛掷 <strong id="coinTimer">10.0s</strong></div></div><div class="progress-wrap"><div class="progress-caption"><span>下一次卡牌抉择</span><span id="progressText">0 / 50 精华</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div><div class="tutorial-actions" id="tutorialActions"><button class="metal-button meditate-button" id="meditateButton" type="button">✦ 冥想，汲取精华 ✦</button><button class="metal-button" id="drawFirstButton" type="button" hidden>抽取卡牌</button></div></div></section>
-</main></div></div>
-<section class="grimoire-pages" id="grimoirePages" aria-label="炼金手牌" aria-hidden="true"><div class="pages-heading"><span>残缺的炼金手札</span><span id="handHint">每张卡牌都会改变你的产出</span></div><section class="hand" id="hand" aria-label="当前手牌"></section><div class="pages-footnote" id="pagesFootnote">点击书本展开手牌</div></section>
-<div class="demon-dock" id="demonDock" aria-label="恶魔献祭区域"><div class="demon-glow"></div><svg class="demon-face" viewBox="0 0 180 150" role="img" aria-hidden="true"><path class="demon-horn" d="M43 44 18 8l8 48m93-12L162 8l-8 48"/><path class="demon-head" d="M32 48Q35 25 54 31l15 8q21-12 42 0l15-8q19-6 22 17l-4 54q-13 30-56 32-43-2-56-32z"/><path class="demon-brow" d="m43 64 28 8m66-8-28 8"/><path class="demon-eye" d="m47 74 22-5-7 13-13 2zm86 0-22-5 7 13 13 2z"/><path class="demon-mouth" d="M57 94q33 25 66 0l-5 31q-28 17-56 0z"/><path class="demon-tooth" d="m63 98 13 7-3 12zm52 0-13 7 3 12zm-32 19 8-4 8 4-8 3z"/></svg><span class="demon-caption" id="demonCaption">虚空之口</span><span class="demon-instruction">将手牌拖入此处献祭</span></div>
-<div class="grimoire-dock"><button class="grimoire-button" id="grimoireButton" type="button" aria-expanded="false" aria-controls="grimoirePages" aria-label="展开炼金手牌"><span class="book-cover" aria-hidden="true"><span class="book-emblem">✧</span><span class="book-title">VOID<br>GRIMOIRE</span></span><span class="book-caption">炼金手札</span><span class="book-count" id="bookCount">0</span></button></div>
+<div class="section-heading"><h2>炼金手牌</h2><span id="handHint">每张卡牌都会改变你的产出</span></div><section class="hand" id="hand" aria-label="当前手牌"></section>
+<div class="lower-note"><strong>抉择规则：</strong>每累计获得 50 点精华，时间暂停并从 3 张牌中选择 1 张。手牌满时须销毁旧牌再加入新牌。卡牌效果会随手牌变化即时更新；芯片迭代和暴食者的增益永久保留。</div>
+</main><aside class="side-panel" aria-label="实验记录"><div class="side-head"><h2>实验记录</h2><span>最近事件</span></div><div class="log" id="log" aria-live="polite"></div></aside></div></div>
 <div class="shade" id="shade" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-symbol" id="modalSymbol" aria-hidden="true">✧</div><h2 id="modalTitle">虚空回应了你的召唤</h2><p id="modalMessage">选择一张卡牌，决定炼金术的下一步。</p><div class="offer-grid" id="offerGrid"></div><div class="selection-tip" id="selectionTip"></div></section></div>
 <div class="discard-toast" id="discardToast" role="status" aria-live="polite" hidden></div>
 <div class="story-shade" id="introShade"><section class="story-modal" role="dialog" aria-modal="true" aria-labelledby="introTitle"><div class="story-seal">❖</div><p class="story-kicker">残缺的炼金笔记</p><h2 id="introTitle">导师的遗言</h2><p>学徒，你的导师因触碰虚空禁忌而陨落。他留下了一本残缺的笔记和一张危险的黑魔法卡牌。现在，请通过【冥想】汇聚精华，开始你的试炼……</p><button class="metal-button" id="startAlchemyButton" type="button">开始炼金</button></section></div>
@@ -1123,8 +745,8 @@ haste:{name:"时间加速",school:"禁忌",color:"#f2d27a",rarity:"史诗",descr
 greed:{name:"无尽贪婪",school:"禁忌",color:"#f2d27a",rarity:"史诗",description:"取消手牌上限 8 张的限制。"}
 };
 const icons={curse:"☠",apprentice:"✧",pipeline:"⌁",simplify:"−",gears:"⚙",overclock:"ϟ",chip:"▦",blood:"♥",glutton:"◉",gamble:"☯",haste:"⌛",greed:"∞"};
-const el=id=>document.getElementById(id),ui={essence:el("essence"),rate:el("rate"),handCount:el("handCount"),draftCount:el("draftCount"),coinTimer:el("coinTimer"),elapsed:el("elapsed"),progressText:el("progressText"),progressFill:el("progressFill"),hand:el("hand"),handHint:el("handHint"),grimoirePages:el("grimoirePages"),grimoireButton:el("grimoireButton"),bookCount:el("bookCount"),pagesFootnote:el("pagesFootnote"),demonDock:el("demonDock"),demonCaption:el("demonCaption"),shade:el("shade"),discardToast:el("discardToast"),modalTitle:el("modalTitle"),modalMessage:el("modalMessage"),modalSymbol:el("modalSymbol"),offerGrid:el("offerGrid"),selectionTip:el("selectionTip"),questTitle:el("questTitle"),questCount:el("questCount"),questDescription:el("questDescription"),questFill:el("questFill"),questProgress:el("questProgress"),inkCount:el("inkCount"),questShade:el("questShade"),questModalTitle:el("questModalTitle"),questRewardText:el("questRewardText"),guideShade:el("guideShade"),afterCurseShade:el("afterCurseShade"),prestigeShade:el("prestigeShade"),prestigeMessage:el("prestigeMessage"),shopShade:el("shopShade"),shopList:el("shopList"),prestigeButton:el("prestigeButton"),meditateButton:el("meditateButton"),drawFirstButton:el("drawFirstButton")};
-let essence=0,hand=[],state="intro",draftProgress=0,selectedCards=0,drawCount=0,elapsedSeconds=0,coinClock=0,permanentMultiplier=1,bloodPenalty=0,pending=null,offers=[],audio=null,lastFrame=performance.now(),tutorialStage="intro",tutorialDraft=false,questTracking=false,questIndex=0,questPopup=false,totalEarned=0,basicDestroyed=0,tabooUnlocked=false,prestigeUnlocked=false,ink=0,questProductionBonus=0,inkMultiplierLevel=0,inkClickLevel=0,inkHandUpgrade=0,rareGuarantee=false,handOpen=false,dragPointerId=null,dragCard=null,dragStartX=0,dragStartY=0,dragActivated=false,suppressClickCard=null,sacrificeInProgress=false;const logs=[];
+const el=id=>document.getElementById(id),ui={essence:el("essence"),rate:el("rate"),handCount:el("handCount"),draftCount:el("draftCount"),coinTimer:el("coinTimer"),elapsed:el("elapsed"),progressText:el("progressText"),progressFill:el("progressFill"),hand:el("hand"),handHint:el("handHint"),log:el("log"),shade:el("shade"),discardToast:el("discardToast"),modalTitle:el("modalTitle"),modalMessage:el("modalMessage"),modalSymbol:el("modalSymbol"),offerGrid:el("offerGrid"),selectionTip:el("selectionTip"),questTitle:el("questTitle"),questCount:el("questCount"),questDescription:el("questDescription"),questFill:el("questFill"),questProgress:el("questProgress"),inkCount:el("inkCount"),questShade:el("questShade"),questModalTitle:el("questModalTitle"),questRewardText:el("questRewardText"),guideShade:el("guideShade"),afterCurseShade:el("afterCurseShade"),prestigeShade:el("prestigeShade"),prestigeMessage:el("prestigeMessage"),shopShade:el("shopShade"),shopList:el("shopList"),prestigeButton:el("prestigeButton"),meditateButton:el("meditateButton"),drawFirstButton:el("drawFirstButton")};
+let essence=0,hand=[],state="intro",draftProgress=0,selectedCards=0,drawCount=0,elapsedSeconds=0,coinClock=0,permanentMultiplier=1,bloodPenalty=0,pending=null,offers=[],audio=null,lastFrame=performance.now(),tutorialStage="intro",tutorialDraft=false,questTracking=false,questIndex=0,questPopup=false,totalEarned=0,basicDestroyed=0,tabooUnlocked=false,prestigeUnlocked=false,ink=0,questProductionBonus=0,inkMultiplierLevel=0,inkClickLevel=0,inkHandUpgrade=0,rareGuarantee=false;const logs=[];
 let baseHandLimit=8,handRenderKey="";
 const count=id=>hand.filter(x=>x===id).length;
 const schoolCount=s=>hand.filter(id=>cards[id]&&cards[id].school===s).length;
@@ -1138,48 +760,38 @@ const quests=[
 {title:"焚尽旧篇",description:"累计销毁 5 张基础卡",target:5,reward:"解锁禁忌卡牌池"},
 {title:"真理的门槛",description:"每秒产出达到 1,000",target:1000,reward:"解锁真理之眼与转生"}
 ];
-function questValue(index=questIndex){if(index===0)return totalEarned;if(index===1)return schoolCount("暗黑");if(index===2)return basicDestroyed;return Math.max(0,rate())}
+function questValue(index=questIndex){if(index===0)return totalEarned;if(index===1)return countSchool("暗黑");if(index===2)return basicDestroyed;return Math.max(0,rate())}
 function renderQuest(){if(questIndex>=quests.length){ui.questTitle.textContent="古书残页已读尽";ui.questCount.textContent="试炼完成";ui.questDescription.textContent="真理之眼已向你开启。";ui.questFill.style.width="100%";ui.questProgress.textContent="✧";ui.inkCount.textContent=fmt(ink);return}const q=quests[questIndex],value=questValue();ui.questTitle.textContent=q.title;ui.questCount.textContent="任务 "+(questIndex+1)+" / "+quests.length;ui.questDescription.textContent=q.description;ui.questFill.style.width=Math.min(100,value/q.target*100)+"%";ui.questProgress.textContent=fmt(Math.min(value,q.target))+" / "+fmt(q.target);ui.inkCount.textContent=fmt(ink);ui.prestigeButton.hidden=!prestigeUnlocked}
-function questComplete(){if(questIndex===0)return totalEarned>=500;if(questIndex===1)return schoolCount("暗黑")>=3;if(questIndex===2)return basicDestroyed>=5;return rate()>=1000}
-function overlaysClear(){return ui.shade.hidden&&ui.questShade.hidden&&ui.shopShade.hidden&&ui.prestigeShade.hidden}
-function processPendingOverlays(){if(state!=="playing"||tutorialStage!=="done"||!overlaysClear())return;if(checkQuest())return;if(draftProgress>=50)openDraft()}
-function checkQuest(){if(state!=="playing"||tutorialStage!=="done"||questPopup||questIndex>=quests.length||!overlaysClear()||!questComplete())return false;questPopup=true;state="quest";const q=quests[questIndex];ui.questModalTitle.textContent=q.title+" · 完成";ui.questRewardText.textContent="残页记载着你的成就。奖励："+q.reward+"。";ui.questShade.hidden=false;tone(720,.18);return true}
-function claimQuest(){if(!questPopup)return;const completed=questIndex;questPopup=false;ui.questShade.hidden=true;questIndex++;if(completed===1)questProductionBonus+=5;if(completed===2)tabooUnlocked=true;if(completed===3)prestigeUnlocked=true;state="playing";if(completed===0){pending={cardId:"gears",minimum:0,reward:0,kind:"quest"};if(Number.isFinite(limit())&&hand.length>=limit()){pending.minimum=1;beginDiscard("任务奖励需要空间：销毁一张手牌，接收【自动化齿轮】。")}else{hand.push("gears");pending=null;addLog("任务奖励：获得稀有科技卡【自动化齿轮】。","special")}}render();processPendingOverlays()}
+function questComplete(){if(questIndex===0)return totalEarned>=500;if(questIndex===1)return countSchool("暗黑")>=3;if(questIndex===2)return basicDestroyed>=5;return rate()>=1000}
+function checkQuest(){if(tutorialStage!=="done"||questPopup||questIndex>=quests.length||!questComplete())return;questPopup=true;state="quest";const q=quests[questIndex];ui.questModalTitle.textContent=q.title+" · 完成";ui.questRewardText.textContent="残页记载着你的成就。奖励："+q.reward+"。";ui.questShade.hidden=false;tone(720,.18)}
+function claimQuest(){if(!questPopup)return;const completed=questIndex;questPopup=false;ui.questShade.hidden=true;questIndex++;if(completed===1)questProductionBonus+=5;if(completed===2)tabooUnlocked=true;if(completed===3)prestigeUnlocked=true;state="playing";if(completed===0){pending={cardId:"gears",minimum:0,reward:0,kind:"quest"};if(Number.isFinite(limit())&&hand.length>=limit()){pending.minimum=1;beginDiscard("任务奖励需要空间：销毁一张手牌，接收【自动化齿轮】。")}else{hand.push("gears");pending=null;addLog("任务奖励：获得稀有科技卡【自动化齿轮】。","special")}}render();if(state==="playing")checkQuest()}
 function beginMeditation(){tutorialStage="meditate";state="meditate";document.body.classList.remove("tutorial-intro");document.body.classList.add("tutorial-meditate");el("introShade").hidden=true;ui.meditateButton.focus();render()}
 function burstDust(x,y){for(let i=0;i<12;i++){const p=document.createElement("i"),angle=Math.PI*2*i/12+Math.random()*.3,distance=24+Math.random()*48;p.className="dust-particle";p.style.left=x+"px";p.style.top=y+"px";p.style.setProperty("--dx",Math.cos(angle)*distance+"px");p.style.setProperty("--dy",Math.sin(angle)*distance+"px");document.body.append(p);p.addEventListener("animationend",()=>p.remove(),{once:true})}}
-function meditate(event){if(tutorialStage!=="meditate"&&tutorialStage!=="done")return;const isTutorial=tutorialStage==="meditate",gain=isTutorial?1:1+inkClickLevel;essence+=gain;if(questTracking)totalEarned+=gain;if(!isTutorial)draftProgress+=gain;burstDust(event.clientX,event.clientY);tone(540,.08);if(!isTutorial)processPendingOverlays();if(isTutorial&&essence>=10){essence=10;hand=["curse"];tutorialStage="curse-story";state="curse-story";document.body.classList.remove("tutorial-meditate");document.body.classList.add("tutorial-curse-story");ui.guideShade.hidden=false}render()}
+function meditate(event){if(tutorialStage!=="meditate"&&tutorialStage!=="done")return;const isTutorial=tutorialStage==="meditate",gain=isTutorial?1:1+inkClickLevel;essence+=gain;if(questTracking)totalEarned+=gain;if(!isTutorial)draftProgress+=gain;burstDust(event.clientX,event.clientY);tone(540,.08);if(!isTutorial&&draftProgress>=50)openDraft();if(isTutorial&&essence>=10){essence=10;hand=["curse"];tutorialStage="curse-story";state="curse-story";document.body.classList.remove("tutorial-meditate");document.body.classList.add("tutorial-curse-story");ui.guideShade.hidden=false}render()}
 function beginCurseDiscard(){if(tutorialStage!=="curse-story")return;tutorialStage="curse-discard";state="discard";pending={cardId:null,minimum:1,reward:0,kind:"tutorial-curse"};ui.guideShade.hidden=true;document.body.classList.remove("tutorial-curse-story");document.body.classList.add("tutorial-curse");render()}
 function startTutorialDraft(){if(tutorialStage!=="after-curse"&&tutorialStage!=="draw")return;tutorialStage="draw";ui.afterCurseShade.hidden=true;document.body.classList.remove("tutorial-after-curse");document.body.classList.add("tutorial-draw-stage");ui.drawFirstButton.textContent="使用 10 精华，抽取卡牌";ui.drawFirstButton.hidden=false;render()}
 function beginFirstDraft(){if(tutorialStage!=="draw")return;openDraft(true)}
-function openPrestige(){if(!prestigeUnlocked||!overlaysClear())return;ui.prestigeShade.hidden=false;ui.prestigeMessage.textContent="献祭当前的所有精华与卡牌，换取永不磨灭的【源初墨水】。你确定吗？本次将获得 "+fmt(Math.max(1,Math.floor(Math.sqrt(Math.max(1,rate())))))+" 滴墨水。"}
-function prestige(){if(!prestigeUnlocked)return;const earned=Math.max(1,Math.floor(Math.sqrt(Math.max(1,rate()))));ink+=earned;essence=0;hand=[];state="playing";draftProgress=0;selectedCards=0;drawCount=0;elapsedSeconds=0;coinClock=0;permanentMultiplier=1;bloodPenalty=0;totalEarned=0;basicDestroyed=0;tabooUnlocked=false;questIndex=0;questPopup=false;pending=null;offers=[];ui.shade.hidden=true;ui.prestigeShade.hidden=true;ui.offerGrid.replaceChildren();addLog("转生完成：获得 "+earned+" 滴源初墨水，炼金循环已重铸。","special");render();processPendingOverlays()}
+function openPrestige(){if(!prestigeUnlocked)return;ui.prestigeShade.hidden=false;ui.prestigeMessage.textContent="献祭当前的所有精华与卡牌，换取永不磨灭的【源初墨水】。你确定吗？本次将获得 "+fmt(Math.max(1,Math.floor(Math.sqrt(Math.max(1,rate())))))+" 滴墨水。"}
+function prestige(){if(!prestigeUnlocked)return;const earned=Math.max(1,Math.floor(Math.sqrt(Math.max(1,rate()))));ink+=earned;essence=0;hand=[];state="playing";draftProgress=0;selectedCards=0;drawCount=0;elapsedSeconds=0;coinClock=0;permanentMultiplier=1;bloodPenalty=0;totalEarned=0;basicDestroyed=0;tabooUnlocked=false;questIndex=0;questPopup=false;pending=null;offers=[];ui.shade.hidden=true;ui.prestigeShade.hidden=true;ui.offerGrid.replaceChildren();addLog("转生完成：获得 "+earned+" 滴源初墨水，炼金循环已重铸。","special");render();checkQuest()}
 function renderShop(){ui.shopList.replaceChildren();const items=[{id:"production",name:"永恒增幅",desc:"全局产出永久 ×2 · 等级 "+inkMultiplierLevel,cost:5*Math.pow(2,inkMultiplierLevel),owned:false},{id:"click",name:"指尖炼金",desc:"冥想点击产出永久 +1 · 等级 "+inkClickLevel,cost:3*(inkClickLevel+1),owned:false},{id:"hand",name:"扩展手册",desc:"基础手牌上限永久 +2",cost:8,owned:inkHandUpgrade>0},{id:"rare",name:"稀有预兆",desc:"抽卡时至少出现 1 张稀有或史诗卡",cost:10,owned:rareGuarantee}];for(const item of items){const row=document.createElement("div"),info=document.createElement("div"),title=document.createElement("strong"),desc=document.createElement("span"),button=document.createElement("button");row.className="shop-item";title.textContent=item.name;desc.textContent=item.desc;info.append(title,desc);button.className="metal-button";button.type="button";button.textContent=item.owned?"已掌握":"购买 · "+item.cost+" 墨";button.disabled=item.owned||ink<item.cost;button.addEventListener("click",()=>buyTalent(item.id,item.cost));row.append(info,button);ui.shopList.append(row)}}
 function buyTalent(id,cost){if(ink<cost)return;ink-=cost;if(id==="production")inkMultiplierLevel++;if(id==="click")inkClickLevel++;if(id==="hand"){inkHandUpgrade=1;baseHandLimit=10}if(id==="rare")rareGuarantee=true;addLog("在墨水商店购入天赋："+({production:"永恒增幅",click:"指尖炼金",hand:"扩展手册",rare:"稀有预兆"})[id]+"。","special");renderShop();render();tone(760,.13)}
-function addLog(message,kind=""){logs.unshift({message,kind,time:timeFmt(elapsedSeconds)});if(logs.length>70)logs.length=70}
+function addLog(message,kind=""){logs.unshift({message,kind,time:timeFmt(elapsedSeconds)});if(logs.length>70)logs.length=70;ui.log.replaceChildren();for(const item of logs){const d=document.createElement("div"),t=document.createElement("span"),m=document.createElement("span");d.className="log-entry"+(item.kind?" "+item.kind:"");t.className="log-time";t.textContent=item.time;m.textContent=item.message;d.append(t,m);ui.log.append(d)}}
 function tone(freq=660,duration=.11){try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;if(!audio)audio=new AC();if(audio.state==="suspended")audio.resume();const o=audio.createOscillator(),g=audio.createGain();o.type="sine";o.frequency.value=freq;g.gain.setValueAtTime(.0001,audio.currentTime);g.gain.exponentialRampToValueAtTime(.07,audio.currentTime+.012);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+duration);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+duration+.02)}catch(err){console.warn("无法播放炼金音效。",err)}}
 function makeCard(id,{offer=false,discard=false}={}){const c=cards[id],b=document.createElement("button");b.type="button";b.className="card"+(offer?" offer-card":"")+(discard?" discard-card":"")+(id==="curse"?" cursed-card":"");b.style.setProperty("--accent",c.color);b.setAttribute("aria-label",`${c.name}，${c.school}流派，${c.rarity}。${c.description}`);const school=document.createElement("span"),mark=document.createElement("span"),name=document.createElement("span"),rarity=document.createElement("span");school.className="card-school";school.textContent=c.school;mark.className="card-mark";mark.textContent=icons[id];mark.setAttribute("aria-hidden","true");name.className="card-name";name.textContent=c.name;rarity.className="card-rarity";rarity.textContent=c.rarity;b.append(school,mark,name,rarity);if(offer){const d=document.createElement("span");d.className="card-description";d.textContent=c.description;b.append(d)}else{const tip=document.createElement("span"),title=document.createElement("strong"),detail=document.createElement("span");tip.className="card-tooltip";title.textContent=c.name+" · "+c.rarity;detail.textContent=c.description;tip.append(title,detail);b.append(tip)}return b}
-function syncHandView(){const visible=handOpen||state==="discard";document.body.classList.toggle("hand-open",visible);document.body.classList.toggle("discard-mode",state==="discard");ui.grimoirePages.setAttribute("aria-hidden",String(!visible));ui.grimoireButton.setAttribute("aria-expanded",String(visible));ui.grimoireButton.setAttribute("aria-label",visible?"收起炼金手牌":"展开炼金手牌");ui.bookCount.textContent=fmt(hand.length);ui.pagesFootnote.textContent=state==="discard"?"拖动卡牌投入虚空之口，或点击卡牌献祭":"点击书本收起手札"}
-function toggleHand(){if(state==="discard")return;handOpen=!handOpen;syncHandView();if(handOpen)ui.hand.focus({preventScroll:true})}
-function renderHand(){const key=state+"|"+hand.join(",");if(key===handRenderKey){syncHandView();return}handRenderKey=key;ui.hand.replaceChildren();if(!hand.length){const d=document.createElement("div");d.className="empty-hand";d.textContent=tutorialStage==="curse-discard"?"诅咒已被销毁。":"手牌尚空。积累 50 精华，开启第一次抉择。";ui.hand.append(d);syncHandView();return}const middle=(hand.length-1)/2,step=hand.length>1?Math.min(8,48/(hand.length-1)):0;hand.forEach((id,i)=>{const b=makeCard(id,{discard:state==="discard"}),angle=(i-middle)*step,lift=Math.abs(i-middle)*2.2;b.style.setProperty("--fan-angle",angle.toFixed(2)+"deg");b.style.setProperty("--fan-lift",lift.toFixed(1)+"px");b.style.zIndex=String(i+1);if(state==="discard"){b.dataset.discardIndex=String(i);b.setAttribute("aria-label","拖入恶魔或点击献祭："+cards[id].name+"。"+cards[id].description)}ui.hand.append(b)});syncHandView()}
-function render(){ui.essence.textContent=fmt(essence);ui.rate.textContent=fmt(rate());const lim=limit();ui.handCount.textContent=hand.length+" / "+(Number.isFinite(lim)?lim:"∞");ui.draftCount.textContent=selectedCards;ui.coinTimer.textContent=Math.max(0,(count("haste")?3:10)-coinClock).toFixed(1)+"s";ui.elapsed.textContent=timeFmt(elapsedSeconds);ui.progressText.textContent=fmt(Math.min(draftProgress,50))+" / 50 精华";ui.progressFill.style.width=Math.min(100,draftProgress/50*100)+"%";ui.handHint.textContent=tutorialStage==="curse-discard"?"拖入恶魔之口或点击献祭":state==="discard"?"拖入恶魔之口，或点击卡牌献祭":state==="draft"?"卡牌抉择中 · 精华仍持续产出":"每张卡牌都会改变你的产出";ui.inkCount.textContent=fmt(ink);ui.prestigeButton.hidden=!prestigeUnlocked;ui.meditateButton.textContent=tutorialStage==="meditate"?"✦ 冥想，凝聚 "+fmt(essence)+" / 10 ✦":"✦ 冥想，汲取 "+(1+inkClickLevel)+" 精华 ✦";ui.drawFirstButton.hidden=tutorialStage!=="draw"||!document.body.classList.contains("tutorial-draw-stage");renderHand();renderQuest()}
+function renderHand(){const key=state+"|"+hand.join(",");if(key===handRenderKey)return;handRenderKey=key;ui.hand.replaceChildren();if(!hand.length){const d=document.createElement("div");d.className="empty-hand";d.textContent=tutorialStage==="curse-discard"?"诅咒已被销毁。":"手牌尚空。积累 50 精华，开启第一次抉择。";ui.hand.append(d);return}hand.forEach((id,i)=>{const b=makeCard(id,{discard:state==="discard"});if(state==="discard"){b.dataset.discardIndex=String(i);b.setAttribute("aria-label",id==="curse"?"点击销毁导师的诅咒：阻塞手牌，无产出。":"点击献祭并销毁"+cards[id].name+"："+cards[id].description)}ui.hand.append(b)})}
+function render(){ui.essence.textContent=fmt(essence);ui.rate.textContent=fmt(rate());const lim=limit();ui.handCount.textContent=hand.length+" / "+(Number.isFinite(lim)?lim:"∞");ui.draftCount.textContent=selectedCards;ui.coinTimer.textContent=Math.max(0,(count("haste")?3:10)-coinClock).toFixed(1)+"s";ui.elapsed.textContent=timeFmt(elapsedSeconds);ui.progressText.textContent=fmt(Math.min(draftProgress,50))+" / 50 精华";ui.progressFill.style.width=Math.min(100,draftProgress/50*100)+"%";ui.handHint.textContent=tutorialStage==="curse-discard"?"请点击下方卡牌进行销毁":state==="discard"?"选择标红的手牌将其销毁":state==="draft"?"卡牌抉择中 · 时间已暂停":"每张卡牌都会改变你的产出";ui.inkCount.textContent=fmt(ink);ui.prestigeButton.hidden=!prestigeUnlocked;ui.meditateButton.textContent=tutorialStage==="meditate"?"✦ 冥想，凝聚 "+fmt(essence)+" / 10 ✦":"✦ 冥想，汲取 "+(1+inkClickLevel)+" 精华 ✦";ui.drawFirstButton.hidden=tutorialStage!=="draw"||!document.body.classList.contains("tutorial-draw-stage");renderHand();renderQuest()}
 function pool(){const p=[{id:"apprentice",w:34},{id:"pipeline",w:21},{id:"simplify",w:1.5},{id:"gears",w:15},{id:"overclock",w:8},{id:"chip",w:7}];if(elapsedSeconds>=300&&!(rate()<100&&drawCount<3))p.push({id:"blood",w:5},{id:"glutton",w:5},{id:"gamble",w:4});if(elapsedSeconds>=900||tabooUnlocked)p.push({id:"haste",w:2.5},{id:"greed",w:2.5});return p.filter(x=>x.id!=="simplify"||hand.length>=2)}
 function draw(){const p=pool(),out=[];while(out.length<3&&p.length){let roll=Math.random()*p.reduce((a,x)=>a+x.w,0),i=0;for(;i<p.length;i++){roll-=p[i].w;if(roll<=0)break}out.push(p.splice(Math.min(i,p.length-1),1)[0].id)}if(rareGuarantee&&!out.some(id=>cards[id].rarity!=="普通")){const rares=p.filter(x=>cards[x.id].rarity!=="普通");const allRare=["gears","overclock","chip","blood","glutton","gamble"];const available=allRare.filter(id=>pool().some(item=>item.id===id));if(available.length)out[out.length-1]=available[Math.floor(Math.random()*available.length)]}return out}
-function openDraft(isTutorial=false){if(isTutorial){if(tutorialStage!=="draw"||!overlaysClear())return}else if(state!=="playing"||tutorialStage!=="done"||!overlaysClear())return;if(isTutorial&&essence<10)return;if(!isTutorial&&draftProgress<50)return;if(isTutorial)essence-=10;else draftProgress-=50;ui.discardToast.hidden=true;state="draft";tutorialDraft=isTutorial;offers=isTutorial?["apprentice"]:draw();ui.shade.hidden=false;ui.modalTitle.textContent=isTutorial?"第一次炼金实验":"虚空回应了你的召唤";ui.modalMessage.textContent=isTutorial?"消耗 10 精华，获得第一张正收益基础图纸。":"选择一张卡牌，精华仍会持续产出。";ui.modalSymbol.textContent="✧";ui.selectionTip.textContent=isTutorial?"导师的笔记为你显现了【学徒提炼】。":"卡牌按照时间阶段逐步解锁；卡牌抉择不会消耗当前精华。";ui.offerGrid.style.gridTemplateColumns=isTutorial?"minmax(210px,260px)":"";ui.offerGrid.style.justifyContent="center";ui.offerGrid.replaceChildren();for(const id of offers){const b=makeCard(id,{offer:true});b.addEventListener("click",()=>choose(id));ui.offerGrid.append(b)}tone(520,.14);render()}
+function openDraft(isTutorial=false){if(state!=="playing"&&!(isTutorial&&tutorialStage==="draw"))return;if(isTutorial&&essence<10)return;if(!isTutorial&&draftProgress<50)return;if(isTutorial)essence-=10;else draftProgress-=50;ui.discardToast.hidden=true;state="draft";tutorialDraft=isTutorial;offers=isTutorial?["apprentice"]:draw();ui.shade.hidden=false;ui.modalTitle.textContent=isTutorial?"第一次炼金实验":"虚空回应了你的召唤";ui.modalMessage.textContent=isTutorial?"消耗 10 精华，获得第一张正收益基础图纸。":"选择一张卡牌，决定炼金术的下一步。时间已暂停。";ui.modalSymbol.textContent="✧";ui.selectionTip.textContent=isTutorial?"导师的笔记为你显现了【学徒提炼】。":"卡牌按照时间阶段逐步解锁；卡牌抉择不会消耗当前精华。";ui.offerGrid.style.gridTemplateColumns=isTutorial?"minmax(210px,260px)":"";ui.offerGrid.style.justifyContent="center";ui.offerGrid.replaceChildren();for(const id of offers){const b=makeCard(id,{offer:true});b.addEventListener("click",()=>choose(id));ui.offerGrid.append(b)}tone(520,.14);render()}
 function choose(id){if(state!=="draft"||!offers.includes(id))return;drawCount++;selectedCards++;addLog("选择了【"+cards[id].name+"】。","good");if(id==="chip"){permanentMultiplier*=1.2;addLog("芯片迭代触发：永久产出乘数提升至 ×"+fmt(permanentMultiplier)+"。","special")}if(id==="blood"){bloodPenalty=Math.min(3,bloodPenalty+1);addLog("献祭之血生效：手牌上限永久减少 1。","bad")}offers=[];ui.offerGrid.replaceChildren();if(tutorialDraft){tutorialDraft=false;hand.push(id);tutorialStage="done";questTracking=true;totalEarned=0;draftProgress=0;ui.shade.hidden=true;ui.drawFirstButton.hidden=true;document.body.classList.remove("tutorial-draw-stage");document.body.classList.add("tutorial-done");state="playing";lastFrame=performance.now();addLog("初次炼金完成：【"+cards[id].name+"】已加入手牌。自由构筑与任务试炼现已开放。","good");render();checkQuest();return}if(id==="simplify"){pending={cardId:null,minimum:2,reward:50,kind:"simplify"};beginDiscard("删繁就简：连续销毁 2 张手牌。");return}const oldLimit=limit(),mustReplace=Number.isFinite(oldLimit)&&hand.length>=oldLimit?1:0,tooMany=Number.isFinite(limit(id))&&hand.length+1>limit(id);pending={cardId:id,minimum:Math.max(mustReplace,tooMany?1:0),reward:0,kind:"add"};if(pending.minimum)beginDiscard("选择要销毁的手牌，再加入【"+cards[id].name+"】。");else finishChoice()}
-function beginDiscard(message){state="discard";handOpen=true;ui.shade.hidden=true;ui.discardToast.textContent=message+" 将手牌拖入左下方的恶魔之口，或点击卡牌献祭。";ui.discardToast.hidden=false;render()}
+function beginDiscard(message){state="discard";ui.shade.hidden=true;ui.discardToast.textContent=message+" 点击下方标红的手牌销毁。";ui.discardToast.hidden=false;render();requestAnimationFrame(()=>{const rect=ui.hand.getBoundingClientRect(),offset=rect.top+rect.height/2-window.innerHeight/2;if(Math.abs(offset)>24)window.scrollBy({top:offset,behavior:"smooth"})})}
 function needsDiscard(){if(!pending)return false;if(pending.minimum>0)return true;const projected=hand.length+(pending.cardId?1:0),lim=limit(pending.cardId);return Number.isFinite(lim)&&projected>lim}
-function swallowCard(index,card){if(sacrificeInProgress||state!=="discard"||!card||!card.isConnected)return;sacrificeInProgress=true;card.disabled=true;const rect=card.getBoundingClientRect(),mouth=ui.demonDock.getBoundingClientRect();card.style.setProperty("--swallow-x",(mouth.left+mouth.width/2-rect.left-rect.width/2)+"px");card.style.setProperty("--swallow-y",(mouth.top+mouth.height/2-rect.top-rect.height/2)+"px");card.classList.add("swallowed");ui.demonDock.classList.add("eating");ui.demonCaption.textContent="吞噬中";tone(130,.2);window.setTimeout(()=>{ui.demonDock.classList.remove("eating","drop-ready");ui.demonCaption.textContent="虚空之口";sacrificeInProgress=false;destroy(index)},480)}
-function destroy(i){if(state!=="discard"||!pending||i<0||i>=hand.length)return;const [removed]=hand.splice(i,1);if(pending.kind==="tutorial-curse"&&removed==="curse"){addLog("黑烟散尽：销毁了【导师的诅咒】。","special");pending=null;tutorialStage="after-curse";state="after-curse";handOpen=false;ui.discardToast.hidden=true;document.body.classList.remove("tutorial-curse");document.body.classList.add("tutorial-after-curse");ui.afterCurseShade.hidden=false;render();return}const glutton=count("glutton")+(removed==="glutton"?1:0);if(questTracking&&cards[removed].school==="基础")basicDestroyed++;if(glutton){permanentMultiplier*=Math.pow(1.1,glutton);addLog("暴食者吞噬【"+cards[removed].name+"】：永久产出乘数提升至 ×"+fmt(permanentMultiplier)+"。","special")}else addLog("销毁了【"+cards[removed].name+"】。");if(pending.minimum>0)pending.minimum--;if(needsDiscard()&&hand.length){ui.modalMessage.textContent=pending.kind==="simplify"?"还需销毁手牌以完成删繁就简。":"继续选择要销毁的手牌，以满足当前手牌上限。";render();return}if(needsDiscard()&&!hand.length&&pending.cardId){pending.minimum=0;finishChoice();return}if(needsDiscard()&&!hand.length)pending.minimum=0;if(pending.minimum===0&&!needsDiscard())finishChoice();else render()}
-function finishChoice(){if(!pending)return;const result=pending;pending=null;if(result.cardId){hand.push(result.cardId);addLog("加入手牌：【"+cards[result.cardId].name+"】。","good")}ui.shade.hidden=true;ui.discardToast.hidden=true;if(result.reward){essence+=result.reward;if(questTracking)totalEarned+=result.reward;draftProgress+=result.reward;addLog("删繁就简完成：获得 50 精华。","special");tone(780,.18)}state="playing";handOpen=false;lastFrame=performance.now();render();processPendingOverlays()}
+function destroy(i){if(state!=="discard"||!pending||i<0||i>=hand.length)return;const [removed]=hand.splice(i,1);if(pending.kind==="tutorial-curse"&&removed==="curse"){addLog("黑烟散尽：销毁了【导师的诅咒】。","special");pending=null;tutorialStage="after-curse";state="after-curse";ui.discardToast.hidden=true;document.body.classList.remove("tutorial-curse");document.body.classList.add("tutorial-after-curse");ui.afterCurseShade.hidden=false;render();return}const glutton=count("glutton")+(removed==="glutton"?1:0);if(questTracking&&cards[removed].school==="基础")basicDestroyed++;if(glutton){permanentMultiplier*=Math.pow(1.1,glutton);addLog("暴食者吞噬【"+cards[removed].name+"】：永久产出乘数提升至 ×"+fmt(permanentMultiplier)+"。","special")}else addLog("销毁了【"+cards[removed].name+"】。");if(pending.minimum>0)pending.minimum--;if(needsDiscard()&&hand.length){ui.modalMessage.textContent=pending.kind==="simplify"?"还需销毁手牌以完成删繁就简。":"继续选择要销毁的手牌，以满足当前手牌上限。";render();return}if(needsDiscard()&&!hand.length&&pending.cardId){pending.minimum=0;finishChoice();return}if(needsDiscard()&&!hand.length)pending.minimum=0;if(pending.minimum===0&&!needsDiscard())finishChoice();else render()}
+function finishChoice(){if(!pending)return;const result=pending;pending=null;if(result.cardId){hand.push(result.cardId);addLog("加入手牌：【"+cards[result.cardId].name+"】。","good")}ui.shade.hidden=true;ui.discardToast.hidden=true;if(result.reward){essence+=result.reward;if(questTracking)totalEarned+=result.reward;draftProgress+=result.reward;addLog("删繁就简完成：获得 50 精华。","special");tone(780,.18)}state="playing";lastFrame=performance.now();render();checkQuest();if(draftProgress>=50)openDraft()}
 function coin(){if(!count("gamble"))return;if(Math.random()<.5){const old=essence;essence*=2;if(questTracking)totalEarned+=essence-old;draftProgress+=essence-old;addLog("梭哈成功：硬币正面，当前精华翻倍！","special");tone(880,.2)}else{essence=0;addLog("梭哈失败：硬币反面，当前精华清零；永久增益保留。","bad");tone(180,.24)}}
-function tick(now){const dt=Math.min(.25,Math.max(0,(now-lastFrame)/1000));lastFrame=now;if(tutorialStage==="done"&&["playing","draft","quest","discard"].includes(state)){elapsedSeconds+=dt;if(count("gamble")){const interval=count("haste")?3:10;coinClock+=dt;while(coinClock>=interval){coinClock-=interval;coin()}}const delta=rate()*dt;if(delta>0){essence+=delta;if(questTracking)totalEarned+=delta;draftProgress+=delta}else if(delta<0)essence=Math.max(0,essence+delta);processPendingOverlays()}render();requestAnimationFrame(tick)}
+function tick(now){const dt=Math.min(.25,Math.max(0,(now-lastFrame)/1000));lastFrame=now;if(state==="playing"){elapsedSeconds+=dt;if(count("gamble")){const interval=count("haste")?3:10;coinClock+=dt;while(coinClock>=interval&&state==="playing"){coinClock-=interval;coin();if(draftProgress>=50)openDraft()}}if(state==="playing"){const delta=rate()*dt;if(delta>0){essence+=delta;if(questTracking)totalEarned+=delta;draftProgress+=delta}else if(delta<0)essence=Math.max(0,essence+delta);if(draftProgress>=50)openDraft()}checkQuest()}render();requestAnimationFrame(tick)}
 el("startAlchemyButton").addEventListener("click",beginMeditation);
-ui.grimoireButton.addEventListener("click",toggleHand);
-ui.hand.addEventListener("click",event=>{const card=event.target.closest("button.card[data-discard-index]");if(suppressClickCard===card){suppressClickCard=null;return}if(state!=="discard"||!card||!ui.hand.contains(card))return;const index=Number(card.dataset.discardIndex);if(!Number.isInteger(index))return;swallowCard(index,card)});
-ui.hand.addEventListener("pointerdown",event=>{if(state!=="discard"||sacrificeInProgress||event.button!==0)return;const card=event.target.closest("button.card[data-discard-index]");if(!card||!ui.hand.contains(card))return;dragPointerId=event.pointerId;dragCard=card;dragStartX=event.clientX;dragStartY=event.clientY;dragActivated=false});
-document.addEventListener("pointermove",event=>{if(dragPointerId!==event.pointerId||!dragCard)return;const dx=event.clientX-dragStartX,dy=event.clientY-dragStartY;if(!dragActivated&&Math.hypot(dx,dy)<8)return;dragActivated=true;event.preventDefault();dragCard.classList.add("dragging");dragCard.style.setProperty("--drag-x",dx+"px");dragCard.style.setProperty("--drag-y",dy+"px");const rect=ui.demonDock.getBoundingClientRect(),inside=event.clientX>=rect.left&&event.clientX<=rect.right&&event.clientY>=rect.top&&event.clientY<=rect.bottom;ui.demonDock.classList.toggle("drop-ready",inside)});
-document.addEventListener("pointerup",event=>{if(dragPointerId!==event.pointerId)return;const card=dragCard,index=card?Number(card.dataset.discardIndex):-1,didDrag=dragActivated,rect=ui.demonDock.getBoundingClientRect(),inside=event.clientX>=rect.left&&event.clientX<=rect.right&&event.clientY>=rect.top&&event.clientY<=rect.bottom;if(card&&didDrag){suppressClickCard=card;window.setTimeout(()=>{if(suppressClickCard===card)suppressClickCard=null},0);card.classList.remove("dragging");card.style.removeProperty("--drag-x");card.style.removeProperty("--drag-y");if(inside)swallowCard(index,card)}ui.demonDock.classList.remove("drop-ready");dragPointerId=null;dragCard=null;dragActivated=false});
-document.addEventListener("pointercancel",event=>{if(dragPointerId!==event.pointerId)return;if(dragCard){dragCard.classList.remove("dragging");dragCard.style.removeProperty("--drag-x");dragCard.style.removeProperty("--drag-y")}ui.demonDock.classList.remove("drop-ready");dragPointerId=null;dragCard=null;dragActivated=false});
+ui.hand.addEventListener("click",event=>{const card=event.target.closest("button.card[data-discard-index]");if(state!=="discard"||!card||!ui.hand.contains(card))return;const index=Number(card.dataset.discardIndex);if(!Number.isInteger(index))return;if(tutorialStage==="curse-discard"){card.classList.add("burning");card.disabled=true;window.setTimeout(()=>destroy(index),320);return}destroy(index)});
 ui.meditateButton.addEventListener("click",meditate);
 el("guideDrawButton").addEventListener("click",beginCurseDiscard);
 el("beginFirstDrawButton").addEventListener("click",startTutorialDraft);
@@ -1187,9 +799,9 @@ ui.drawFirstButton.addEventListener("click",beginFirstDraft);
 el("claimQuestButton").addEventListener("click",claimQuest);
 ui.prestigeButton.addEventListener("click",openPrestige);
 el("confirmPrestigeButton").addEventListener("click",prestige);
-el("cancelPrestigeButton").addEventListener("click",()=>{ui.prestigeShade.hidden=true;processPendingOverlays()});
+el("cancelPrestigeButton").addEventListener("click",()=>{ui.prestigeShade.hidden=true});
 el("inkShopButton").addEventListener("click",()=>{renderShop();ui.shopShade.hidden=false});
-el("closeShopButton").addEventListener("click",()=>{ui.shopShade.hidden=true;processPendingOverlays()});
+el("closeShopButton").addEventListener("click",()=>{ui.shopShade.hidden=true});
 addLog("炼金实验开始：基础产出 1 精华 / 秒。");render();requestAnimationFrame(tick);
 })();
 </script>
