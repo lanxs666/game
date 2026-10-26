@@ -1,0 +1,1197 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#090811">
+<title>虚空炼金术士 · Void Alchemist</title>
+<style>
+:root{color-scheme:dark;--bg:#090811;--panel:#13111f;--line:rgba(188,160,255,.17);--text:#eee8ff;--muted:#9990ae;--violet:#ae83ff}*{box-sizing:border-box}body{min-height:100vh;margin:0;color:var(--text);background:radial-gradient(ellipse at 50% -18%,rgba(99,53,156,.28),transparent 54%),radial-gradient(ellipse at 12% 80%,rgba(35,38,94,.17),transparent 42%),var(--bg);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}button{font:inherit}.app{width:min(1320px,100%);margin:auto;padding:24px clamp(14px,3vw,32px) 30px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:18px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:13px}.brand-mark{display:grid;width:42px;height:42px;place-items:center;border:1px solid rgba(191,154,255,.42);border-radius:14px;background:linear-gradient(145deg,rgba(157,103,255,.24),rgba(52,37,83,.2));box-shadow:0 0 25px rgba(153,96,255,.16);color:#dcc8ff;font-size:23px}.brand h1{margin:0;font-size:17px;letter-spacing:.04em}.brand p{margin:2px 0 0;color:var(--muted);font-size:11px;letter-spacing:.15em}.run-tag,.stat-pill{padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:#b6a9d1;font-size:11px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:18px;margin-top:18px;align-items:start}.main-column{min-width:0}.altar{position:relative;display:grid;min-height:264px;place-items:center;overflow:hidden;padding:28px 18px 24px;border:1px solid rgba(177,139,246,.2);border-radius:20px;background:radial-gradient(ellipse at 50% 110%,rgba(125,72,198,.18),transparent 55%),linear-gradient(160deg,rgba(28,23,44,.92),rgba(12,11,21,.95));box-shadow:0 18px 55px #0005;text-align:center}.altar:before,.altar:after{position:absolute;content:"";pointer-events:none;border:1px solid rgba(191,152,255,.1);border-radius:50%;transform:rotate(-18deg)}.altar:before{width:440px;height:128px}.altar:after{width:320px;height:92px;transform:rotate(28deg)}.altar-content{position:relative;z-index:1}.eyebrow{color:#ad9dc9;font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase}.essence{margin:7px 0 0;color:#f5edff;font-size:clamp(44px,8vw,76px);font-variant-numeric:tabular-nums;font-weight:760;letter-spacing:-.055em;line-height:1.08;text-shadow:0 0 30px #b882ff5c}.rate-line{margin-top:9px;color:#c2b5d7}.rate-line strong{color:#d7bcff;font-variant-numeric:tabular-nums}.stats{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:17px}.stat-pill{border-color:#bea3e422;background:#0b0a1370;color:#b9b0c9}.stat-pill strong{color:#eee4ff}.progress-wrap{width:min(360px,82vw);margin:15px auto 0;text-align:left}.progress-caption{display:flex;justify-content:space-between;margin-bottom:5px;color:#978da8;font-size:10px}.progress-track{height:5px;overflow:hidden;border-radius:99px;background:#ffffff14}.progress-fill{width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#8560e5,#d4adff);box-shadow:0 0 12px #b384ff8c;transition:width .12s linear}.section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:22px 2px 10px}.section-heading h2{margin:0;font-size:13px;letter-spacing:.05em}.section-heading span{color:var(--muted);font-size:11px}.hand{display:flex;min-height:155px;align-items:flex-start;gap:10px;overflow-x:auto;padding:4px 4px 18px;scrollbar-color:#ad89e666 transparent;scrollbar-width:thin}.empty-hand{display:grid;min-width:100%;min-height:118px;place-items:center;border:1px dashed #baa3dc30;border-radius:14px;color:#766d87;font-size:12px}.card{--accent:#e9e6f2;position:relative;display:flex;flex:0 0 150px;min-height:122px;flex-direction:column;align-items:flex-start;padding:12px;overflow:visible;border:1px solid color-mix(in srgb,var(--accent) 52%,transparent);border-radius:13px;background:radial-gradient(ellipse at 50% -10%,color-mix(in srgb,var(--accent) 12%,transparent),transparent 70%),linear-gradient(155deg,#221e30,#12101b);box-shadow:0 6px 14px #0004,inset 0 1px #ffffff0b;color:var(--text);text-align:left;transition:transform .18s,box-shadow .18s,border-color .18s}button.card{cursor:pointer}.card:hover,.card:focus-visible{z-index:4;transform:translateY(-5px) scale(1.035);border-color:var(--accent);box-shadow:0 9px 24px color-mix(in srgb,var(--accent) 21%,transparent),0 0 18px color-mix(in srgb,var(--accent) 13%,transparent);outline:none}.card-school{color:var(--accent);font-size:9px;font-weight:750;letter-spacing:.16em}.card-name{margin-top:10px;font-size:13px;font-weight:750}.card-rarity{margin-top:3px;color:#a79bb9;font-size:10px}.card-mark{position:absolute;top:9px;right:10px;color:var(--accent);font-size:15px}.card-tooltip{position:absolute;z-index:6;top:calc(100% + 7px);left:50%;width:210px;padding:10px 11px;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);border-radius:10px;background:#171422;box-shadow:0 12px 28px #0007;color:#d5cce2;font-size:11px;line-height:1.55;opacity:0;pointer-events:none;transform:translate(-50%,-3px);transition:opacity .15s,transform .15s}.card:hover .card-tooltip,.card:focus-visible .card-tooltip{opacity:1;transform:translate(-50%,0)}.card-tooltip strong{display:block;margin-bottom:3px;color:var(--accent)}.side-panel{min-height:470px;overflow:hidden;border:1px solid var(--line);border-radius:17px;background:rgba(19,17,31,.88);box-shadow:0 12px 36px #0003}.side-head{display:flex;align-items:center;justify-content:space-between;padding:15px 15px 12px;border-bottom:1px solid var(--line)}.side-head h2{margin:0;font-size:12px;letter-spacing:.07em}.side-head span{color:#8f849f;font-size:10px}.log{display:flex;max-height:450px;flex-direction:column;gap:9px;overflow-y:auto;padding:13px 14px 16px;scrollbar-width:thin}.log-entry{padding-left:9px;border-left:2px solid #b194db47;color:#b5acc3;font-size:10px;line-height:1.45;overflow-wrap:anywhere}.log-entry.special{border-color:#e1bd72;color:#e0c98e}.log-entry.good{border-color:#89d7b6}.log-entry.bad{border-color:#e16d8c;color:#db9eac}.log-time{display:block;margin-bottom:2px;color:#716982;font-size:9px}.lower-note{margin-top:18px;padding:12px 14px;border:1px solid #b79adf1c;border-radius:12px;background:#110f1aa0;color:#9288a2;font-size:10px;line-height:1.7}.lower-note strong{color:#c7b7e3}.shade{position:fixed;z-index:10;inset:0;display:grid;place-items:center;padding:18px;background:#05040ac7;backdrop-filter:blur(7px)}.shade[hidden]{display:none}.modal{width:min(760px,100%);padding:22px;border:1px solid #bf9df652;border-radius:18px;background:radial-gradient(ellipse at 50% 0,#744aa92b,transparent 54%),#14111e;box-shadow:0 25px 80px #0009,0 0 45px #8e5bd622;text-align:center;animation:arrive .25s ease both}@keyframes arrive{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}.modal-symbol{display:grid;width:44px;height:44px;place-items:center;margin:0 auto 10px;border:1px solid #bc97f259;border-radius:50%;background:#8253c421;color:#dfcaff;font-size:21px}.modal h2{margin:0;font-size:19px}.modal>p{margin:6px auto 17px;color:#a59ab5;font-size:11px}.offer-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.offer-card{width:100%;min-height:160px;align-items:flex-start;padding:15px;text-align:left}.offer-card .card-name{margin-top:12px;font-size:15px}.offer-card .card-description{margin-top:8px;color:#b7adc6;font-size:11px;line-height:1.55}.discard-card{border-color:#ff638d80;background:linear-gradient(150deg,#481b2acc,#18101b)}.discard-card:hover{border-color:#ff638d;box-shadow:0 0 24px #ff52823b}.selection-tip{margin-top:14px;color:#bcaed0;font-size:11px}.selection-tip strong{color:#f2c6d0}@media(max-width:820px){.layout{grid-template-columns:1fr}.side-panel{min-height:0}.log{max-height:210px}}@media(max-width:560px){.app{padding-top:14px}.brand-mark{width:38px;height:38px}.brand h1{font-size:15px}.run-tag{font-size:9px}.altar{min-height:235px}.offer-grid{grid-template-columns:1fr;max-height:60vh;overflow-y:auto;padding:3px}.offer-card{min-height:116px}.offer-card .card-description{margin-top:5px}.modal{padding:18px 14px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:wght@400;500;600;700&display=swap");
+
+  :root {
+    color-scheme: dark;
+    --bg: #1a1410;
+    --panel: rgba(35, 26, 18, .94);
+    --line: rgba(177, 134, 55, .34);
+    --text: #d4c4a8;
+    --muted: #9f8b6b;
+    --violet: #9b59b6;
+    --title-font: "Cinzel", Georgia, serif;
+    --body-font: "EB Garamond", Georgia, serif;
+  }
+
+  body {
+    position: relative;
+    overflow-x: hidden;
+    color: var(--text);
+    background:
+      repeating-radial-gradient(ellipse at 50% 45%, rgba(160, 119, 54, .025) 0 1px, transparent 2px 8px),
+      radial-gradient(ellipse at 50% 42%, #35291b 0, #241a13 43%, #1a1410 78%, #100d0a 100%);
+    font: 17px/1.45 var(--body-font);
+  }
+
+  body::before,
+  body::after {
+    position: fixed;
+    z-index: 0;
+    inset: 0;
+    content: "";
+    pointer-events: none;
+  }
+
+  body::before {
+    opacity: .32;
+    background-image:
+      radial-gradient(2px 2px at 12% 23%, rgba(255, 224, 151, .75) 50%, transparent 100%),
+      radial-gradient(1px 1px at 72% 17%, rgba(255, 236, 192, .7) 50%, transparent 100%),
+      radial-gradient(2px 2px at 87% 55%, rgba(232, 190, 91, .68) 50%, transparent 100%),
+      radial-gradient(1px 1px at 39% 79%, rgba(255, 231, 176, .68) 50%, transparent 100%),
+      radial-gradient(1px 1px at 23% 67%, rgba(238, 208, 147, .65) 50%, transparent 100%),
+      radial-gradient(2px 2px at 61% 91%, rgba(255, 215, 0, .55) 50%, transparent 100%);
+    animation: arcane-particles 22s linear infinite;
+  }
+
+  body::after {
+    opacity: .12;
+    background:
+      radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, .8) 100%),
+      repeating-linear-gradient(117deg, transparent 0 7px, rgba(227, 192, 119, .08) 8px, transparent 9px 19px);
+    mix-blend-mode: screen;
+  }
+
+  @keyframes arcane-particles {
+    from { transform: translateY(0); }
+    to { transform: translateY(-18px); }
+  }
+
+  .app {
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 20px 28px rgba(0, 0, 0, .5));
+  }
+
+  .app::before {
+    position: fixed;
+    z-index: -1;
+    inset: 12px;
+    border: 1px solid rgba(176, 134, 55, .12);
+    border-radius: 5px;
+    content: "";
+    pointer-events: none;
+  }
+
+  .topbar {
+    position: relative;
+    padding-right: 6px;
+    padding-left: 6px;
+    border-bottom-color: var(--line);
+  }
+
+  .topbar::before,
+  .topbar::after {
+    position: absolute;
+    bottom: -5px;
+    width: 10px;
+    height: 10px;
+    border: 1px solid #b8860b;
+    background: #241a13;
+    content: "";
+    transform: rotate(45deg);
+  }
+
+  .topbar::before { left: 0; }
+  .topbar::after { right: 0; }
+
+  .brand-mark {
+    border-color: #b8860b;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 35% 28%, rgba(255, 224, 146, .2), transparent 52%),
+      linear-gradient(145deg, #41301b, #1d160f);
+    box-shadow: 0 0 18px rgba(197, 143, 39, .2), inset 0 0 12px rgba(0, 0, 0, .7);
+    color: #f0d18a;
+    text-shadow: 0 0 12px rgba(255, 215, 0, .5);
+  }
+
+  .brand h1,
+  .brand p,
+  .section-heading h2,
+  .side-head h2,
+  .card-name,
+  .card-school,
+  .modal h2,
+  .card-tooltip strong {
+    font-family: var(--title-font);
+  }
+
+  .brand h1 { color: #e5d4b2; letter-spacing: .08em; }
+  .brand p { color: #a38b5c; font-size: 9px; letter-spacing: .22em; }
+
+  .run-tag {
+    border-color: rgba(177, 134, 55, .48);
+    border-radius: 3px;
+    background: linear-gradient(180deg, rgba(69, 50, 28, .72), rgba(31, 23, 17, .8));
+    box-shadow: inset 0 1px rgba(255, 230, 167, .08);
+    color: #c4a96c;
+    font-size: 13px;
+  }
+
+  .altar {
+    border-color: rgba(184, 134, 11, .5);
+    border-radius: 4px;
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(123, 91, 42, .24), transparent 57%),
+      repeating-radial-gradient(circle at 50% 50%, transparent 0 40px, rgba(194, 151, 71, .045) 41px 42px, transparent 43px 78px),
+      linear-gradient(160deg, rgba(49, 36, 23, .96), rgba(24, 17, 12, .98));
+    box-shadow: 0 18px 45px rgba(0, 0, 0, .42), inset 0 0 28px rgba(0, 0, 0, .72);
+  }
+
+  .altar::before,
+  .altar::after {
+    border-color: rgba(213, 173, 91, .2);
+  }
+
+  .altar::after {
+    border-color: rgba(213, 173, 91, .14);
+  }
+
+  .eyebrow {
+    color: #c2a56c;
+    font-family: var(--title-font);
+  }
+
+  .essence {
+    display: inline-block;
+    color: #ffd700;
+    font-family: var(--title-font);
+    text-shadow: 0 0 15px rgba(255, 215, 0, .6), 0 0 34px rgba(255, 191, 0, .28);
+    animation: essence-breath 2.8s ease-in-out infinite;
+  }
+
+  @keyframes essence-breath {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.035); filter: brightness(1.14); }
+  }
+
+  .rate-line { color: #a98849; font-size: 16px; }
+  .rate-line strong { color: #c39a43; }
+
+  .stat-pill {
+    border-color: rgba(184, 134, 11, .34);
+    border-radius: 3px;
+    background: rgba(18, 13, 9, .68);
+    color: #a98849;
+    font-size: 13px;
+  }
+
+  .stat-pill strong { color: #d0b274; }
+
+  .progress-caption { color: #a58a5d; font-size: 12px; }
+
+  .progress-track {
+    border: 1px solid rgba(184, 134, 11, .36);
+    border-radius: 2px;
+    background: rgba(8, 6, 4, .75);
+    box-shadow: inset 0 1px 4px #000;
+  }
+
+  .progress-fill {
+    background: linear-gradient(90deg, #77500e, #d4a52f, #ffe28a);
+    box-shadow: 0 0 12px rgba(255, 194, 40, .48);
+  }
+
+  .section-heading {
+    padding: 0 8px 7px;
+    border-bottom: 1px solid rgba(177, 134, 55, .24);
+  }
+
+  .section-heading h2 {
+    color: #d5c096;
+    font-size: 13px;
+    letter-spacing: .1em;
+  }
+
+  .section-heading span { color: #927a52; font-size: 13px; }
+
+  .hand {
+    padding: 6px 6px 18px;
+    scrollbar-color: rgba(184, 134, 11, .48) transparent;
+  }
+
+  .empty-hand {
+    border-color: rgba(184, 134, 11, .36);
+    border-radius: 8px;
+    color: #927d5d;
+    font-size: 14px;
+  }
+
+  .card {
+    --accent: #b8860b;
+    border: 2px solid #8b6508;
+    border-radius: 8px;
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(184, 134, 11, .12), transparent 70%),
+      linear-gradient(155deg, #382a1c, #2c2218 62%, #21190f);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, .38), inset 0 0 10px rgba(0, 0, 0, .8);
+    color: #d4c4a8;
+    transition: all .2s ease;
+  }
+
+  .card[style*="#65b4ff"] {
+    --accent: #4a90e2;
+    border-color: #4a90e2;
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(74, 144, 226, .16), transparent 70%),
+      linear-gradient(155deg, #25303a, #2c2218 62%, #21190f);
+  }
+
+  .card[style*="#ff6687"] {
+    --accent: #8b0000;
+    border-color: #8b0000;
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(139, 0, 0, .2), transparent 70%),
+      linear-gradient(155deg, #3c211d, #2c2218 62%, #21190f);
+  }
+
+  .card[style*="#f2d27a"] {
+    --accent: #9b59b6;
+    border-color: #c59b35;
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(155, 89, 182, .19), transparent 70%),
+      linear-gradient(155deg, #392638, #2c2218 62%, #21190f);
+  }
+
+  .card-school { font-size: 9px; font-weight: 700; }
+  .card-name { color: #ead8b5; font-size: 12px; }
+  .card-rarity { color: #aa936a; font-size: 13px; }
+  .card-mark { text-shadow: 0 0 10px currentColor; }
+
+  .card:hover,
+  .card:focus-visible {
+    transform: translateY(-5px) scale(1.05);
+    border-color: #ffb52e;
+    box-shadow: 0 0 20px rgba(255, 140, 0, .8), inset 0 0 10px rgba(0, 0, 0, .8);
+  }
+
+  .card-tooltip {
+    border-color: rgba(184, 134, 11, .72);
+    border-radius: 5px;
+    background: #21180f;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, .72), inset 0 0 12px rgba(0, 0, 0, .6);
+    color: #d4c4a8;
+    font-size: 14px;
+  }
+
+  .card-tooltip strong { color: #f0d18a; font-size: 11px; }
+
+  .side-panel {
+    border: 1px solid rgba(139, 101, 8, .55);
+    border-radius: 4px 12px 4px 12px;
+    background:
+      linear-gradient(145deg, rgba(54, 39, 24, .76), rgba(26, 19, 14, .94)),
+      repeating-linear-gradient(0deg, transparent 0 5px, rgba(209, 175, 111, .025) 6px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, .42), inset 0 0 18px rgba(0, 0, 0, .56);
+  }
+
+  .side-head {
+    border-bottom-color: rgba(177, 134, 55, .28);
+    background: linear-gradient(90deg, rgba(115, 80, 31, .16), transparent);
+  }
+
+  .side-head h2 { color: #d7c29a; font-size: 12px; }
+  .side-head span { color: #937b53; font-size: 12px; }
+
+  .log {
+    scrollbar-color: rgba(184, 134, 11, .38) transparent;
+  }
+
+  .log-entry {
+    position: relative;
+    padding-left: 19px;
+    color: #c4b394;
+    font-size: 13px;
+  }
+
+  .log-entry::before {
+    position: absolute;
+    top: 1px;
+    left: 0;
+    color: #c49a46;
+    content: "✧";
+    font-size: 12px;
+    text-shadow: 0 0 7px rgba(255, 215, 0, .35);
+  }
+
+  .log-entry.special { color: #e1c982; }
+  .log-entry.special::before { color: #ffd700; content: "❖"; }
+  .log-entry.good { color: #c8c39c; }
+  .log-entry.good::before { color: #aebd77; }
+  .log-entry.bad { color: #c18e7c; }
+  .log-entry.bad::before { color: #a94d37; }
+  .log-time { color: #84704e; font-size: 11px; }
+
+  .lower-note {
+    border: 1px solid rgba(177, 134, 55, .3);
+    border-radius: 4px;
+    background: rgba(25, 18, 13, .76);
+    box-shadow: inset 0 0 14px rgba(0, 0, 0, .45);
+    color: #a99470;
+    font-size: 13px;
+  }
+
+  .lower-note::before,
+  .lower-note::after {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: #b8860b;
+    border-style: solid;
+    content: "";
+    opacity: .7;
+  }
+
+  .lower-note::before {
+    top: -1px;
+    left: -1px;
+    border-width: 1px 0 0 1px;
+  }
+
+  .lower-note::after {
+    right: -1px;
+    bottom: -1px;
+    border-width: 0 1px 1px 0;
+  }
+
+  .lower-note strong { color: #d2b572; }
+
+  .shade {
+    background: rgba(0, 0, 0, .72);
+    backdrop-filter: blur(4px);
+  }
+
+  .modal {
+    border-color: rgba(184, 134, 11, .7);
+    border-radius: 5px;
+    background:
+      repeating-radial-gradient(circle at 50% 40%, transparent 0 48px, rgba(199, 155, 66, .045) 49px 50px, transparent 51px 84px),
+      radial-gradient(ellipse at 50% 0, rgba(125, 91, 42, .3), transparent 58%),
+      #21180f;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, .8), 0 0 45px rgba(180, 126, 24, .16), inset 0 0 28px rgba(0, 0, 0, .6);
+  }
+
+  .modal-symbol {
+    border-color: rgba(184, 134, 11, .65);
+    background: radial-gradient(circle, rgba(194, 145, 45, .23), rgba(24, 17, 12, .8));
+    color: #f0d18a;
+    box-shadow: 0 0 20px rgba(205, 154, 45, .2), inset 0 0 10px rgba(0, 0, 0, .6);
+  }
+
+  .modal h2 { color: #e4d3ac; font-size: 19px; letter-spacing: .04em; }
+  .modal > p { color: #ae9870; font-size: 14px; }
+
+  .offer-card {
+    min-height: 160px;
+    animation: arcane-card-reveal .55s cubic-bezier(.2, .8, .25, 1) both;
+  }
+
+  .offer-card:nth-child(2) { animation-delay: .1s; }
+  .offer-card:nth-child(3) { animation-delay: .2s; }
+
+  @keyframes arcane-card-reveal {
+    from { opacity: 0; transform: translateY(50px) rotate(-3deg) scale(.96); }
+    to { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
+  }
+
+  .offer-card .card-name { margin-top: 12px; font-size: 13px; }
+  .offer-card .card-description { margin-top: 8px; color: #c0ad8c; font-size: 14px; }
+
+  .discard-card {
+    border-color: #8b0000;
+    background: radial-gradient(ellipse at 50% -10%, rgba(139, 0, 0, .22), transparent 70%), linear-gradient(150deg, #422319, #2c1b12);
+  }
+
+  .discard-card:hover {
+    border-color: #e07232;
+    box-shadow: 0 0 20px rgba(255, 140, 0, .8), inset 0 0 10px rgba(0, 0, 0, .8);
+  }
+
+  .selection-tip { color: #bca77e; font-size: 13px; }
+  .selection-tip strong { color: #e1b98c; }
+
+  @media (max-width: 560px) {
+    .brand-mark { width: 40px; height: 40px; }
+    .brand h1 { font-size: 14px; }
+    .run-tag { font-size: 11px; }
+    .offer-card { min-height: 116px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      scroll-behavior: auto !important;
+      animation-duration: .01ms !important;
+      transition-duration: .01ms !important;
+    }
+  }
+
+  .quest-book {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-top: 16px;
+    padding: 12px 15px;
+    border: 1px solid rgba(139, 101, 8, .65);
+    border-radius: 4px 12px 4px 12px;
+    background: linear-gradient(110deg, rgba(64, 46, 26, .96), rgba(30, 22, 15, .96));
+    box-shadow: inset 0 0 16px rgba(0, 0, 0, .62), 0 5px 18px rgba(0, 0, 0, .25);
+  }
+
+  .quest-icon { color: #d3ac56; font-size: 28px; text-shadow: 0 0 12px rgba(255, 215, 0, .3); }
+  .quest-content { flex: 1; min-width: 0; }
+  .quest-title-row { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .quest-title-row h2 { margin: 0; color: #e2cfaa; font: 700 13px var(--title-font); }
+  .quest-title-row span, .quest-progress { color: #aa8b51; font-size: 12px; }
+  .quest-content p { margin: 2px 0 6px; color: #c4b08b; font-size: 14px; }
+  .quest-track { height: 7px; overflow: hidden; border: 1px solid rgba(184, 134, 11, .42); background: #120d09; }
+  .quest-fill { width: 0; height: 100%; background: linear-gradient(90deg, #493411, #b8860b, #e6c56e); box-shadow: 0 0 10px rgba(255, 215, 0, .35); transition: width .25s ease; }
+  .quest-progress { display: block; margin-top: 3px; text-align: right; }
+
+  .metal-button {
+    position: relative;
+    min-height: 42px;
+    padding: 8px 18px;
+    border: 1px solid #c1973c;
+    border-radius: 4px;
+    background: linear-gradient(180deg, #8b6827, #4a3519 52%, #302113);
+    box-shadow: inset 0 1px rgba(255, 238, 186, .28), inset 0 -2px 4px rgba(0, 0, 0, .4), 0 4px 0 #1b120b, 0 6px 12px rgba(0, 0, 0, .35);
+    color: #f0ddb1;
+    cursor: pointer;
+    font: 600 13px var(--title-font);
+    text-shadow: 0 1px 2px #000;
+    transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+  }
+
+  .metal-button:hover { filter: brightness(1.17); }
+  .metal-button:active {
+    transform: translateY(3px);
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, .52), 0 1px 0 #1b120b, 0 2px 5px rgba(0, 0, 0, .35);
+  }
+
+  .small-button { min-height: 34px; padding: 5px 10px; font-size: 10px; white-space: nowrap; }
+  .tutorial-actions { display: none; }
+
+  .meditate-button {
+    min-height: 68px;
+    padding: 15px 30px;
+    border: 2px solid #d4ad58;
+    background: radial-gradient(ellipse at 50% 20%, #a67c2e, #5c421d 62%, #332315);
+    box-shadow: inset 0 2px rgba(255, 236, 174, .3), inset 0 -8px 14px rgba(0, 0, 0, .35), 0 7px 0 #1b120b, 0 0 25px rgba(255, 196, 54, .25);
+    color: #ffedbd;
+    font-size: clamp(16px, 3vw, 21px);
+  }
+
+  .meditate-button:active { transform: translateY(6px); }
+
+  .truth-button {
+    position: fixed;
+    z-index: 5;
+    top: 18px;
+    right: 18px;
+    border-color: #e3c36d;
+    background: linear-gradient(180deg, #a87c29, #5a3b17 55%, #2b1d11);
+    box-shadow: 0 0 20px rgba(255, 215, 0, .36), inset 0 1px rgba(255, 238, 186, .3), 0 4px 0 #1b120b;
+    animation: eye-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes eye-glow {
+    50% { box-shadow: 0 0 30px rgba(255, 215, 0, .72), inset 0 1px rgba(255, 238, 186, .3), 0 4px 0 #1b120b; }
+  }
+
+  .story-shade {
+    position: fixed;
+    z-index: 30;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 18px;
+    background: rgba(5, 3, 1, .78);
+    backdrop-filter: blur(5px);
+  }
+
+  .story-shade[hidden] { display: none; }
+
+  .story-modal {
+    position: relative;
+    width: min(500px, 100%);
+    padding: 28px clamp(18px, 5vw, 38px);
+    border: 2px solid #9d7628;
+    border-radius: 4px;
+    background:
+      repeating-linear-gradient(8deg, transparent 0 11px, rgba(95, 64, 27, .045) 12px, transparent 13px 21px),
+      radial-gradient(ellipse at 50% 0, #e4cf9d, #c9b37c 68%, #b69b65);
+    box-shadow: inset 0 0 0 4px rgba(91, 61, 25, .18), inset 0 0 30px rgba(66, 42, 17, .28), 0 25px 80px #000b;
+    color: #382512;
+    text-align: center;
+    animation: scroll-arrive .35s ease both;
+  }
+
+  @keyframes scroll-arrive {
+    from { opacity: 0; transform: translateY(14px) rotate(-1deg) scale(.97); }
+    to { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
+  }
+
+  .story-modal::before, .story-modal::after {
+    position: absolute;
+    width: 19px;
+    height: 19px;
+    border-color: #77551e;
+    border-style: solid;
+    content: "";
+    opacity: .75;
+  }
+
+  .story-modal::before { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
+  .story-modal::after { right: 8px; bottom: 8px; border-width: 0 1px 1px 0; }
+  .story-seal { color: #77551e; font-size: 27px; text-shadow: 0 1px #f0dfa9; }
+  .story-kicker { margin: 3px 0; color: #795a2b; font: 600 10px var(--title-font); letter-spacing: .2em; }
+  .story-modal h2 { margin: 7px 0 10px; color: #392714; font: 700 21px var(--title-font); }
+  .story-modal > p:not(.story-kicker) { margin: 8px auto 20px; color: #49351f; font-size: 19px; line-height: 1.5; }
+  .story-modal .metal-button { border-color: #70501d; background: linear-gradient(180deg, #755622, #513916 55%, #33220f); color: #f0d99e; }
+  .discard-toast {
+    position: fixed;
+    z-index: 20;
+    top: 18px;
+    left: 50%;
+    width: max-content;
+    max-width: calc(100vw - 28px);
+    padding: 11px 18px;
+    border: 1px solid #b8860b;
+    border-radius: 4px;
+    background: linear-gradient(145deg, rgba(65, 47, 27, .97), rgba(30, 22, 15, .97));
+    box-shadow: 0 8px 28px rgba(0, 0, 0, .48), inset 0 0 12px rgba(0, 0, 0, .45);
+    color: #ead8b5;
+    font: 600 13px var(--title-font);
+    text-align: center;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .discard-toast[hidden] { display: none; }
+  .card.discard-card { cursor: crosshair; touch-action: manipulation; }
+  .card.discard-card::after {
+    position: absolute;
+    right: 8px;
+    bottom: 7px;
+    color: #e1b98c;
+    content: "点击献祭";
+    font: 600 9px var(--title-font);
+    opacity: .82;
+  }
+  .story-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+  .secondary-button { background: linear-gradient(180deg, #786d55, #514633 55%, #332c20) !important; }
+  .close-mark { position: absolute; top: 12px; right: 13px; border: 0; background: none; color: #513916; cursor: pointer; font: 24px var(--body-font); }
+
+  .shop-modal { width: min(600px, 100%); }
+  .shop-list { display: grid; gap: 9px; margin-top: 14px; text-align: left; }
+  .shop-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px; border: 1px solid rgba(86, 59, 25, .38); background: rgba(255, 235, 187, .2); }
+  .shop-item strong { display: block; color: #392714; font: 700 11px var(--title-font); }
+  .shop-item span { display: block; color: #604a2c; font-size: 14px; }
+  .shop-item button { flex: 0 0 auto; min-height: 32px; padding: 4px 9px; font-size: 10px; }
+  .shop-item button:disabled { filter: grayscale(.8); opacity: .55; cursor: not-allowed; }
+
+  body.tutorial-intro .app { visibility: hidden; }
+  body.tutorial-meditate .topbar,
+  body.tutorial-meditate .quest-book,
+  body.tutorial-meditate .section-heading,
+  body.tutorial-meditate .hand,
+  body.tutorial-meditate .lower-note,
+  body.tutorial-meditate .side-panel { display: none; }
+
+  body.tutorial-meditate .layout { display: block; margin-top: 5vh; }
+  body.tutorial-meditate .altar { min-height: 70vh; }
+  body.tutorial-meditate .altar-content > :not(.tutorial-actions) { display: none; }
+  body.tutorial-meditate .tutorial-actions { display: grid; place-items: center; }
+
+  body.tutorial-curse-story .app,
+  body.tutorial-after-curse .app { visibility: hidden; }
+
+  body.tutorial-curse .topbar,
+  body.tutorial-curse .quest-book,
+  body.tutorial-curse .altar,
+  body.tutorial-curse .lower-note,
+  body.tutorial-curse .side-panel { display: none; }
+
+  body.tutorial-curse .section-heading { margin-top: 12vh; }
+  body.tutorial-curse .hand { justify-content: center; min-height: 190px; overflow: visible; }
+  body.tutorial-curse .card { flex-basis: 190px; min-height: 155px; }
+  body.tutorial-curse .card.cursed-card {
+    --accent: #740f19;
+    border-color: #740f19;
+    background: radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, .95), transparent 68%), linear-gradient(145deg, #321b19, #100c0b);
+    box-shadow: 0 0 20px rgba(77, 0, 0, .45), inset 0 0 22px rgba(0, 0, 0, .95);
+    animation: curse-smolder 2.4s ease-in-out infinite;
+  }
+  .card.cursed-card::before {
+    position: absolute;
+    right: 12%;
+    bottom: -8px;
+    left: 12%;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(12, 9, 8, .78);
+    content: "";
+    filter: blur(10px);
+    animation: curse-smoke 1.8s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  .card.cursed-card:hover { transform: translateY(-3px) scale(1.025); border-color: #bb302e; }
+  .card.cursed-card.burning { animation: curse-burn .32s ease-in forwards; pointer-events: none; }
+  @keyframes curse-burn {
+    to { opacity: 0; filter: grayscale(1) brightness(.25); transform: translateY(-14px) scale(.9); }
+  }
+  .card.cursed-card .card-tooltip { opacity: 0; }
+  .card.cursed-card:hover .card-tooltip,
+  .card.cursed-card:focus-visible .card-tooltip { opacity: 1; }
+  .card.cursed-card .card-tooltip::after {
+    display: block;
+    margin-top: 5px;
+    color: #d86c61;
+    content: "不可用";
+    font: 700 10px var(--title-font);
+  }
+
+  @keyframes curse-smolder {
+    50% { box-shadow: 0 0 28px rgba(112, 0, 0, .72), inset 0 0 26px #000; }
+  }
+  @keyframes curse-smoke {
+    to { opacity: .45; transform: translateY(-8px) scale(1.12); }
+  }
+
+  body.tutorial-draw-stage .topbar,
+  body.tutorial-draw-stage .quest-book,
+  body.tutorial-draw-stage .section-heading,
+  body.tutorial-draw-stage .hand,
+  body.tutorial-draw-stage .lower-note,
+  body.tutorial-draw-stage .side-panel { display: none; }
+  body.tutorial-draw-stage .layout { display: block; margin-top: 8vh; }
+  body.tutorial-draw-stage .altar { min-height: 68vh; }
+  body.tutorial-draw-stage .altar-content > :not(.essence):not(.tutorial-actions) { display: none; }
+  body.tutorial-draw-stage .tutorial-actions { display: grid; place-items: center; margin-top: 20px; }
+  body.tutorial-draw-stage #meditateButton { display: none; }
+  body.tutorial-draw-stage #drawFirstButton:not([hidden]) { display: inline-flex; align-items: center; justify-content: center; min-width: 230px; min-height: 60px; font-size: 17px; animation: eye-glow 1.5s ease-in-out infinite; }
+
+  body.tutorial-draw .tutorial-actions { display: flex; justify-content: center; margin-top: 18px; }
+  body.tutorial-draw #meditateButton { display: none; }
+  body.tutorial-draw #drawFirstButton:not([hidden]) { display: inline-flex; align-items: center; justify-content: center; min-width: 220px; min-height: 56px; font-size: 17px; animation: eye-glow 1.5s ease-in-out infinite; }
+  body.tutorial-done .tutorial-actions { display: flex; justify-content: center; margin-top: 12px; }
+
+  .dust-particle {
+    position: fixed;
+    z-index: 40;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #ffe38a;
+    box-shadow: 0 0 9px 3px rgba(255, 185, 35, .75);
+    pointer-events: none;
+    animation: dust-burst .75s ease-out forwards;
+  }
+
+  @keyframes dust-burst {
+    to { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.15); }
+  }
+
+  @media (max-width: 560px) {
+    .quest-book { align-items: flex-start; gap: 8px; padding: 10px; }
+    .quest-icon { font-size: 22px; }
+    .small-button { padding: 4px 7px; }
+    .truth-button { top: auto; right: 10px; bottom: 12px; }
+  }
+</style>
+<style>
+  :root {
+    --bg: #080b10;
+    --panel: #10151c;
+    --line: rgba(137, 164, 184, .22);
+    --text: #d6dce0;
+    --muted: #87949c;
+    --violet: #8ca5b4;
+  }
+
+  body {
+    color: #cbd2d6;
+    background:
+      radial-gradient(ellipse at 50% 4%, rgba(47, 63, 76, .23), transparent 54%),
+      radial-gradient(ellipse at 8% 100%, rgba(75, 22, 30, .2), transparent 38%),
+      repeating-linear-gradient(112deg, transparent 0 13px, rgba(157, 179, 190, .012) 14px, transparent 15px 27px),
+      #080b10;
+  }
+
+  .app { width: min(1120px, 100%); padding-bottom: 190px; }
+  .layout { display: block; }
+  .side-panel { display: none; }
+  .topbar { border-color: rgba(128, 152, 167, .2); }
+  .brand-mark {
+    border-color: #566775;
+    border-radius: 3px;
+    background: linear-gradient(145deg, #28343e, #111820);
+    box-shadow: 0 0 24px rgba(83, 111, 131, .17), inset 0 0 12px #0008;
+    color: #c2d0d7;
+  }
+  .brand h1 { color: #d3d9dc; }
+  .brand p, .eyebrow { color: #82939d; }
+  .run-tag {
+    border-color: #485864;
+    border-radius: 3px;
+    background: #11171d;
+    color: #a4b2ba;
+  }
+  .quest-book {
+    border-color: rgba(119, 144, 160, .38);
+    border-radius: 3px;
+    background: linear-gradient(112deg, rgba(27, 36, 44, .98), rgba(13, 18, 24, .98));
+    box-shadow: inset 0 0 18px #0009, 0 8px 22px #0005;
+  }
+  .quest-title-row h2, .quest-content p { color: #c4cdd1; }
+  .quest-title-row span, .quest-progress { color: #8c9da6; }
+  .quest-icon { color: #a3b6bf; text-shadow: 0 0 12px #8099aa44; }
+  .metal-button {
+    border-color: #748894;
+    border-radius: 3px;
+    background: linear-gradient(180deg, #45535d, #27313a 55%, #171f25);
+    box-shadow: inset 0 1px #e8f3f41c, 0 4px 0 #090d11, 0 8px 16px #0006;
+    color: #d5dde0;
+  }
+  .metal-button:hover { filter: brightness(1.2); }
+  .altar {
+    min-height: 280px;
+    border-color: rgba(120, 146, 160, .31);
+    border-radius: 4px;
+    background:
+      radial-gradient(ellipse at 50% 100%, rgba(69, 87, 100, .2), transparent 58%),
+      repeating-radial-gradient(circle at 50% 50%, transparent 0 43px, rgba(154, 174, 184, .025) 44px 45px, transparent 46px 82px),
+      linear-gradient(160deg, #151c23, #0b1015 72%);
+    box-shadow: 0 20px 52px #0008, inset 0 0 34px #0008;
+  }
+  .altar::before, .altar::after { border-color: rgba(144, 164, 175, .12); }
+  .essence {
+    color: #d9e1e4;
+    text-shadow: 0 0 22px rgba(138, 168, 182, .3), 0 0 48px #98b4c01c;
+  }
+  .rate-line { color: #899aa3; }
+  .rate-line strong { color: #b7c6cd; }
+  .stat-pill { border-color: #57677266; background: #070b10a8; color: #91a1aa; }
+  .stat-pill strong { color: #d0d9dd; }
+  .progress-caption { color: #8c9ba3; }
+  .progress-track { background: #030608; }
+  .progress-fill { background: linear-gradient(90deg, #435b6c, #a0b3bd); box-shadow: 0 0 12px #8fa7b64a; }
+  .shade { background: rgba(1, 4, 7, .84); }
+  .modal {
+    border-color: #657b88;
+    border-radius: 4px;
+    background: radial-gradient(ellipse at 50% 0, #34434d44, transparent 58%), #121920;
+    box-shadow: 0 26px 90px #000c, 0 0 38px #6f89941c, inset 0 0 22px #0006;
+  }
+  .modal h2 { color: #d1d9dc; }
+  .modal > p, .selection-tip { color: #96a4ab; }
+  .modal-symbol { border-color: #657b88; background: #455c692c; color: #d1dde1; }
+  .offer-card {
+    border-color: #687a84;
+    background: linear-gradient(155deg, #202a31, #11171d);
+    color: #cbd3d6;
+  }
+  .offer-card .card-description { color: #aab6bc; }
+  .story-shade { background: rgba(1, 4, 7, .88); }
+  .story-modal {
+    border-color: #657b88;
+    background: repeating-linear-gradient(8deg, transparent 0 11px, #9bb3bc08 12px, transparent 13px 21px), radial-gradient(ellipse at 50% 0, #26333c, #151d24 72%, #10161c);
+    box-shadow: inset 0 0 0 4px #90a7ad0b, inset 0 0 30px #0009, 0 25px 80px #000d;
+    color: #cbd3d6;
+  }
+  .story-modal::before, .story-modal::after { border-color: #778b95; }
+  .story-seal, .story-kicker { color: #9badb5; text-shadow: none; }
+  .story-modal h2 { color: #d9e0e2; }
+  .story-modal > p:not(.story-kicker) { color: #abb7bc; }
+  .story-modal .metal-button { border-color: #718590; background: linear-gradient(180deg, #45555f, #29343d 55%, #171f25); color: #d8e0e2; }
+  .shop-item { border-color: #55656e; background: #9daeb20b; }
+  .shop-item strong { color: #d8e0e2; }
+  .shop-item span { color: #a6b2b8; }
+  .discard-toast {
+    border-color: #748792;
+    background: linear-gradient(145deg, #222d35f7, #10171df7);
+    color: #cbd4d8;
+  }
+
+  .grimoire-pages {
+    position: fixed;
+    z-index: 6;
+    right: 22px;
+    bottom: 122px;
+    display: none;
+    width: min(720px, calc(100vw - 44px));
+    min-height: 230px;
+    padding: 15px 20px 10px;
+    border: 1px solid #756950;
+    border-radius: 3px 10px 4px 5px;
+    background:
+      linear-gradient(90deg, rgba(0, 0, 0, .36), transparent 5%, transparent 95%, rgba(0, 0, 0, .28)),
+      repeating-linear-gradient(0deg, transparent 0 24px, rgba(77, 81, 79, .16) 25px, transparent 26px),
+      linear-gradient(105deg, #b7b09b, #d0c9b3 48%, #aaa58f);
+    box-shadow: 0 16px 42px #000c, inset 0 0 0 5px rgba(36, 30, 23, .2), inset 0 0 28px rgba(25, 23, 19, .38);
+    color: #292d2d;
+    transform-origin: 95% 100%;
+  }
+  body.hand-open .grimoire-pages, body.discard-mode .grimoire-pages { display: block; animation: pages-unfold .32s cubic-bezier(.2,.75,.25,1) both; }
+  @keyframes pages-unfold { from { opacity: 0; transform: perspective(800px) rotateX(-18deg) scale(.88) translateY(20px); } to { opacity: 1; transform: perspective(800px) rotateX(0) scale(1) translateY(0); } }
+  .pages-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 0 4px 7px;
+    border-bottom: 1px solid rgba(55, 57, 52, .35);
+    color: #343a39;
+    font: 600 11px var(--title-font);
+    letter-spacing: .08em;
+  }
+  .pages-heading span:last-child { color: #555e5f; font: 12px var(--body-font); letter-spacing: 0; text-align: right; }
+  .pages-footnote { padding: 0 4px; color: #62665f; font: 12px var(--body-font); text-align: center; }
+  .hand {
+    display: flex;
+    min-height: 184px;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 15px 26px 6px;
+    scrollbar-color: #555d5b66 transparent;
+  }
+  .empty-hand {
+    display: grid;
+    min-width: 100%;
+    min-height: 145px;
+    place-items: center;
+    border: 1px dashed rgba(56, 61, 59, .34);
+    color: #5f6562;
+    font: 15px var(--body-font);
+  }
+  .hand .card {
+    flex: 0 0 148px;
+    min-height: 160px;
+    margin-left: -63px;
+    padding: 15px 13px;
+    clip-path: polygon(4% 2%,12% 3%,18% 1%,27% 3%,35% 1%,43% 3%,51% 1%,60% 3%,69% 1%,78% 3%,88% 1%,97% 3%,96% 97%,87% 96%,79% 99%,69% 96%,60% 98%,50% 96%,40% 99%,30% 96%,20% 98%,11% 96%,3% 98%);
+    border: 0;
+    background:
+      radial-gradient(ellipse at 50% 0, color-mix(in srgb, var(--accent) 10%, transparent), transparent 65%),
+      repeating-linear-gradient(172deg, transparent 0 12px, rgba(225, 221, 202, .025) 13px, transparent 14px 23px),
+      linear-gradient(158deg, #353b3c, #1a2023 72%, #11171a);
+    box-shadow: 0 10px 18px #0008, inset 0 0 0 1px #bec8c51c, inset 0 0 16px #0008;
+    color: #c7cdcc;
+    transform: rotate(var(--fan-angle, 0deg)) translateY(var(--fan-lift, 0px));
+    transform-origin: 50% 118%;
+    transition: transform .2s ease, filter .2s ease;
+  }
+  .hand .card:first-child { margin-left: 0; }
+  .hand .card:hover, .hand .card:focus-visible {
+    transform: translateY(-24px) rotate(var(--fan-angle, 0deg)) scale(1.055);
+    filter: brightness(1.18);
+  }
+  .hand .card-school { color: color-mix(in srgb, var(--accent) 72%, #d2d8d8); font: 700 9px var(--title-font); }
+  .hand .card-name { color: #e0dfd7; font: 700 12px var(--title-font); text-shadow: 0 1px #000; }
+  .hand .card-rarity { color: #aeb8b8; font: 13px var(--body-font); }
+  .hand .card-mark { color: color-mix(in srgb, var(--accent) 75%, #d0d5d1); }
+  .hand .card-tooltip {
+    top: auto;
+    bottom: calc(100% + 8px);
+    border-color: #6d7c7c;
+    border-radius: 2px;
+    background: #11181ceF;
+    color: #cbd4d4;
+  }
+  .hand .card-tooltip strong { color: #e0e2d9; }
+  .hand .discard-card {
+    cursor: grab;
+    touch-action: none;
+    outline: 1px solid #8a4549;
+    background: linear-gradient(155deg, #3b292c, #20191c 72%, #141215);
+  }
+  .hand .discard-card::after {
+    right: 14px;
+    bottom: 10px;
+    color: #dfa4a3;
+    content: "拖入恶魔";
+    font: 700 9px var(--title-font);
+    opacity: .9;
+  }
+  .hand .discard-card:hover { cursor: grabbing; border-color: #d57775; }
+  .hand .card.dragging {
+    z-index: 50 !important;
+    cursor: grabbing;
+    filter: brightness(1.35) drop-shadow(0 10px 14px #000b);
+    transform: translate(var(--drag-x), var(--drag-y)) rotate(var(--fan-angle, 0deg)) scale(1.08);
+    transition: none;
+  }
+  .hand .card.swallowed { pointer-events: none; animation: page-swallowed .48s cubic-bezier(.5,0,.8,.2) forwards; }
+  @keyframes page-swallowed {
+    to { opacity: 0; filter: brightness(.2) blur(5px); transform: translate(var(--swallow-x), var(--swallow-y)) rotate(24deg) scale(.08); }
+  }
+
+  .demon-dock {
+    position: fixed;
+    z-index: 7;
+    bottom: 12px;
+    left: 18px;
+    display: grid;
+    width: 186px;
+    justify-items: center;
+    gap: 0;
+    padding: 5px 12px 8px;
+    border: 1px solid rgba(99, 61, 68, .54);
+    border-radius: 48% 48% 5px 5px / 32% 32% 5px 5px;
+    background: radial-gradient(ellipse at 50% 78%, rgba(89, 27, 35, .28), transparent 66%), linear-gradient(180deg, rgba(20, 22, 26, .85), rgba(7, 9, 12, .96));
+    box-shadow: 0 10px 32px #000c, inset 0 0 24px #0009;
+    transition: border-color .2s, box-shadow .2s, transform .2s;
+  }
+  .demon-glow {
+    position: absolute;
+    right: 22%;
+    bottom: 32px;
+    left: 22%;
+    height: 25px;
+    border-radius: 50%;
+    background: #741d2c;
+    filter: blur(24px);
+    opacity: .38;
+    transition: opacity .2s;
+  }
+  .demon-face { position: relative; z-index: 1; width: 148px; height: 118px; overflow: visible; filter: drop-shadow(0 5px 8px #000a); }
+  .demon-horn { fill: #25282a; stroke: #778184; stroke-width: 4; stroke-linejoin: round; }
+  .demon-head { fill: #22282a; stroke: #718087; stroke-width: 2.5; }
+  .demon-brow { fill: none; stroke: #111719; stroke-width: 8; stroke-linecap: round; }
+  .demon-eye { fill: #bd5352; filter: drop-shadow(0 0 5px #bd3948); }
+  .demon-mouth { fill: #09090c; stroke: #8c4448; stroke-width: 3; transform-box: fill-box; transform-origin: center top; }
+  .demon-tooth { fill: #b7b4a5; stroke: #68645d; stroke-width: 1; }
+  .demon-caption { position: relative; z-index: 1; color: #aab3b3; font: 600 10px var(--title-font); letter-spacing: .14em; }
+  .demon-instruction { position: relative; z-index: 1; color: #777f82; font: 12px var(--body-font); }
+  .demon-dock.drop-ready {
+    border-color: #d47170;
+    box-shadow: 0 0 28px #a5394a66, inset 0 0 28px #8b253a44;
+    transform: scale(1.06);
+  }
+  .demon-dock.drop-ready .demon-glow { opacity: .9; }
+  .demon-dock.eating { animation: demon-devour .42s ease-in-out; }
+  .demon-dock.eating .demon-mouth { animation: demon-bite .42s ease-in-out; }
+  @keyframes demon-devour { 35% { transform: scale(1.1) translateY(-5px); } 70% { transform: scale(.96,1.06); } }
+  @keyframes demon-bite { 35% { transform: scaleY(1.7); } 72% { transform: scaleY(.7); } }
+
+  .grimoire-dock { position: fixed; z-index: 7; right: 20px; bottom: 14px; }
+  .grimoire-button {
+    position: relative;
+    display: grid;
+    width: 94px;
+    justify-items: center;
+    gap: 3px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #c7c0ab;
+    cursor: pointer;
+    filter: drop-shadow(0 9px 12px #000b);
+    transition: transform .2s, filter .2s;
+  }
+  .grimoire-button:hover, .grimoire-button:focus-visible { transform: translateY(-6px) rotate(2deg); filter: drop-shadow(0 12px 18px #000c) brightness(1.15); outline: none; }
+  .book-cover {
+    position: relative;
+    display: grid;
+    width: 78px;
+    height: 96px;
+    align-content: center;
+    justify-items: center;
+    gap: 5px;
+    border: 2px solid #69736e;
+    border-radius: 4px 9px 7px 3px;
+    background:
+      linear-gradient(90deg, #111619 0 10%, transparent 11%),
+      repeating-linear-gradient(0deg, transparent 0 15px, #aab3a414 16px, transparent 17px 25px),
+      linear-gradient(135deg, #3c4140, #1a2022 62%, #101517);
+    box-shadow: inset 0 0 0 4px rgba(8, 11, 12, .45), inset 5px 0 9px #0009, 3px 5px 0 #0a0d0f;
+    transform: perspective(140px) rotateY(-8deg);
+  }
+  .book-cover::before, .book-cover::after { position: absolute; right: 7px; left: 13px; height: 1px; background: #9aa39b55; content: ""; }
+  .book-cover::before { top: 10px; }
+  .book-cover::after { bottom: 10px; }
+  .book-emblem { display: grid; width: 28px; height: 28px; place-items: center; border: 1px solid #9f9b82; border-radius: 50%; color: #c8bd93; font-size: 15px; text-shadow: 0 0 10px #ddd0a244; }
+  .book-title { color: #b8b39f; font: 600 8px/1.25 var(--title-font); letter-spacing: .08em; text-align: center; }
+  .book-caption { color: #939c9d; font: 12px var(--title-font); letter-spacing: .07em; text-shadow: 0 2px 4px #000; }
+  .book-count {
+    position: absolute;
+    top: -5px;
+    right: -2px;
+    display: grid;
+    min-width: 22px;
+    height: 22px;
+    place-items: center;
+    padding: 0 5px;
+    border: 1px solid #7e8986;
+    border-radius: 50%;
+    background: #171d20;
+    color: #d5d8cd;
+    font: 11px var(--title-font);
+  }
+
+  body.tutorial-intro .demon-dock, body.tutorial-intro .grimoire-dock,
+  body.tutorial-meditate .demon-dock, body.tutorial-meditate .grimoire-dock,
+  body.tutorial-curse-story .demon-dock, body.tutorial-curse-story .grimoire-dock,
+  body.tutorial-after-curse .demon-dock, body.tutorial-after-curse .grimoire-dock,
+  body.tutorial-draw-stage .demon-dock, body.tutorial-draw-stage .grimoire-dock { visibility: hidden; }
+  body.tutorial-curse .grimoire-pages { display: block; }
+  body.tutorial-curse .pages-footnote { display: none; }
+  body.tutorial-curse .demon-dock { bottom: 12px; }
+  body.tutorial-curse .hand .card { flex-basis: 190px; min-height: 155px; }
+  body.tutorial-curse .hand { min-height: 184px; overflow: visible; }
+
+  @media (max-width: 700px) {
+    .app { padding: 14px 12px 210px; }
+    .grimoire-pages { right: 10px; bottom: 174px; width: calc(100vw - 20px); min-height: 210px; padding: 12px 11px 8px; }
+    .hand { min-height: 164px; justify-content: flex-start; padding: 14px 22px 8px; }
+    .hand .card { flex-basis: 132px; min-height: 145px; margin-left: -66px; }
+    .hand .card:first-child { margin-left: 0; }
+    .demon-dock { bottom: 8px; left: 8px; width: 144px; padding: 2px 8px 6px; }
+    .demon-face { width: 118px; height: 94px; }
+    .demon-instruction { font-size: 10px; }
+    .grimoire-dock { right: 9px; bottom: 9px; }
+    .grimoire-button { width: 78px; }
+    .book-cover { width: 62px; height: 76px; }
+    .book-emblem { width: 23px; height: 23px; }
+    .book-title { font-size: 7px; }
+    .pages-heading { font-size: 10px; }
+    .pages-heading span:last-child { font-size: 11px; }
+    .altar { min-height: 260px; }
+    .story-modal > p:not(.story-kicker) { font-size: 17px; }
+  }
+
+  @media (max-width: 380px) {
+    .demon-dock { width: 126px; left: 4px; }
+    .demon-face { width: 106px; height: 85px; }
+    .grimoire-dock { right: 4px; }
+    .grimoire-pages { bottom: 164px; }
+    .hand .card { flex-basis: 122px; margin-left: -72px; }
+    .hand .card:first-child { margin-left: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .grimoire-pages, .demon-dock.eating, .demon-dock.eating .demon-mouth, .hand .card.swallowed { animation-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body class="tutorial-intro">
+<div class="app">
+<header class="topbar"><div class="brand"><div class="brand-mark" aria-hidden="true">✦</div><div><h1>虚空炼金术士</h1><p>VOID ALCHEMIST</p></div></div><div class="run-tag">炼金实验 · <span id="elapsed">00:00</span></div></header>
+<section class="quest-book" id="questBook" aria-label="古书残页任务"><div class="quest-icon" aria-hidden="true">❖</div><div class="quest-content"><div class="quest-title-row"><h2 id="questTitle">学徒的试炼</h2><span id="questCount">任务 1 / 4</span></div><p id="questDescription">累计获得 500 精华</p><div class="quest-track"><div class="quest-fill" id="questFill"></div></div><div class="quest-progress" id="questProgress">0 / 500</div></div><button class="metal-button small-button" id="inkShopButton" type="button">墨水商店 · <span id="inkCount">0</span></button></section>
+<div class="layout" id="gameLayout"><main class="main-column">
+<section class="altar" aria-label="精华与产出"><div class="altar-content"><div class="eyebrow">当前魔法精华</div><div class="essence" id="essence">0</div><div class="rate-line">每秒净产出 <strong id="rate">1</strong> 精华 / s</div><div class="stats"><div class="stat-pill">手牌 <strong id="handCount">0 / 8</strong></div><div class="stat-pill">已选卡牌 <strong id="draftCount">0</strong></div><div class="stat-pill">金币抛掷 <strong id="coinTimer">10.0s</strong></div></div><div class="progress-wrap"><div class="progress-caption"><span>下一次卡牌抉择</span><span id="progressText">0 / 50 精华</span></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div><div class="tutorial-actions" id="tutorialActions"><button class="metal-button meditate-button" id="meditateButton" type="button">✦ 冥想，汲取精华 ✦</button><button class="metal-button" id="drawFirstButton" type="button" hidden>抽取卡牌</button></div></div></section>
+</main></div></div>
+<section class="grimoire-pages" id="grimoirePages" aria-label="炼金手牌" aria-hidden="true"><div class="pages-heading"><span>残缺的炼金手札</span><span id="handHint">每张卡牌都会改变你的产出</span></div><section class="hand" id="hand" aria-label="当前手牌"></section><div class="pages-footnote" id="pagesFootnote">点击书本展开手牌</div></section>
+<div class="demon-dock" id="demonDock" aria-label="恶魔献祭区域"><div class="demon-glow"></div><svg class="demon-face" viewBox="0 0 180 150" role="img" aria-hidden="true"><path class="demon-horn" d="M43 44 18 8l8 48m93-12L162 8l-8 48"/><path class="demon-head" d="M32 48Q35 25 54 31l15 8q21-12 42 0l15-8q19-6 22 17l-4 54q-13 30-56 32-43-2-56-32z"/><path class="demon-brow" d="m43 64 28 8m66-8-28 8"/><path class="demon-eye" d="m47 74 22-5-7 13-13 2zm86 0-22-5 7 13 13 2z"/><path class="demon-mouth" d="M57 94q33 25 66 0l-5 31q-28 17-56 0z"/><path class="demon-tooth" d="m63 98 13 7-3 12zm52 0-13 7 3 12zm-32 19 8-4 8 4-8 3z"/></svg><span class="demon-caption" id="demonCaption">虚空之口</span><span class="demon-instruction">将手牌拖入此处献祭</span></div>
+<div class="grimoire-dock"><button class="grimoire-button" id="grimoireButton" type="button" aria-expanded="false" aria-controls="grimoirePages" aria-label="展开炼金手牌"><span class="book-cover" aria-hidden="true"><span class="book-emblem">✧</span><span class="book-title">VOID<br>GRIMOIRE</span></span><span class="book-caption">炼金手札</span><span class="book-count" id="bookCount">0</span></button></div>
+<div class="shade" id="shade" hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-symbol" id="modalSymbol" aria-hidden="true">✧</div><h2 id="modalTitle">虚空回应了你的召唤</h2><p id="modalMessage">选择一张卡牌，决定炼金术的下一步。</p><div class="offer-grid" id="offerGrid"></div><div class="selection-tip" id="selectionTip"></div></section></div>
+<div class="discard-toast" id="discardToast" role="status" aria-live="polite" hidden></div>
+<div class="story-shade" id="introShade"><section class="story-modal" role="dialog" aria-modal="true" aria-labelledby="introTitle"><div class="story-seal">❖</div><p class="story-kicker">残缺的炼金笔记</p><h2 id="introTitle">导师的遗言</h2><p>学徒，你的导师因触碰虚空禁忌而陨落。他留下了一本残缺的笔记和一张危险的黑魔法卡牌。现在，请通过【冥想】汇聚精华，开始你的试炼……</p><button class="metal-button" id="startAlchemyButton" type="button">开始炼金</button></section></div>
+<div class="story-shade" id="guideShade" hidden><section class="story-modal guide-modal" role="dialog" aria-modal="true" aria-labelledby="guideTitle"><div class="story-seal">✧</div><p class="story-kicker">导师留下的警告</p><h2 id="guideTitle">禁忌残卷正在苏醒</h2><p id="guideMessage">导师的笔记显示，那张【禁忌残卷】正在吞噬你的魔法。必须立刻将它销毁，用纯粹的精华换取新的知识！</p><button class="metal-button" id="guideDrawButton" type="button">销毁禁忌残卷</button></section></div>
+<div class="story-shade" id="afterCurseShade" hidden><section class="story-modal" role="dialog" aria-modal="true" aria-labelledby="afterCurseTitle"><div class="story-seal">✧</div><p class="story-kicker">虚空重新归于寂静</p><h2 id="afterCurseTitle">导师的笔记已回应</h2><p>做得很好。导师的笔记已为你敞开，使用刚刚积攒的 10 点精华，进行一次炼金实验（抽卡）吧。</p><button class="metal-button" id="beginFirstDrawButton" type="button">继续实验</button></section></div>
+<div class="story-shade" id="questShade" hidden><section class="story-modal" role="dialog" aria-modal="true" aria-labelledby="questModalTitle"><div class="story-seal">❖</div><p class="story-kicker">古书残页已显现</p><h2 id="questModalTitle"></h2><p id="questRewardText"></p><button class="metal-button" id="claimQuestButton" type="button">收下馈赠</button></section></div>
+<div class="story-shade" id="prestigeShade" hidden><section class="story-modal" role="dialog" aria-modal="true" aria-labelledby="prestigeTitle"><div class="story-seal">◉</div><p class="story-kicker">真理之眼</p><h2 id="prestigeTitle">重铸真理</h2><p id="prestigeMessage">献祭当前的所有精华与卡牌，换取永不磨灭的【源初墨水】。你确定吗？</p><div class="story-actions"><button class="metal-button" id="confirmPrestigeButton" type="button">献祭并转生</button><button class="metal-button secondary-button" id="cancelPrestigeButton" type="button">暂不献祭</button></div></section></div>
+<div class="story-shade" id="shopShade" hidden><section class="story-modal shop-modal" role="dialog" aria-modal="true" aria-labelledby="shopTitle"><button class="close-mark" id="closeShopButton" type="button" aria-label="关闭">×</button><div class="story-seal">✒</div><p class="story-kicker">源初墨水的回响</p><h2 id="shopTitle">墨水商店</h2><p>将转生留下的墨水注入永恒天赋。</p><div class="shop-list" id="shopList"></div></section></div>
+<button class="metal-button truth-button" id="prestigeButton" type="button" hidden>◉ 真理之眼</button>
+<script>
+(()=>{"use strict";
+const cards={
+curse:{name:"导师的诅咒",school:"诅咒",color:"#8b0000",rarity:"禁忌",description:"阻塞手牌，无产出。销毁它以继续试炼。"},
+apprentice:{name:"学徒提炼",school:"基础",color:"#e9e6f2",rarity:"普通",description:"基础每秒产出 +1。"},
+pipeline:{name:"能量管线",school:"基础",color:"#e9e6f2",rarity:"普通",description:"如果手牌中有至少 3 张【科技】卡，每秒产出 +5。"},
+simplify:{name:"删繁就简",school:"基础",color:"#e9e6f2",rarity:"普通",description:"选择此卡后不加入手牌。连续销毁 2 张现有手牌，并获得 50 精华。"},
+gears:{name:"自动化齿轮",school:"科技",color:"#65b4ff",rarity:"稀有",description:"每拥有 1 张【科技】卡，基础每秒产出 +2。"},
+overclock:{name:"超频引擎",school:"科技",color:"#65b4ff",rarity:"稀有",description:"总产出 ×1.5；每秒额外消耗 10 精华。精华不足以支付消耗时，产出归零。"},
+chip:{name:"芯片迭代",school:"科技",color:"#c18cff",rarity:"史诗",description:"每次选择新卡牌时，永久增加 20% 总产出。"},
+blood:{name:"献祭之血",school:"暗黑",color:"#ff6687",rarity:"稀有",description:"总产出 ×3；手牌上限永久减少 1 张，最低减少至 5 张。"},
+glutton:{name:"暴食者",school:"暗黑",color:"#ff6687",rarity:"稀有",description:"每当你销毁 1 张卡牌，总产出永久 +10%。"},
+gamble:{name:"梭哈",school:"暗黑",color:"#ff6687",rarity:"史诗",description:"每 10 秒抛掷一次硬币：50% 概率当前精华翻倍，50% 概率当前精华清零。"},
+haste:{name:"时间加速",school:"禁忌",color:"#f2d27a",rarity:"史诗",description:"所有每 10 秒触发的效果改为每 3 秒触发一次。"},
+greed:{name:"无尽贪婪",school:"禁忌",color:"#f2d27a",rarity:"史诗",description:"取消手牌上限 8 张的限制。"}
+};
+const icons={curse:"☠",apprentice:"✧",pipeline:"⌁",simplify:"−",gears:"⚙",overclock:"ϟ",chip:"▦",blood:"♥",glutton:"◉",gamble:"☯",haste:"⌛",greed:"∞"};
+const el=id=>document.getElementById(id),ui={essence:el("essence"),rate:el("rate"),handCount:el("handCount"),draftCount:el("draftCount"),coinTimer:el("coinTimer"),elapsed:el("elapsed"),progressText:el("progressText"),progressFill:el("progressFill"),hand:el("hand"),handHint:el("handHint"),grimoirePages:el("grimoirePages"),grimoireButton:el("grimoireButton"),bookCount:el("bookCount"),pagesFootnote:el("pagesFootnote"),demonDock:el("demonDock"),demonCaption:el("demonCaption"),shade:el("shade"),discardToast:el("discardToast"),modalTitle:el("modalTitle"),modalMessage:el("modalMessage"),modalSymbol:el("modalSymbol"),offerGrid:el("offerGrid"),selectionTip:el("selectionTip"),questTitle:el("questTitle"),questCount:el("questCount"),questDescription:el("questDescription"),questFill:el("questFill"),questProgress:el("questProgress"),inkCount:el("inkCount"),questShade:el("questShade"),questModalTitle:el("questModalTitle"),questRewardText:el("questRewardText"),guideShade:el("guideShade"),afterCurseShade:el("afterCurseShade"),prestigeShade:el("prestigeShade"),prestigeMessage:el("prestigeMessage"),shopShade:el("shopShade"),shopList:el("shopList"),prestigeButton:el("prestigeButton"),meditateButton:el("meditateButton"),drawFirstButton:el("drawFirstButton")};
+let essence=0,hand=[],state="intro",draftProgress=0,selectedCards=0,drawCount=0,elapsedSeconds=0,coinClock=0,permanentMultiplier=1,bloodPenalty=0,pending=null,offers=[],audio=null,lastFrame=performance.now(),tutorialStage="intro",tutorialDraft=false,questTracking=false,questIndex=0,questPopup=false,totalEarned=0,basicDestroyed=0,tabooUnlocked=false,prestigeUnlocked=false,ink=0,questProductionBonus=0,inkMultiplierLevel=0,inkClickLevel=0,inkHandUpgrade=0,rareGuarantee=false,handOpen=false,dragPointerId=null,dragCard=null,dragStartX=0,dragStartY=0,dragActivated=false,suppressClickCard=null,sacrificeInProgress=false;const logs=[];
+let baseHandLimit=8,handRenderKey="";
+const count=id=>hand.filter(x=>x===id).length;
+const schoolCount=s=>hand.filter(id=>cards[id]&&cards[id].school===s).length;
+function limit(pendingId=null){return count("greed")||pendingId==="greed"?Infinity:Math.max(5,baseHandLimit-bloodPenalty)}
+function rate(){const tech=schoolCount("科技");let base=1+count("apprentice")+(tech>=3?5:0)+count("gears")*tech*2+questProductionBonus;const gross=base*permanentMultiplier*Math.pow(2,inkMultiplierLevel)*Math.pow(3,count("blood"))*Math.pow(1.5,count("overclock"));const upkeep=count("overclock")*10;return upkeep&&essence<upkeep?0:gross-upkeep}
+function fmt(n){if(!Number.isFinite(n))return"∞";if(Math.abs(n)>=1e5)return n.toExponential(2);return n.toLocaleString("zh-CN",{maximumFractionDigits:0})}
+function timeFmt(n){const s=Math.floor(n);return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
+const quests=[
+{title:"学徒的试炼",description:"累计获得 500 精华",target:500,reward:"稀有科技图纸：自动化齿轮"},
+{title:"禁忌的诱惑",description:"手牌中同时装备 3 张暗黑卡",target:3,reward:"永久产出 +5 / 秒"},
+{title:"焚尽旧篇",description:"累计销毁 5 张基础卡",target:5,reward:"解锁禁忌卡牌池"},
+{title:"真理的门槛",description:"每秒产出达到 1,000",target:1000,reward:"解锁真理之眼与转生"}
+];
+function questValue(index=questIndex){if(index===0)return totalEarned;if(index===1)return schoolCount("暗黑");if(index===2)return basicDestroyed;return Math.max(0,rate())}
+function renderQuest(){if(questIndex>=quests.length){ui.questTitle.textContent="古书残页已读尽";ui.questCount.textContent="试炼完成";ui.questDescription.textContent="真理之眼已向你开启。";ui.questFill.style.width="100%";ui.questProgress.textContent="✧";ui.inkCount.textContent=fmt(ink);return}const q=quests[questIndex],value=questValue();ui.questTitle.textContent=q.title;ui.questCount.textContent="任务 "+(questIndex+1)+" / "+quests.length;ui.questDescription.textContent=q.description;ui.questFill.style.width=Math.min(100,value/q.target*100)+"%";ui.questProgress.textContent=fmt(Math.min(value,q.target))+" / "+fmt(q.target);ui.inkCount.textContent=fmt(ink);ui.prestigeButton.hidden=!prestigeUnlocked}
+function questComplete(){if(questIndex===0)return totalEarned>=500;if(questIndex===1)return schoolCount("暗黑")>=3;if(questIndex===2)return basicDestroyed>=5;return rate()>=1000}
+function overlaysClear(){return ui.shade.hidden&&ui.questShade.hidden&&ui.shopShade.hidden&&ui.prestigeShade.hidden}
+function processPendingOverlays(){if(state!=="playing"||tutorialStage!=="done"||!overlaysClear())return;if(checkQuest())return;if(draftProgress>=50)openDraft()}
+function checkQuest(){if(state!=="playing"||tutorialStage!=="done"||questPopup||questIndex>=quests.length||!overlaysClear()||!questComplete())return false;questPopup=true;state="quest";const q=quests[questIndex];ui.questModalTitle.textContent=q.title+" · 完成";ui.questRewardText.textContent="残页记载着你的成就。奖励："+q.reward+"。";ui.questShade.hidden=false;tone(720,.18);return true}
+function claimQuest(){if(!questPopup)return;const completed=questIndex;questPopup=false;ui.questShade.hidden=true;questIndex++;if(completed===1)questProductionBonus+=5;if(completed===2)tabooUnlocked=true;if(completed===3)prestigeUnlocked=true;state="playing";if(completed===0){pending={cardId:"gears",minimum:0,reward:0,kind:"quest"};if(Number.isFinite(limit())&&hand.length>=limit()){pending.minimum=1;beginDiscard("任务奖励需要空间：销毁一张手牌，接收【自动化齿轮】。")}else{hand.push("gears");pending=null;addLog("任务奖励：获得稀有科技卡【自动化齿轮】。","special")}}render();processPendingOverlays()}
+function beginMeditation(){tutorialStage="meditate";state="meditate";document.body.classList.remove("tutorial-intro");document.body.classList.add("tutorial-meditate");el("introShade").hidden=true;ui.meditateButton.focus();render()}
+function burstDust(x,y){for(let i=0;i<12;i++){const p=document.createElement("i"),angle=Math.PI*2*i/12+Math.random()*.3,distance=24+Math.random()*48;p.className="dust-particle";p.style.left=x+"px";p.style.top=y+"px";p.style.setProperty("--dx",Math.cos(angle)*distance+"px");p.style.setProperty("--dy",Math.sin(angle)*distance+"px");document.body.append(p);p.addEventListener("animationend",()=>p.remove(),{once:true})}}
+function meditate(event){if(tutorialStage!=="meditate"&&tutorialStage!=="done")return;const isTutorial=tutorialStage==="meditate",gain=isTutorial?1:1+inkClickLevel;essence+=gain;if(questTracking)totalEarned+=gain;if(!isTutorial)draftProgress+=gain;burstDust(event.clientX,event.clientY);tone(540,.08);if(!isTutorial)processPendingOverlays();if(isTutorial&&essence>=10){essence=10;hand=["curse"];tutorialStage="curse-story";state="curse-story";document.body.classList.remove("tutorial-meditate");document.body.classList.add("tutorial-curse-story");ui.guideShade.hidden=false}render()}
+function beginCurseDiscard(){if(tutorialStage!=="curse-story")return;tutorialStage="curse-discard";state="discard";pending={cardId:null,minimum:1,reward:0,kind:"tutorial-curse"};ui.guideShade.hidden=true;document.body.classList.remove("tutorial-curse-story");document.body.classList.add("tutorial-curse");render()}
+function startTutorialDraft(){if(tutorialStage!=="after-curse"&&tutorialStage!=="draw")return;tutorialStage="draw";ui.afterCurseShade.hidden=true;document.body.classList.remove("tutorial-after-curse");document.body.classList.add("tutorial-draw-stage");ui.drawFirstButton.textContent="使用 10 精华，抽取卡牌";ui.drawFirstButton.hidden=false;render()}
+function beginFirstDraft(){if(tutorialStage!=="draw")return;openDraft(true)}
+function openPrestige(){if(!prestigeUnlocked||!overlaysClear())return;ui.prestigeShade.hidden=false;ui.prestigeMessage.textContent="献祭当前的所有精华与卡牌，换取永不磨灭的【源初墨水】。你确定吗？本次将获得 "+fmt(Math.max(1,Math.floor(Math.sqrt(Math.max(1,rate())))))+" 滴墨水。"}
+function prestige(){if(!prestigeUnlocked)return;const earned=Math.max(1,Math.floor(Math.sqrt(Math.max(1,rate()))));ink+=earned;essence=0;hand=[];state="playing";draftProgress=0;selectedCards=0;drawCount=0;elapsedSeconds=0;coinClock=0;permanentMultiplier=1;bloodPenalty=0;totalEarned=0;basicDestroyed=0;tabooUnlocked=false;questIndex=0;questPopup=false;pending=null;offers=[];ui.shade.hidden=true;ui.prestigeShade.hidden=true;ui.offerGrid.replaceChildren();addLog("转生完成：获得 "+earned+" 滴源初墨水，炼金循环已重铸。","special");render();processPendingOverlays()}
+function renderShop(){ui.shopList.replaceChildren();const items=[{id:"production",name:"永恒增幅",desc:"全局产出永久 ×2 · 等级 "+inkMultiplierLevel,cost:5*Math.pow(2,inkMultiplierLevel),owned:false},{id:"click",name:"指尖炼金",desc:"冥想点击产出永久 +1 · 等级 "+inkClickLevel,cost:3*(inkClickLevel+1),owned:false},{id:"hand",name:"扩展手册",desc:"基础手牌上限永久 +2",cost:8,owned:inkHandUpgrade>0},{id:"rare",name:"稀有预兆",desc:"抽卡时至少出现 1 张稀有或史诗卡",cost:10,owned:rareGuarantee}];for(const item of items){const row=document.createElement("div"),info=document.createElement("div"),title=document.createElement("strong"),desc=document.createElement("span"),button=document.createElement("button");row.className="shop-item";title.textContent=item.name;desc.textContent=item.desc;info.append(title,desc);button.className="metal-button";button.type="button";button.textContent=item.owned?"已掌握":"购买 · "+item.cost+" 墨";button.disabled=item.owned||ink<item.cost;button.addEventListener("click",()=>buyTalent(item.id,item.cost));row.append(info,button);ui.shopList.append(row)}}
+function buyTalent(id,cost){if(ink<cost)return;ink-=cost;if(id==="production")inkMultiplierLevel++;if(id==="click")inkClickLevel++;if(id==="hand"){inkHandUpgrade=1;baseHandLimit=10}if(id==="rare")rareGuarantee=true;addLog("在墨水商店购入天赋："+({production:"永恒增幅",click:"指尖炼金",hand:"扩展手册",rare:"稀有预兆"})[id]+"。","special");renderShop();render();tone(760,.13)}
+function addLog(message,kind=""){logs.unshift({message,kind,time:timeFmt(elapsedSeconds)});if(logs.length>70)logs.length=70}
+function tone(freq=660,duration=.11){try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;if(!audio)audio=new AC();if(audio.state==="suspended")audio.resume();const o=audio.createOscillator(),g=audio.createGain();o.type="sine";o.frequency.value=freq;g.gain.setValueAtTime(.0001,audio.currentTime);g.gain.exponentialRampToValueAtTime(.07,audio.currentTime+.012);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+duration);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+duration+.02)}catch(err){console.warn("无法播放炼金音效。",err)}}
+function makeCard(id,{offer=false,discard=false}={}){const c=cards[id],b=document.createElement("button");b.type="button";b.className="card"+(offer?" offer-card":"")+(discard?" discard-card":"")+(id==="curse"?" cursed-card":"");b.style.setProperty("--accent",c.color);b.setAttribute("aria-label",`${c.name}，${c.school}流派，${c.rarity}。${c.description}`);const school=document.createElement("span"),mark=document.createElement("span"),name=document.createElement("span"),rarity=document.createElement("span");school.className="card-school";school.textContent=c.school;mark.className="card-mark";mark.textContent=icons[id];mark.setAttribute("aria-hidden","true");name.className="card-name";name.textContent=c.name;rarity.className="card-rarity";rarity.textContent=c.rarity;b.append(school,mark,name,rarity);if(offer){const d=document.createElement("span");d.className="card-description";d.textContent=c.description;b.append(d)}else{const tip=document.createElement("span"),title=document.createElement("strong"),detail=document.createElement("span");tip.className="card-tooltip";title.textContent=c.name+" · "+c.rarity;detail.textContent=c.description;tip.append(title,detail);b.append(tip)}return b}
+function syncHandView(){const visible=handOpen||state==="discard";document.body.classList.toggle("hand-open",visible);document.body.classList.toggle("discard-mode",state==="discard");ui.grimoirePages.setAttribute("aria-hidden",String(!visible));ui.grimoireButton.setAttribute("aria-expanded",String(visible));ui.grimoireButton.setAttribute("aria-label",visible?"收起炼金手牌":"展开炼金手牌");ui.bookCount.textContent=fmt(hand.length);ui.pagesFootnote.textContent=state==="discard"?"拖动卡牌投入虚空之口，或点击卡牌献祭":"点击书本收起手札"}
+function toggleHand(){if(state==="discard")return;handOpen=!handOpen;syncHandView();if(handOpen)ui.hand.focus({preventScroll:true})}
+function renderHand(){const key=state+"|"+hand.join(",");if(key===handRenderKey){syncHandView();return}handRenderKey=key;ui.hand.replaceChildren();if(!hand.length){const d=document.createElement("div");d.className="empty-hand";d.textContent=tutorialStage==="curse-discard"?"诅咒已被销毁。":"手牌尚空。积累 50 精华，开启第一次抉择。";ui.hand.append(d);syncHandView();return}const middle=(hand.length-1)/2,step=hand.length>1?Math.min(8,48/(hand.length-1)):0;hand.forEach((id,i)=>{const b=makeCard(id,{discard:state==="discard"}),angle=(i-middle)*step,lift=Math.abs(i-middle)*2.2;b.style.setProperty("--fan-angle",angle.toFixed(2)+"deg");b.style.setProperty("--fan-lift",lift.toFixed(1)+"px");b.style.zIndex=String(i+1);if(state==="discard"){b.dataset.discardIndex=String(i);b.setAttribute("aria-label","拖入恶魔或点击献祭："+cards[id].name+"。"+cards[id].description)}ui.hand.append(b)});syncHandView()}
+function render(){ui.essence.textContent=fmt(essence);ui.rate.textContent=fmt(rate());const lim=limit();ui.handCount.textContent=hand.length+" / "+(Number.isFinite(lim)?lim:"∞");ui.draftCount.textContent=selectedCards;ui.coinTimer.textContent=Math.max(0,(count("haste")?3:10)-coinClock).toFixed(1)+"s";ui.elapsed.textContent=timeFmt(elapsedSeconds);ui.progressText.textContent=fmt(Math.min(draftProgress,50))+" / 50 精华";ui.progressFill.style.width=Math.min(100,draftProgress/50*100)+"%";ui.handHint.textContent=tutorialStage==="curse-discard"?"拖入恶魔之口或点击献祭":state==="discard"?"拖入恶魔之口，或点击卡牌献祭":state==="draft"?"卡牌抉择中 · 精华仍持续产出":"每张卡牌都会改变你的产出";ui.inkCount.textContent=fmt(ink);ui.prestigeButton.hidden=!prestigeUnlocked;ui.meditateButton.textContent=tutorialStage==="meditate"?"✦ 冥想，凝聚 "+fmt(essence)+" / 10 ✦":"✦ 冥想，汲取 "+(1+inkClickLevel)+" 精华 ✦";ui.drawFirstButton.hidden=tutorialStage!=="draw"||!document.body.classList.contains("tutorial-draw-stage");renderHand();renderQuest()}
+function pool(){const p=[{id:"apprentice",w:34},{id:"pipeline",w:21},{id:"simplify",w:1.5},{id:"gears",w:15},{id:"overclock",w:8},{id:"chip",w:7}];if(elapsedSeconds>=300&&!(rate()<100&&drawCount<3))p.push({id:"blood",w:5},{id:"glutton",w:5},{id:"gamble",w:4});if(elapsedSeconds>=900||tabooUnlocked)p.push({id:"haste",w:2.5},{id:"greed",w:2.5});return p.filter(x=>x.id!=="simplify"||hand.length>=2)}
+function draw(){const p=pool(),out=[];while(out.length<3&&p.length){let roll=Math.random()*p.reduce((a,x)=>a+x.w,0),i=0;for(;i<p.length;i++){roll-=p[i].w;if(roll<=0)break}out.push(p.splice(Math.min(i,p.length-1),1)[0].id)}if(rareGuarantee&&!out.some(id=>cards[id].rarity!=="普通")){const rares=p.filter(x=>cards[x.id].rarity!=="普通");const allRare=["gears","overclock","chip","blood","glutton","gamble"];const available=allRare.filter(id=>pool().some(item=>item.id===id));if(available.length)out[out.length-1]=available[Math.floor(Math.random()*available.length)]}return out}
+function openDraft(isTutorial=false){if(isTutorial){if(tutorialStage!=="draw"||!overlaysClear())return}else if(state!=="playing"||tutorialStage!=="done"||!overlaysClear())return;if(isTutorial&&essence<10)return;if(!isTutorial&&draftProgress<50)return;if(isTutorial)essence-=10;else draftProgress-=50;ui.discardToast.hidden=true;state="draft";tutorialDraft=isTutorial;offers=isTutorial?["apprentice"]:draw();ui.shade.hidden=false;ui.modalTitle.textContent=isTutorial?"第一次炼金实验":"虚空回应了你的召唤";ui.modalMessage.textContent=isTutorial?"消耗 10 精华，获得第一张正收益基础图纸。":"选择一张卡牌，精华仍会持续产出。";ui.modalSymbol.textContent="✧";ui.selectionTip.textContent=isTutorial?"导师的笔记为你显现了【学徒提炼】。":"卡牌按照时间阶段逐步解锁；卡牌抉择不会消耗当前精华。";ui.offerGrid.style.gridTemplateColumns=isTutorial?"minmax(210px,260px)":"";ui.offerGrid.style.justifyContent="center";ui.offerGrid.replaceChildren();for(const id of offers){const b=makeCard(id,{offer:true});b.addEventListener("click",()=>choose(id));ui.offerGrid.append(b)}tone(520,.14);render()}
+function choose(id){if(state!=="draft"||!offers.includes(id))return;drawCount++;selectedCards++;addLog("选择了【"+cards[id].name+"】。","good");if(id==="chip"){permanentMultiplier*=1.2;addLog("芯片迭代触发：永久产出乘数提升至 ×"+fmt(permanentMultiplier)+"。","special")}if(id==="blood"){bloodPenalty=Math.min(3,bloodPenalty+1);addLog("献祭之血生效：手牌上限永久减少 1。","bad")}offers=[];ui.offerGrid.replaceChildren();if(tutorialDraft){tutorialDraft=false;hand.push(id);tutorialStage="done";questTracking=true;totalEarned=0;draftProgress=0;ui.shade.hidden=true;ui.drawFirstButton.hidden=true;document.body.classList.remove("tutorial-draw-stage");document.body.classList.add("tutorial-done");state="playing";lastFrame=performance.now();addLog("初次炼金完成：【"+cards[id].name+"】已加入手牌。自由构筑与任务试炼现已开放。","good");render();checkQuest();return}if(id==="simplify"){pending={cardId:null,minimum:2,reward:50,kind:"simplify"};beginDiscard("删繁就简：连续销毁 2 张手牌。");return}const oldLimit=limit(),mustReplace=Number.isFinite(oldLimit)&&hand.length>=oldLimit?1:0,tooMany=Number.isFinite(limit(id))&&hand.length+1>limit(id);pending={cardId:id,minimum:Math.max(mustReplace,tooMany?1:0),reward:0,kind:"add"};if(pending.minimum)beginDiscard("选择要销毁的手牌，再加入【"+cards[id].name+"】。");else finishChoice()}
+function beginDiscard(message){state="discard";handOpen=true;ui.shade.hidden=true;ui.discardToast.textContent=message+" 将手牌拖入左下方的恶魔之口，或点击卡牌献祭。";ui.discardToast.hidden=false;render()}
+function needsDiscard(){if(!pending)return false;if(pending.minimum>0)return true;const projected=hand.length+(pending.cardId?1:0),lim=limit(pending.cardId);return Number.isFinite(lim)&&projected>lim}
+function swallowCard(index,card){if(sacrificeInProgress||state!=="discard"||!card||!card.isConnected)return;sacrificeInProgress=true;card.disabled=true;const rect=card.getBoundingClientRect(),mouth=ui.demonDock.getBoundingClientRect();card.style.setProperty("--swallow-x",(mouth.left+mouth.width/2-rect.left-rect.width/2)+"px");card.style.setProperty("--swallow-y",(mouth.top+mouth.height/2-rect.top-rect.height/2)+"px");card.classList.add("swallowed");ui.demonDock.classList.add("eating");ui.demonCaption.textContent="吞噬中";tone(130,.2);window.setTimeout(()=>{ui.demonDock.classList.remove("eating","drop-ready");ui.demonCaption.textContent="虚空之口";sacrificeInProgress=false;destroy(index)},480)}
+function destroy(i){if(state!=="discard"||!pending||i<0||i>=hand.length)return;const [removed]=hand.splice(i,1);if(pending.kind==="tutorial-curse"&&removed==="curse"){addLog("黑烟散尽：销毁了【导师的诅咒】。","special");pending=null;tutorialStage="after-curse";state="after-curse";handOpen=false;ui.discardToast.hidden=true;document.body.classList.remove("tutorial-curse");document.body.classList.add("tutorial-after-curse");ui.afterCurseShade.hidden=false;render();return}const glutton=count("glutton")+(removed==="glutton"?1:0);if(questTracking&&cards[removed].school==="基础")basicDestroyed++;if(glutton){permanentMultiplier*=Math.pow(1.1,glutton);addLog("暴食者吞噬【"+cards[removed].name+"】：永久产出乘数提升至 ×"+fmt(permanentMultiplier)+"。","special")}else addLog("销毁了【"+cards[removed].name+"】。");if(pending.minimum>0)pending.minimum--;if(needsDiscard()&&hand.length){ui.modalMessage.textContent=pending.kind==="simplify"?"还需销毁手牌以完成删繁就简。":"继续选择要销毁的手牌，以满足当前手牌上限。";render();return}if(needsDiscard()&&!hand.length&&pending.cardId){pending.minimum=0;finishChoice();return}if(needsDiscard()&&!hand.length)pending.minimum=0;if(pending.minimum===0&&!needsDiscard())finishChoice();else render()}
+function finishChoice(){if(!pending)return;const result=pending;pending=null;if(result.cardId){hand.push(result.cardId);addLog("加入手牌：【"+cards[result.cardId].name+"】。","good")}ui.shade.hidden=true;ui.discardToast.hidden=true;if(result.reward){essence+=result.reward;if(questTracking)totalEarned+=result.reward;draftProgress+=result.reward;addLog("删繁就简完成：获得 50 精华。","special");tone(780,.18)}state="playing";handOpen=false;lastFrame=performance.now();render();processPendingOverlays()}
+function coin(){if(!count("gamble"))return;if(Math.random()<.5){const old=essence;essence*=2;if(questTracking)totalEarned+=essence-old;draftProgress+=essence-old;addLog("梭哈成功：硬币正面，当前精华翻倍！","special");tone(880,.2)}else{essence=0;addLog("梭哈失败：硬币反面，当前精华清零；永久增益保留。","bad");tone(180,.24)}}
+function tick(now){const dt=Math.min(.25,Math.max(0,(now-lastFrame)/1000));lastFrame=now;if(tutorialStage==="done"&&["playing","draft","quest","discard"].includes(state)){elapsedSeconds+=dt;if(count("gamble")){const interval=count("haste")?3:10;coinClock+=dt;while(coinClock>=interval){coinClock-=interval;coin()}}const delta=rate()*dt;if(delta>0){essence+=delta;if(questTracking)totalEarned+=delta;draftProgress+=delta}else if(delta<0)essence=Math.max(0,essence+delta);processPendingOverlays()}render();requestAnimationFrame(tick)}
+el("startAlchemyButton").addEventListener("click",beginMeditation);
+ui.grimoireButton.addEventListener("click",toggleHand);
+ui.hand.addEventListener("click",event=>{const card=event.target.closest("button.card[data-discard-index]");if(suppressClickCard===card){suppressClickCard=null;return}if(state!=="discard"||!card||!ui.hand.contains(card))return;const index=Number(card.dataset.discardIndex);if(!Number.isInteger(index))return;swallowCard(index,card)});
+ui.hand.addEventListener("pointerdown",event=>{if(state!=="discard"||sacrificeInProgress||event.button!==0)return;const card=event.target.closest("button.card[data-discard-index]");if(!card||!ui.hand.contains(card))return;dragPointerId=event.pointerId;dragCard=card;dragStartX=event.clientX;dragStartY=event.clientY;dragActivated=false});
+document.addEventListener("pointermove",event=>{if(dragPointerId!==event.pointerId||!dragCard)return;const dx=event.clientX-dragStartX,dy=event.clientY-dragStartY;if(!dragActivated&&Math.hypot(dx,dy)<8)return;dragActivated=true;event.preventDefault();dragCard.classList.add("dragging");dragCard.style.setProperty("--drag-x",dx+"px");dragCard.style.setProperty("--drag-y",dy+"px");const rect=ui.demonDock.getBoundingClientRect(),inside=event.clientX>=rect.left&&event.clientX<=rect.right&&event.clientY>=rect.top&&event.clientY<=rect.bottom;ui.demonDock.classList.toggle("drop-ready",inside)});
+document.addEventListener("pointerup",event=>{if(dragPointerId!==event.pointerId)return;const card=dragCard,index=card?Number(card.dataset.discardIndex):-1,didDrag=dragActivated,rect=ui.demonDock.getBoundingClientRect(),inside=event.clientX>=rect.left&&event.clientX<=rect.right&&event.clientY>=rect.top&&event.clientY<=rect.bottom;if(card&&didDrag){suppressClickCard=card;window.setTimeout(()=>{if(suppressClickCard===card)suppressClickCard=null},0);card.classList.remove("dragging");card.style.removeProperty("--drag-x");card.style.removeProperty("--drag-y");if(inside)swallowCard(index,card)}ui.demonDock.classList.remove("drop-ready");dragPointerId=null;dragCard=null;dragActivated=false});
+document.addEventListener("pointercancel",event=>{if(dragPointerId!==event.pointerId)return;if(dragCard){dragCard.classList.remove("dragging");dragCard.style.removeProperty("--drag-x");dragCard.style.removeProperty("--drag-y")}ui.demonDock.classList.remove("drop-ready");dragPointerId=null;dragCard=null;dragActivated=false});
+ui.meditateButton.addEventListener("click",meditate);
+el("guideDrawButton").addEventListener("click",beginCurseDiscard);
+el("beginFirstDrawButton").addEventListener("click",startTutorialDraft);
+ui.drawFirstButton.addEventListener("click",beginFirstDraft);
+el("claimQuestButton").addEventListener("click",claimQuest);
+ui.prestigeButton.addEventListener("click",openPrestige);
+el("confirmPrestigeButton").addEventListener("click",prestige);
+el("cancelPrestigeButton").addEventListener("click",()=>{ui.prestigeShade.hidden=true;processPendingOverlays()});
+el("inkShopButton").addEventListener("click",()=>{renderShop();ui.shopShade.hidden=false});
+el("closeShopButton").addEventListener("click",()=>{ui.shopShade.hidden=true;processPendingOverlays()});
+addLog("炼金实验开始：基础产出 1 精华 / 秒。");render();requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
