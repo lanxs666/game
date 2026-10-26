@@ -428,6 +428,97 @@
       transform: rotate(-4deg);
     }
 
+    .alchemy-art {
+      background:
+        radial-gradient(ellipse at 50% 65%, rgba(110, 37, 49, .24), transparent 38%),
+        radial-gradient(ellipse at 50% 100%, rgba(85, 104, 110, .12), transparent 55%),
+        linear-gradient(145deg, #0c1116, #14191d 56%, #101116);
+    }
+
+    .alchemy-art::before {
+      background-image:
+        linear-gradient(rgba(156, 174, 179, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(156, 174, 179, .035) 1px, transparent 1px);
+    }
+
+    .alchemy-book {
+      position: relative;
+      display: grid;
+      width: 146px;
+      height: 132px;
+      place-items: center;
+      filter: drop-shadow(0 15px 20px rgba(0, 0, 0, .68));
+      transform: rotate(-5deg);
+      transition: transform .25s ease;
+    }
+
+    .game-card:hover .alchemy-book { transform: rotate(0) translateY(-5px) scale(1.04); }
+
+    .alchemy-book-cover {
+      position: absolute;
+      inset: 8px 13px 5px;
+      border: 2px solid #68726f;
+      border-radius: 4px 10px 9px 4px;
+      background:
+        linear-gradient(90deg, #101518 0 11%, transparent 12%),
+        repeating-linear-gradient(0deg, transparent 0 15px, rgba(194, 200, 182, .06) 16px, transparent 17px 25px),
+        linear-gradient(135deg, #3d4341, #202729 58%, #13191c);
+      box-shadow: inset 0 0 0 5px rgba(7, 10, 12, .48), inset 8px 0 11px #0009, 4px 6px 0 #090c0f;
+    }
+
+    .alchemy-book-cover::before,
+    .alchemy-book-cover::after {
+      position: absolute;
+      right: 12px;
+      left: 22px;
+      height: 1px;
+      background: rgba(192, 195, 174, .48);
+      content: "";
+    }
+    .alchemy-book-cover::before { top: 15px; }
+    .alchemy-book-cover::after { bottom: 14px; }
+
+    .alchemy-page {
+      position: absolute;
+      top: 19px;
+      left: 3px;
+      display: grid;
+      width: 76px;
+      height: 93px;
+      align-content: center;
+      justify-items: center;
+      gap: 5px;
+      border: 1px solid rgba(193, 182, 153, .54);
+      background: linear-gradient(145deg, #c5bda5, #827d70);
+      box-shadow: 0 5px 11px #000a;
+      color: #313334;
+      transform: rotate(-8deg);
+    }
+    .alchemy-page::before,
+    .alchemy-page::after {
+      position: absolute;
+      right: 0;
+      left: 0;
+      height: 4px;
+      background: #a59e89;
+      content: "";
+      clip-path: polygon(0 0, 10% 45%, 20% 5%, 32% 70%, 42% 15%, 52% 60%, 62% 5%, 74% 70%, 85% 12%, 100% 50%, 100% 100%, 0 100%);
+    }
+    .alchemy-page::before { top: -2px; }
+    .alchemy-page::after { bottom: -2px; transform: rotate(180deg); }
+    .alchemy-rune { color: #6a3940; font-size: 20px; text-shadow: 0 0 8px #8e434333; }
+    .alchemy-scribble { width: 37px; height: 3px; background: #414746; box-shadow: 0 6px #414746, 0 12px #41474666; }
+    .alchemy-eye {
+      position: absolute;
+      right: 17px;
+      bottom: 32px;
+      color: #d78274;
+      font-size: 21px;
+      text-shadow: 0 0 14px rgba(196, 69, 74, .85);
+      animation: alchemy-eye-pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes alchemy-eye-pulse { 50% { opacity: .55; text-shadow: 0 0 5px #a8323b; } }
+
     .classic-art.tetris-art { font-size: 48px; letter-spacing: -10px; }
     .classic-art.space-art { font-size: 52px; }
     .classic-art.mines-art { font-size: 48px; }
@@ -683,7 +774,7 @@
       <h1 id="hero-title">灵感已就绪，<span>开始游戏。</span></h1>
       <p class="hero-copy">欢迎来到我的游戏角落。每一款小游戏，都是一个随时可以开启的小小新世界。</p>
       <div class="hero-meta" aria-label="作品集统计">
-        <span class="meta-pill"><strong>08</strong>款可玩游戏</span>
+        <span class="meta-pill"><strong>09</strong>款可玩游戏</span>
         <span class="meta-pill"><strong>FREE</strong>即点即玩</span>
         <span class="meta-pill">为好奇心而造</span>
       </div>
@@ -698,7 +789,7 @@
             <p class="section-subtitle">挑一款喜欢的，马上开始你的下一局。</p>
           </div>
         </div>
-        <span class="game-count"><strong>08</strong> 款游戏</span>
+        <span class="game-count"><strong>09</strong> 款游戏</span>
       </div>
 
       <div class="game-grid">
@@ -888,6 +979,26 @@
             <div class="card-topline"><h3>小鸡快跑</h3><span class="game-type">街机 · 反应</span></div>
             <p class="card-description">操控小鸡，利用二段跳和下蹲躲过障碍，挑战不断加速的奔跑。</p>
             <div class="card-footer"><div class="tag-list" aria-label="游戏标签"><span class="tag">单人</span><span class="tag">跳跃 / 下蹲</span></div><a class="play-link" href="endless-runner.html">开始游戏 <span class="arrow" aria-hidden="true">↗</span></a></div>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-art alchemy-art" aria-label="虚空炼金术士游戏封面">
+            <span class="art-label">ROGUELIKE · 009</span><span class="art-glow" aria-hidden="true"></span>
+            <div class="alchemy-book" aria-hidden="true">
+              <span class="alchemy-book-cover"></span>
+              <span class="alchemy-page"><span class="alchemy-rune">✧</span><span class="alchemy-scribble"></span></span>
+              <span class="alchemy-eye">◉</span>
+            </div>
+            <span class="art-index" aria-hidden="true">NO. 009</span>
+          </div>
+          <div class="card-content">
+            <div class="card-topline"><h3>虚空炼金术士</h3><span class="game-type">卡牌 · 放置</span></div>
+            <p class="card-description">翻开残缺的炼金手札，构筑卡牌、吞噬旧页，在虚空中积累精华与力量。</p>
+            <div class="card-footer">
+              <div class="tag-list" aria-label="游戏标签"><span class="tag">单人</span><span class="tag">卡牌 / 放置</span></div>
+              <a class="play-link" href="Void-Alchemist/index.html">开始游戏 <span class="arrow" aria-hidden="true">↗</span></a>
+            </div>
           </div>
         </article>
 
